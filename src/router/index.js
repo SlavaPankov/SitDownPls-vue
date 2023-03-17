@@ -13,6 +13,10 @@ const routes = [
     name: 'notFound',
     component: NotFoundView,
   },
+  {
+    path: '/personal',
+    name: 'personal',
+  },
 ];
 
 const router = createRouter({
