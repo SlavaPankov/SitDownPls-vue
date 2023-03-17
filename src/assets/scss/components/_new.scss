@@ -1,0 +1,65 @@
+.new {
+  //background: url("../img/main/commercial.webp") center center no-repeat var(--grey);
+  //background-size: 100% 100%;
+
+  @include tablet {
+    //background: url("../img/main/commercial-1024.webp") center center no-repeat var(--grey);
+  }
+
+  @include mobile {
+    background-size: contain;
+    background: transparent none top center;
+    padding-bottom: 91px;
+  }
+
+  &__container {
+    padding-top: 153px;
+    padding-bottom: 150px;
+
+    @include mobile {
+      //background: url("../img/main/commercial-320.webp") center center no-repeat var(--grey);
+      background-size: cover;
+      padding: 30px 12px 112px;
+    }
+  }
+
+  &__heading {
+    max-width: 580px;
+    margin-bottom: 49px;
+    font-size: 48px;
+    line-height: 57.6px;
+    font-weight: 400;
+    color: var(--white);
+
+    @include mobile {
+      max-width: 187px;
+      font-size: 16px;
+      line-height: 19.2px;
+    }
+
+    &-playfair {
+      display: block;
+      font-family: 'PlayfairDisplay', 'OpenSans', sans-serif;
+      font-size: 60px;
+      line-height: 72px;
+      font-weight: 900;
+      color: var(--gold);
+
+      @include mobile {
+        font-size: 24px;
+        line-height: 120%;
+      }
+    }
+  }
+
+  &__button {
+    @include btn-primary;
+    padding: 21px 30px;
+
+    @include mobile {
+      position: absolute;
+      top: calc(100% + 32px);
+      width: calc(100% - 24px);
+    }
+  }
+}

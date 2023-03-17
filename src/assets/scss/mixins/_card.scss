@@ -1,0 +1,91 @@
+@mixin card {
+  position: relative;
+  padding: 30px 15px;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  background-color: var(--grey_light);
+  border-radius: 10px;
+
+  @include mobile {
+    height: 342px;
+    padding: 16px;
+  }
+
+  @include small-mobile {
+    height: 278px;
+  }
+
+  &__grade {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 31px;
+    left: 30px;
+    font-size: 16px;
+    line-height: 20.8px;
+    font-weight: 400;
+    color: var(--secondary);
+
+    @include mobile {
+      top: 16px;
+      left: 16px;
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
+    fill: var(--secondary);
+  }
+
+  &__picture {
+    margin: 0 auto 14px;
+
+    @include mobile {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__title {
+    margin-bottom: 20px;
+    padding: 0 15px;
+    @include card-title;
+
+    @include mobile {
+      padding: 0;
+      margin-bottom: 16px;
+      font-size: 16px;
+      line-height: 20.8px;
+    }
+  }
+
+  &__price {
+    margin-bottom: 24px;
+    padding: 0 15px;
+    font-size: 16px;
+    line-height: 20.8px;
+    font-weight: 400;
+    color: var(--grey_shade);
+
+    @include mobile {
+      padding: 0;
+      margin-bottom: 16px;
+    }
+  }
+
+  &__button {
+    @include btn-secondary;
+    padding: 17.5px 33.5px;
+    margin-left: 15px;
+
+    @include mobile {
+      padding: 12px 25px;
+      margin: 0;
+    }
+  }
+}

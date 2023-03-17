@@ -1,0 +1,57 @@
+@mixin arrow-round {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--primary);
+  border-radius: 100%;
+  background-color: transparent;
+  transition: background-color .3s ease-in-out, border-color .3s ease-in-out;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    width: 7px;
+    height: 7px;
+    border-bottom: 2px solid var(--primary);
+    border-right: 2px solid var(--primary);
+    transition: border-color .3s ease-in-out;
+  }
+
+  &:hover {
+    background-color: var(--primary);
+
+    &::after {
+      border-color: var(--white);
+    }
+  }
+
+  &:focus {
+    outline: none;
+    background-color: var(--primary_light);
+
+    &::after {
+      border-color: var(--white);
+    }
+  }
+
+  &:active {
+    background-color: var(--primary_shade);
+    border-color: var(--primary_shade);
+
+    &::after {
+      border-color: var(--white);
+    }
+  }
+
+  &:disabled {
+    border-color: var(--grey);
+
+    &::after {
+      border-color: var(--grey);
+    }
+  }
+}

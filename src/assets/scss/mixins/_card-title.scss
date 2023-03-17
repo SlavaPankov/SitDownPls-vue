@@ -1,0 +1,24 @@
+@mixin card-title {
+  font-size: 24px;
+  line-height: 31.2px;
+  font-weight: 400;
+  color: var(--black);
+  transition: color .3s ease-in-out;
+
+  &:hover {
+    color: var(--primary);
+  }
+
+  &:focus {
+    outline: 2px solid var(--primary);
+  }
+
+  &:active {
+    outline: none;
+    color: var(--primary_shade);
+  }
+
+  &-block {
+    display: block;
+  }
+}

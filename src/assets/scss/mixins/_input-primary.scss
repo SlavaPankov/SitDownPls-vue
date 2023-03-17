@@ -1,0 +1,44 @@
+@mixin input-primary {
+  width: 100%;
+  padding: 7px 18px;
+  font-size: 16px;
+  line-height: 40px;
+  font-weight: 400;
+  color: var(--black);
+  background-color: var(--grey_light);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  transition: background-color .3s ease-in-out, border-color .3s ease-in-out;
+
+  &::placeholder {
+    color: var(--grey);
+  }
+
+  &:hover {
+    background-color: var(--md_grey);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: var(--pink_light);
+  }
+
+  &--valid {
+    border-color: var(--green_input);;
+  }
+
+  &--invalid {
+    border-color: var(--red_input);
+  }
+
+  &--writing {
+    border-color: var(--grey_light);
+    background-color: var(--white);
+
+    &:focus {
+      border-color: var(--grey_light);
+      background-color: var(--white);
+    }
+  }
+}

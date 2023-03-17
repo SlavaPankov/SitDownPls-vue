@@ -1,0 +1,29 @@
+@mixin btn-secondary {
+  padding: 19px 35px;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 10px;
+  background-color: transparent;
+  transition: background-color .3s ease-in-out, color .3s ease-in-out, border-color .3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--white);
+    background-color: var(--primary);
+  }
+
+  &:focus {
+    outline: none;
+    color: var(--white);
+    background-color: var(--primary_light);
+  }
+
+  &:active {
+    color: var(--white);
+    background-color: var(--primary_shade);
+    border-color: var(--primary_shade);
+  }
+}

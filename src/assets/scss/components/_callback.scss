@@ -1,0 +1,107 @@
+.callback {
+
+  &__container {
+    padding-top: 35px;
+    padding-bottom: 70px;
+    //background: url('../img/main/1-contacts.webp') right 15px top 60px no-repeat transparent;
+    //background-size: 624px 383px;
+
+    //@include tablet {
+    //  background: url('../img/main/1-contacts-1024.webp') right 38px top 112px no-repeat transparent;
+    //  background-size: 514px 316px;
+    //}
+
+    //@include small-tablet {
+    //  background: url('../img/main/1-contacts-768.webp') right 38px top 112px no-repeat transparent;
+    //  background-size: 187px 444px;
+    //}
+  }
+
+  &__heading {
+    margin-bottom: 10px;
+    @include h2;
+
+    @include tablet {
+      margin-bottom: 9px;
+    }
+  }
+
+  &__text {
+    max-width: 624px;
+    margin-bottom: 14.5px;
+    font-size: 14px;
+    line-height: 19.07px;
+    font-weight: 400;
+    color: var(--grey_shade);
+
+    @include big-desktop {
+      max-width: 50%;
+    }
+
+    @include tablet {
+      max-width: 405px;
+    }
+  }
+}
+
+.callback-form {
+  max-width: 624px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  @include big-desktop {
+    max-width: 50%;
+  }
+
+  @include tablet {
+    max-width: 405px;
+  }
+
+  &__label {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    margin-bottom: 28.5px;
+  }
+
+  &__input {
+    @include input-primary;
+  }
+
+  &__button {
+    margin-bottom: 13.5px;
+    @include btn-primary;
+    padding: 17px 32px;
+  }
+
+  &__link {
+    color: var(--primary);
+    text-decoration: underline;
+    padding-left: 4px;
+  }
+}
+
+.agreement-label {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+  line-height: 19.07px;
+  font-weight: 400;
+  color: var(--black);
+}
+
+.custom-checkbox {
+  @include custom-checkbox;
+}
+
+.invalid {
+  margin-bottom: 6px;
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 16.34px;
+  font-weight: 400;
+  color: var(--red_input);
+}

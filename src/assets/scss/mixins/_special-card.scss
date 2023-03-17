@@ -1,0 +1,129 @@
+@mixin special-card {
+  position: relative;
+  height: 451px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 30px 30px 30px;
+  border-radius: 10px;
+  background-color: var(--grey_light);
+
+  @include tablet {
+    padding-right: 21px;
+    padding-left: 21px;
+  }
+
+  @include mobile {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  &__label {
+    position: absolute;
+    box-sizing: border-box;
+    max-width: 92px;
+    width: 100%;
+    top: 30px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 21px 8px 12px;
+    font-size: 13px;
+    line-height: 19.07px;
+    font-weight: 400;
+    color: var(--white);
+    background-color: var(--secondary);
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-top: 15px solid var(--grey_light);
+      border-left: 10px solid var(--secondary);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border-bottom: 15px solid var(--grey_light);
+      border-left: 10px solid var(--secondary);
+    }
+  }
+
+  &__picture {
+    margin: 0 auto 13px;
+
+    @include tablet {
+      margin-bottom: 15px;
+    }
+  }
+
+  &__title {
+    margin-bottom: 20px;
+    @include card-title;
+
+    @include tablet {
+      padding: 0 9px;
+    }
+
+    @include mobile {
+      padding: 0 7px;
+    }
+  }
+
+  &__prices {
+    display: flex;
+    align-items: center;
+    margin-bottom: 22.5px;
+
+    @include tablet {
+      padding: 0 9px;
+    }
+
+    @include mobile {
+      padding: 0 7px;
+    }
+  }
+
+  &__prices-current {
+    margin-right: 30px;
+    font-size: 18px;
+    line-height: 23.4px;
+    font-weight: 400;
+    color: var(--secondary);
+  }
+
+  &__prices-old {
+    position: relative;
+    font-size: 16px;
+    line-height: 20.8px;
+    font-weight: 400;
+    color: var(--grey);
+    //text-decoration: line-through;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 60%;
+      left: -5%;
+      transform: translateY(-50%);
+      width: 110%;
+      height: 1px;
+      background-color: var(--grey);
+    }
+  }
+
+  &__button {
+    @include btn-secondary;
+    padding: 17px 34px;
+
+    @include tablet {
+      margin-left: 9px;
+    }
+  }
+}

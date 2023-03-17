@@ -1,0 +1,5 @@
+@mixin arrow-round-right {
+  &::after {
+    transform: translate(-65%, -50%) rotate(-45deg);
+  }
+}
