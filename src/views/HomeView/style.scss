@@ -1,0 +1,12 @@
+@import '../../assets/scss/_mixins.scss';
+
+.specials {
+  &__container {
+    padding-top: 70px;
+    padding-bottom: 35px;
+  }
+
+  &__heading {
+    @include h2;
+  }
+}

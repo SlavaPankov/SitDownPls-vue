@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import './style.scss';
+import './styles.scss';
 
 export default {
   name: 'BaseSpinner',

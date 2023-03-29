@@ -1,0 +1,60 @@
+@import '../../assets/scss/_mixins.scss';
+
+.banner {
+  &__container {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  &__heading {
+    margin-bottom: 49px;
+    font-size: 48px;
+    line-height: 65px;
+    font-weight: 700;
+    color: var(--grey);
+  }
+
+  &__button {
+    @include btn-primary;
+  }
+
+  &__slide {
+    box-sizing: border-box;
+
+    &:first-child {
+      background: url("../../assets/img/1-banner.webp") center center no-repeat var(--white);
+      background-size: cover;
+    }
+
+    &:nth-child(2) {
+      background: url("../../assets/img/2-banner.webp") center center no-repeat var(--white);
+      background-size: cover;
+    }
+
+    &:nth-child(3) {
+      background: url("../../assets/img/3-banner.webp") center center no-repeat var(--grey_shade);
+      background-size: cover;
+
+      & .banner__heading {
+        color: var(--white);
+      }
+    }
+  }
+}
+
+.block {
+  display: block;
+}
+
+.swiper-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 var(--swiper-pagination-bullet-horizontal-gap,8px);
+}
+
+.swiper-pagination-bullet {
+  width: 14px;
+  height: 14px;
+
+  &-active {
+    background-color: var(--black);
+  }
+}
