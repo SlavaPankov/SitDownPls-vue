@@ -5,9 +5,9 @@
       <h2 class="specials__heading heading-reset">
         Специальные предложения
       </h2>
-      <div class="special__buttons">
-        <button class="specials__button specials__button--next btn-reset"></button>
+      <div class="specials__buttons">
         <button class="specials__button specials__button--prev btn-reset"></button>
+        <button class="specials__button specials__button--next btn-reset"></button>
       </div>
       <specials-slider />
     </div>
