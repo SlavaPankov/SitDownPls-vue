@@ -1,0 +1,66 @@
+<template>
+  <article class="specials__card special-card">
+    <span class="special-card__label">
+      - {{ formattedPrice(discount) }}
+    </span>
+    <router-link :to="{ name: 'product',
+                        params: { slug: product.slug, category: product.categories[0].slug } }"
+                 class="special-card__img-link"
+    >
+      <picture class="special-card__picture">
+        <img loading="lazy"
+             src="../../assets/img/1-specials.png"
+             class="image special-card__image"
+             :alt="product.name"
+        >
+      </picture>
+    </router-link>
+    <router-link
+      :to="{ name: 'product',
+             params: { slug: product.slug, category: product.categories[0].slug } }"
+      class="heading-reset special-card__title"
+    >
+      {{ product.name}}
+    </router-link>
+    <div class="special-card__prices">
+      <div class="special-card__prices-current">
+        {{ formattedPrice(product.price) }} руб
+      </div>
+      <div class="special-card__prices-old">
+        {{ formattedPrice(product.old_price) }} руб
+      </div>
+    </div>
+    <router-link
+      :to="{ name: 'product',
+             params: { slug: product.slug, category: product.categories[0].slug } }"
+      class="special-card__button btn-reset">
+      Купить
+    </router-link>
+  </article>
+</template>
+
+<script>
+import './styles.scss';
+
+export default {
+  name: 'DiscountCard',
+  props: {
+    product: {
+      require: true,
+      type: Array,
+    },
+  },
+
+  computed: {
+    discount() {
+      return Number(this.product.old_price) - Number(this.product.price);
+    },
+  },
+
+  methods: {
+    formattedPrice(price) {
+      return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(price).split(',')[0];
+    },
+  },
+};
+</script>

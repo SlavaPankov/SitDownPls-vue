@@ -109,7 +109,7 @@
     &::after {
       content: '';
       position: absolute;
-      top: 60%;
+      top: 47%;
       left: -5%;
       transform: translateY(-50%);
       width: 110%;
@@ -125,5 +125,9 @@
     @include tablet {
       margin-left: 9px;
     }
+  }
+
+  &__img-link {
+    align-self: center;
   }
 }

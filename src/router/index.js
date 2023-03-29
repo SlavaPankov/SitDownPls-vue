@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import ProductView from '../views/ProductView';
 import HomeView from '../views/HomeView/HomeView';
 import NotFoundView from '../views/NotFoundView';
 
@@ -16,6 +17,11 @@ const routes = [
   {
     path: '/personal',
     name: 'personal',
+  },
+  {
+    path: '/catalog/:category/:slug',
+    name: 'product',
+    component: ProductView,
   },
 ];
 

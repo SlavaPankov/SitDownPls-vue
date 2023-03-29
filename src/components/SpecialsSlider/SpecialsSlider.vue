@@ -1,21 +1,24 @@
 <template>
   <swiper
+    class="specials__slider"
     :slides-per-view="3"
     :slides-per-group="3"
     :space-between="32"
     :navigation="navigation"
     :modules="modules"
+    :loop="true"
   >
-    <swiper-slide>
-      1Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius molestiae, voluptate! At
-      debitis delectus distinctio, doloremque earum expedita fugiat, id illum magni minima non
-      quaerat quam quod sapiente tenetur voluptatibus.
+    <swiper-slide
+      v-for="product in discountProducts"
+      :key="product.id">
+      <discount-card :product="product" />
     </swiper-slide>
   </swiper>
 </template>
 
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import DiscountCard from '@/components/DiscountCard/DiscountCard';
 import { Navigation } from 'swiper';
 import { mapGetters } from 'vuex';
 
@@ -28,6 +31,7 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
+    DiscountCard,
   },
 
   setup() {

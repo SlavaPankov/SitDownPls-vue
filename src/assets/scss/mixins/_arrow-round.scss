@@ -49,9 +49,14 @@
 
   &:disabled {
     border-color: var(--grey);
+    cursor: default;
 
     &::after {
       border-color: var(--grey);
+    }
+
+    &:hover {
+      background-color: transparent;
     }
   }
 }
