@@ -1,27 +1,42 @@
 <template>
-  <main-header/>
+  <main-header />
 
-  <router-view/>
+  <router-view />
 </template>
 
 <script>
-import MainHeader from '@/components/MainHeader.vue';
-import { mapActions, mapGetters } from 'vuex';
+import MainHeader from '@/components/MainHeader';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
   components: { MainHeader },
 
   methods: {
-    ...mapActions(['loadCategories']),
+    ...mapActions(['loadCategories', 'loadBasket', 'loadProducts']),
+    ...mapMutations(['updateUserAccessToken']),
   },
 
   computed: {
-    ...mapGetters(['getCategories']),
+    ...mapGetters(['getCategories', 'getProducts', 'getBasket']),
   },
 
   created() {
+    const userAccessToken = localStorage.getItem('userAccessToken');
+
+    if (userAccessToken) {
+      this.updateUserAccessToken(userAccessToken);
+    }
+
     if (this.getCategories.length === 0) {
       this.loadCategories();
+    }
+
+    if (Object.keys(this.getBasket).length === 0) {
+      this.loadBasket();
+    }
+
+    if (this.getProducts.length === 0) {
+      this.loadProducts();
     }
   },
 };
