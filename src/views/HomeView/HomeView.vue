@@ -26,6 +26,19 @@
       </button>
     </div>
   </section>
+  <section class="commercial">
+    <div class="commercial__container container">
+      <h2 class="commercial__heading heading-reset">
+        Оксфорд 1950
+      </h2>
+      <p class="commercial__subtitle heading-reset">
+        Новая коллекция изысканных кресел
+      </p>
+      <button class="commercial__button btn-reset">
+        Ознакомиться
+      </button>
+    </div>
+  </section>
 </template>
 
 <script>

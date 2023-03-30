@@ -59,3 +59,34 @@
     margin: 0 auto;
   }
 }
+
+.commercial {
+  background: url("../../assets/img/commercial.jpg") center center no-repeat var(--grey);
+  background-size: 100% 100%;
+
+  &__container {
+    padding-top: 150px;
+    padding-bottom: 150px;
+  }
+
+  &__heading {
+    font-family: 'PlayfairDisplay', 'OpenSans', sans-serif;
+    font-size: 60px;
+    line-height: 72px;
+    font-weight: 900;
+    color: var(--gold);
+  }
+
+  &__subtitle {
+    max-width: 580px;
+    margin-bottom: 49px;
+    font-size: 48px;
+    line-height: 57.6px;
+    font-weight: 400;
+    color: var(--white);
+  }
+
+  &__button {
+    @include btn-primary;
+  }
+}
