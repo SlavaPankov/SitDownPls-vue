@@ -24,7 +24,10 @@ export default createStore({
     },
 
     getHighRatingProducts(state) {
-      return state.products.filter((product) => parseInt(product.rating, 10) > 4);
+      return state.products
+        .filter((product) => product.rating > 4
+        && parseInt(product.old_price, 10) === 0)
+        .sort((a, b) => (a.rating > b.rating ? -1 : 1));
     },
 
     getBasket(state) {

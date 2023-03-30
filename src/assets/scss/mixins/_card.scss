@@ -55,6 +55,10 @@
     margin-bottom: 20px;
     padding: 0 15px;
     @include card-title;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 
     @include mobile {
       padding: 0;

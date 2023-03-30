@@ -1,0 +1,7 @@
+@import "../../assets/scss/_mixins.scss";
+
+.rating-card {
+  max-width: 296px;
+  width: 100%;
+  @include card;
+}

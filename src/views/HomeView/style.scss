@@ -41,3 +41,15 @@
     }
   }
 }
+
+.rating {
+  &__container {
+    padding-top: 35px;
+    padding-bottom: 70px;
+  }
+
+  &__heading {
+    @include h2;
+    margin-bottom: 26px;
+  }
+}
