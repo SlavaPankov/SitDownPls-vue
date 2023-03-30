@@ -20,7 +20,7 @@
              params: { slug: product.slug, category: product.categories[0].slug } }"
       class="heading-reset special-card__title"
     >
-      {{ product.name}}
+      {{ nameWithoutLastWord }} <span class="block">{{ nameLastWord }}</span>
     </router-link>
     <div class="special-card__prices">
       <div class="special-card__prices-current">
@@ -47,13 +47,26 @@ export default {
   props: {
     product: {
       require: true,
-      type: Array,
+      type: Object,
     },
   },
 
   computed: {
     discount() {
       return Number(this.product.old_price) - Number(this.product.price);
+    },
+
+    nameLastWord() {
+      const arrFromString = this.product.name.split(' ');
+
+      return arrFromString[arrFromString.length - 1];
+    },
+
+    nameWithoutLastWord() {
+      const arrFromString = this.product.name.split(' ');
+      arrFromString.pop();
+
+      return arrFromString.join(' ');
     },
   },
 

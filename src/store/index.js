@@ -19,6 +19,14 @@ export default createStore({
       return state.products;
     },
 
+    getDiscountProducts(state) {
+      return state.products.filter((product) => parseInt(product.old_price, 10) > 0);
+    },
+
+    getHighRatingProducts(state) {
+      return state.products.filter((product) => parseInt(product.rating, 10) > 4);
+    },
+
     getBasket(state) {
       return state.basket;
     },

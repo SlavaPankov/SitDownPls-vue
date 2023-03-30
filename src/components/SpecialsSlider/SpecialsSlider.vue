@@ -9,7 +9,7 @@
     :loop="true"
   >
     <swiper-slide
-      v-for="product in discountProducts"
+      v-for="product in getDiscountProducts"
       :key="product.id">
       <discount-card :product="product" />
     </swiper-slide>
@@ -45,11 +45,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getProducts']),
-
-    discountProducts() {
-      return this.getProducts.filter((product) => parseInt(product.old_price, 10) > 0);
-    },
+    ...mapGetters(['getDiscountProducts']),
   },
 };
 </script>
