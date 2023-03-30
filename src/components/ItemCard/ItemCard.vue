@@ -48,6 +48,10 @@ export default {
       require: true,
       type: Object,
     },
+    mode: {
+      type: String,
+      default: 'item',
+    },
   },
 
   computed: {

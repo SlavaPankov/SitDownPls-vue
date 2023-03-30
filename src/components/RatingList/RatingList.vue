@@ -1,6 +1,6 @@
 <template>
   <ul class="rating-list list-reset">
-    <li v-for="product in getHighRatingProducts" :key="product.id">
+    <li v-for="product in products" :key="product.id">
       <item-card :product="product" />
     </li>
   </ul>
@@ -8,15 +8,16 @@
 
 <script>
 import './styles.scss';
-import { mapGetters } from 'vuex';
 import ItemCard from '@/components/ItemCard/ItemCard';
 
 export default {
   name: 'RatingList',
   components: { ItemCard },
-
-  computed: {
-    ...mapGetters(['getHighRatingProducts']),
+  props: {
+    products: {
+      require: true,
+      type: Array,
+    },
   },
 };
 </script>

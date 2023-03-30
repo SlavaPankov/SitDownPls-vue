@@ -52,4 +52,10 @@
     @include h2;
     margin-bottom: 26px;
   }
+
+  &__button {
+    @include btn-primary;
+    display: block;
+    margin: 0 auto;
+  }
 }
