@@ -19,7 +19,7 @@
       </h2>
       <rating-list :products="slicedProducts" />
       <button class="btn-reset rating__button"
-              v-if="getHighRatingProducts.length > 8 && offsetStep <= getHighRatingProducts.length"
+              v-if="getHighRatingProducts.length > 8 && slicedProducts.length < 20"
               @click="showMore"
       >
         Смотреть больше товаров
@@ -39,18 +39,32 @@
       </button>
     </div>
   </section>
+  <section class="top-categories">
+    <div class="top-categories__container container">
+      <h2 class="top-categories__heading heading-reset">
+        Топ категории
+      </h2>
+      <categories-list />
+    </div>
+  </section>
 </template>
 
 <script>
 import MainSlider from '@/components/MainSlider/MainSlider';
 import SpecialsSlider from '@/components/SpecialsSlider/SpecialsSlider';
 import RatingList from '@/components/RatingList/RatingList';
-import './style.scss';
+import CategoriesList from '@/components/CategoriesList/CategoriesList';
+import './styles.scss';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'HomeView',
-  components: { SpecialsSlider, MainSlider, RatingList },
+  components: {
+    SpecialsSlider,
+    MainSlider,
+    RatingList,
+    CategoriesList,
+  },
   data() {
     return {
       RatingListLength: 0,

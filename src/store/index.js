@@ -20,6 +20,7 @@ export default createStore({
     },
 
     getDiscountProducts(state) {
+      console.log(state.products);
       return state.products.filter((product) => parseInt(product.old_price, 10) > 0);
     },
 
@@ -33,6 +34,10 @@ export default createStore({
 
     getBasket(state) {
       return state.basket;
+    },
+
+    getTopCategories(state) {
+      return state.categories.slice(0, 5);
     },
   },
   mutations: {
