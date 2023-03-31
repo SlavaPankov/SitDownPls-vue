@@ -7,6 +7,7 @@ export default createStore({
   state: {
     categories: [],
     products: [],
+    posts: [],
     basket: {},
     userAccessToken: '',
   },
@@ -39,6 +40,11 @@ export default createStore({
     getTopCategories(state) {
       return state.categories.slice(0, 5);
     },
+
+    getPosts(state) {
+      return state.posts
+        .filter((a, b) => (new Date(a.created_at) < new Date(b.created_at) ? -1 : 1));
+    },
   },
   mutations: {
     updateCategories(state, value) {
@@ -55,6 +61,10 @@ export default createStore({
 
     updateUserAccessToken(state, value) {
       state.userAccessToken = value;
+    },
+
+    updatePosts(state, value) {
+      state.posts = value;
     },
   },
   actions: {
@@ -86,6 +96,12 @@ export default createStore({
             localStorage.setItem('userAccessToken', userAccessToken);
           }
         });
+    },
+
+    loadPosts(ctx) {
+      return axios
+        .get(`${BASE_URL}/api/posts`)
+        .then((response) => ctx.commit('updatePosts', response.data.payload));
     },
   },
   modules: {

@@ -103,3 +103,44 @@
     @include h2;
   }
 }
+
+.useful {
+  &__container {
+    padding-top: 35px;
+    padding-bottom: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 26px;
+  }
+
+  &__heading {
+    @include h2;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  &__button {
+    @include arrow-round;
+
+    &__disabled {
+      border-color: var(--grey);
+
+      &::after {
+        border-color: var(--grey)
+      }
+    }
+
+    &--prev {
+      @include arrow-round-left;
+      margin-right: 13px;
+    }
+
+    &--next {
+      @include arrow-round-right;
+    }
+  }
+}

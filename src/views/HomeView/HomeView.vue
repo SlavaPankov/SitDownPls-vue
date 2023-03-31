@@ -47,6 +47,18 @@
       <categories-list />
     </div>
   </section>
+  <div class="useful">
+    <div class="useful__container container">
+      <h2 class="useful__heading heading-reset">
+        Полезное
+      </h2>
+      <div class="useful__buttons">
+        <button class="useful__button useful__button--prev btn-reset"></button>
+        <button class="useful__button useful__button--next btn-reset"></button>
+      </div>
+      <useful-slider />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -56,10 +68,12 @@ import RatingList from '@/components/RatingList/RatingList';
 import CategoriesList from '@/components/CategoriesList/CategoriesList';
 import './styles.scss';
 import { mapGetters } from 'vuex';
+import UsefulSlider from '@/components/UsefulSlider/UsefulSlider';
 
 export default {
   name: 'HomeView',
   components: {
+    UsefulSlider,
     SpecialsSlider,
     MainSlider,
     RatingList,
@@ -74,7 +88,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getHighRatingProducts', 'getProducts']),
+    ...mapGetters(['getHighRatingProducts', 'getProducts', 'getPosts']),
 
     slicedProducts() {
       return this.getHighRatingProducts.slice(0, this.offsetStep);
