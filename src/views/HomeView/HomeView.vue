@@ -9,7 +9,7 @@
         <button class="specials__button specials__button--prev btn-reset"></button>
         <button class="specials__button specials__button--next btn-reset"></button>
       </div>
-      <specials-slider />
+      <specials-slider/>
     </div>
   </section>
   <section class="rating">
@@ -17,7 +17,7 @@
       <h2 class="rating__heading heading-reset">
         Высокий рейтинг
       </h2>
-      <rating-list :products="slicedProducts" />
+      <rating-list :products="slicedProducts"/>
       <button class="btn-reset rating__button"
               v-if="getHighRatingProducts.length > 8 && slicedProducts.length < 20"
               @click="showMore"
@@ -44,10 +44,10 @@
       <h2 class="top-categories__heading heading-reset">
         Топ категории
       </h2>
-      <categories-list />
+      <categories-list/>
     </div>
   </section>
-  <div class="useful">
+  <section class="useful">
     <div class="useful__container container">
       <h2 class="useful__heading heading-reset">
         Полезное
@@ -56,9 +56,10 @@
         <button class="useful__button useful__button--prev btn-reset"></button>
         <button class="useful__button useful__button--next btn-reset"></button>
       </div>
-      <useful-slider />
+      <useful-slider/>
     </div>
-  </div>
+  </section>
+  <base-callback />
 </template>
 
 <script>
@@ -69,6 +70,7 @@ import CategoriesList from '@/components/CategoriesList/CategoriesList';
 import './styles.scss';
 import { mapGetters } from 'vuex';
 import UsefulSlider from '@/components/UsefulSlider/UsefulSlider';
+import BaseCallback from '@/components/BaseCallback/BaseCallback';
 
 export default {
   name: 'HomeView',
@@ -78,6 +80,7 @@ export default {
     MainSlider,
     RatingList,
     CategoriesList,
+    BaseCallback,
   },
   data() {
     return {

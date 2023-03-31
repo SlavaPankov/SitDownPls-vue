@@ -21,7 +21,6 @@ export default createStore({
     },
 
     getDiscountProducts(state) {
-      console.log(state.products);
       return state.products.filter((product) => parseInt(product.old_price, 10) > 0);
     },
 

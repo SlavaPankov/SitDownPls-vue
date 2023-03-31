@@ -2,14 +2,17 @@
   <main-header />
 
   <router-view />
+
+  <main-footer />
 </template>
 
 <script>
 import MainHeader from '@/components/MainHeader';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import MainFooter from '@/components/MainFooter';
 
 export default {
-  components: { MainHeader },
+  components: { MainFooter, MainHeader },
 
   methods: {
     ...mapActions(['loadCategories', 'loadBasket', 'loadProducts', 'loadPosts']),
