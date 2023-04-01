@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import CatalogView from '@/views/CatalogView';
 import ProductView from '../views/ProductView';
 import HomeView from '../views/HomeView/HomeView';
 import NotFoundView from '../views/NotFoundView';
@@ -10,6 +11,11 @@ const routes = [
     component: HomeView,
   },
   {
+    path: '/catalog',
+    name: 'catalog',
+    component: CatalogView,
+  },
+  {
     path: '/:catchAll(.*)',
     name: 'notFound',
     component: NotFoundView,
@@ -19,7 +25,7 @@ const routes = [
     name: 'personal',
   },
   {
-    path: '/catalog/:category/:slug',
+    path: '/:category/:subcategory/:slug',
     name: 'product',
     component: ProductView,
   },

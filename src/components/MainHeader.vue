@@ -82,9 +82,9 @@
         <nav class="nav header-middle__nav middle-nav" title="">
           <ul class="middle-nav__list list-reset">
             <li class="middle-nav__item">
-              <a href="#" class="middle-nav__link">
+              <router-link :to="{ name: 'catalog' }" class="middle-nav__link">
                 <span class="middle-nav__text">Каталог</span>
-              </a>
+              </router-link>
             </li>
             <li class="middle-nav__item">
               <a href="#" class="middle-nav__link">

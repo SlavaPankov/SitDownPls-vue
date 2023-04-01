@@ -44,7 +44,7 @@
       <h2 class="top-categories__heading heading-reset">
         Топ категории
       </h2>
-      <categories-list/>
+      <categories-list :categories="getTopCategories"/>
     </div>
   </section>
   <section class="useful">
@@ -91,7 +91,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getHighRatingProducts', 'getProducts', 'getPosts']),
+    ...mapGetters([
+      'getHighRatingProducts',
+      'getProducts',
+      'getPosts',
+      'getTopCategories',
+    ]),
 
     slicedProducts() {
       return this.getHighRatingProducts.slice(0, this.offsetStep);

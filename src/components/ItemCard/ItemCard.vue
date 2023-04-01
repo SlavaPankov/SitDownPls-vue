@@ -17,6 +17,7 @@
         name: 'product',
         params: {
           category: product.categories[0].slug,
+          subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
           slug: product.slug
         }
       }"
@@ -30,6 +31,7 @@
         name: 'product',
         params: {
           category: product.categories[0].slug,
+          subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
           slug: product.slug
         }
       }" class="btn-reset rating-card__button">

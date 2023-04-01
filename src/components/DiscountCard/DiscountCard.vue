@@ -3,9 +3,15 @@
     <span class="special-card__label">
       - {{ formattedPrice(discount) }}
     </span>
-    <router-link :to="{ name: 'product',
-                        params: { slug: product.slug, category: product.categories[0].slug } }"
-                 class="special-card__img-link"
+    <router-link :to="{
+      name: 'product',
+          params: {
+            slug: product.slug,
+            subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
+            category: product.categories[0].slug
+          }
+        }"
+     class="special-card__img-link"
     >
       <picture class="special-card__picture">
         <img loading="lazy"
@@ -17,7 +23,10 @@
     </router-link>
     <router-link
       :to="{ name: 'product',
-             params: { slug: product.slug, category: product.categories[0].slug } }"
+             params: {
+                slug: product.slug,
+                subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
+                category: product.categories[0].slug } }"
       class="heading-reset special-card__title"
     >
       {{ nameWithoutLastWord }} <span class="block">{{ nameLastWord }}</span>
@@ -32,7 +41,10 @@
     </div>
     <router-link
       :to="{ name: 'product',
-             params: { slug: product.slug, category: product.categories[0].slug } }"
+             params: {
+              slug: product.slug,
+              subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
+              category: product.categories[0].slug } }"
       class="special-card__button btn-reset">
       Купить
     </router-link>

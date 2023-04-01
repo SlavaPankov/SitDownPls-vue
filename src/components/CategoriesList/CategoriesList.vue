@@ -1,7 +1,7 @@
 <template>
   <ul class="top-categories__list list-reset">
     <li class="top-categories__item"
-        v-for="category in getTopCategories"
+        v-for="category in categories"
         :key="category.id"
     >
       <category-card :category="category" />
@@ -11,15 +11,15 @@
 
 <script>
 import CategoryCard from '@/components/CategoryCard/CategoryCard';
-import { mapGetters } from 'vuex';
 import './styles.scss';
 
 export default {
   name: 'CategoriesList',
   components: { CategoryCard },
-
-  computed: {
-    ...mapGetters(['getTopCategories']),
+  props: {
+    categories: {
+      type: Array,
+    },
   },
 };
 </script>
