@@ -140,7 +140,7 @@
       </div>
     </div>
     <div class="footer__bottom">
-      <span class="footer__copyright">SDP®</span> 2011-2021
+      <span class="footer__copyright">SDP®</span> 2011-{{ new Date().getFullYear() }}
     </div>
   </footer>
 </template>

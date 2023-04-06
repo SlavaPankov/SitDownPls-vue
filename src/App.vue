@@ -15,12 +15,12 @@ export default {
   components: { MainFooter, MainHeader },
 
   methods: {
-    ...mapActions(['loadCategories', 'loadBasket', 'loadProducts', 'loadPosts']),
+    ...mapActions(['loadCategories', 'loadBasket', 'loadProducts', 'loadPosts', 'loadColors']),
     ...mapMutations(['updateUserAccessToken']),
   },
 
   computed: {
-    ...mapGetters(['getCategories', 'getProducts', 'getBasket', 'getPosts']),
+    ...mapGetters(['getCategories', 'getProducts', 'getBasket', 'getPosts', 'getColors']),
   },
 
   created() {
@@ -44,6 +44,10 @@ export default {
 
     if (this.getPosts.length === 0) {
       this.loadPosts();
+    }
+
+    if (this.getColors.length === 0) {
+      this.loadColors();
     }
   },
 };

@@ -32,7 +32,7 @@
       width: 15px;
       height: 15px;
       box-sizing: border-box;
-      background-image: url("../../assets/img/svg/check.svg");
+      background-image: url("@/assets/img/svg/check.svg");
       background-position: center;
       background-size: 10px 10px;
       background-repeat: no-repeat;
@@ -52,11 +52,6 @@
 .custom-checkbox__field:checked + .custom-checkbox__content::after {
   opacity: 1;
 }
-
-//.custom-checkbox__field:focus + .custom-checkbox__content::before {
-//  outline: 1px solid var(--primary);
-//  outline-offset: 2px;
-//}
 
 .custom-checkbox__field:disabled + .custom-checkbox__content {
   opacity: 0.4;

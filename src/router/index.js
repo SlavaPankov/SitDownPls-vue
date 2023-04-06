@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CatalogView from '@/views/CatalogView';
-import ProductView from '../views/ProductView';
-import HomeView from '../views/HomeView/HomeView';
-import NotFoundView from '../views/NotFoundView';
+import CategoryView from '@/views/CategoryView';
+import ProductView from '@/views/ProductView';
+import HomeView from '@/views/HomeView/HomeView';
+import NotFoundView from '@/views/NotFoundView';
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
     path: '/catalog',
     name: 'catalog',
     component: CatalogView,
+  },
+  {
+    path: '/catalog/:category',
+    name: 'category',
+    component: CategoryView,
   },
   {
     path: '/:catchAll(.*)',
@@ -34,6 +40,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to) => {
+  console.log(to);
 });
 
 export default router;

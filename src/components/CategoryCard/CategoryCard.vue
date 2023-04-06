@@ -21,12 +21,15 @@
            class="image"
            :alt="category.name">
     </picture>
-    <a href="#" class="top-card__link">
+    <router-link
+      :to="{ name: 'category', params: { category: category.slug } }"
+      class="top-card__link"
+    >
           <span class="top-card__link-text">
             В каталог
           </span>
       <span class="top-card__link-arrow"></span>
-    </a>
+    </router-link>
   </article>
 </template>
 

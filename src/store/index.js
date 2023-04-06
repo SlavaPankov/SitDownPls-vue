@@ -8,6 +8,7 @@ export default createStore({
     categories: [],
     products: [],
     posts: [],
+    colors: [],
     basket: {},
     userAccessToken: '',
   },
@@ -44,6 +45,10 @@ export default createStore({
       return state.posts
         .filter((a, b) => (new Date(a.created_at) < new Date(b.created_at) ? -1 : 1));
     },
+
+    getColors(state) {
+      return state.colors;
+    },
   },
   mutations: {
     updateCategories(state, value) {
@@ -64,6 +69,10 @@ export default createStore({
 
     updatePosts(state, value) {
       state.posts = value;
+    },
+
+    updateColors(state, value) {
+      state.colors = value;
     },
   },
   actions: {
@@ -101,6 +110,12 @@ export default createStore({
       return axios
         .get(`${BASE_URL}/api/posts`)
         .then((response) => ctx.commit('updatePosts', response.data.payload));
+    },
+
+    loadColors(ctx) {
+      return axios
+        .get(`${BASE_URL}/api/colors`)
+        .then((response) => ctx.commit('updateColors', response.data.payload));
     },
   },
   modules: {
