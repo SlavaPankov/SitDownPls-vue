@@ -1,7 +1,8 @@
 <template>
   <main-header />
 
-  <router-view />
+  <router-view v-if="getStateIsLoaded"/>
+  <base-spinner v-if="getStateIsLoading"/>
 
   <main-footer />
 </template>
@@ -10,9 +11,10 @@
 import MainHeader from '@/components/MainHeader';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import MainFooter from '@/components/MainFooter';
+import BaseSpinner from '@/components/BaseSpinner/BaseSpinner';
 
 export default {
-  components: { MainFooter, MainHeader },
+  components: { BaseSpinner, MainFooter, MainHeader },
 
   methods: {
     ...mapActions(['loadCategories', 'loadBasket', 'loadProducts', 'loadPosts', 'loadColors']),
@@ -20,7 +22,15 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getCategories', 'getProducts', 'getBasket', 'getPosts', 'getColors']),
+    ...mapGetters([
+      'getCategories',
+      'getProducts',
+      'getBasket',
+      'getPosts',
+      'getColors',
+      'getStateIsLoading',
+      'getStateIsLoaded',
+    ]),
   },
 
   created() {

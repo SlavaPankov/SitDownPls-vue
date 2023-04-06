@@ -11,6 +11,8 @@ export default createStore({
     colors: [],
     basket: {},
     userAccessToken: '',
+    dataIsLoaded: false,
+    dataIsLoading: true,
   },
   getters: {
     getCategories(state) {
@@ -49,6 +51,14 @@ export default createStore({
     getColors(state) {
       return state.colors;
     },
+
+    getStateIsLoading(state) {
+      return state.dataIsLoading;
+    },
+
+    getStateIsLoaded(state) {
+      return state.dataIsLoaded;
+    },
   },
   mutations: {
     updateCategories(state, value) {
@@ -74,6 +84,14 @@ export default createStore({
     updateColors(state, value) {
       state.colors = value;
     },
+
+    updateIsLoading(state, value) {
+      state.dataIsLoading = value;
+    },
+
+    updateIsLoaded(state, value) {
+      state.dataIsLoaded = value;
+    },
   },
   actions: {
     loadCategories(ctx) {
@@ -85,7 +103,11 @@ export default createStore({
     loadProducts(ctx) {
       return axios
         .get(`${BASE_URL}/api/products`)
-        .then((response) => ctx.commit('updateProducts', response.data.payload));
+        .then((response) => {
+          ctx.commit('updateProducts', response.data.payload);
+          ctx.commit('updateIsLoaded', true);
+          ctx.commit('updateIsLoading', false);
+        });
     },
 
     loadBasket(ctx) {
