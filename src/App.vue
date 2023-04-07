@@ -11,7 +11,7 @@
 import MainHeader from '@/components/MainHeader';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import MainFooter from '@/components/MainFooter';
-import BaseSpinner from '@/components/BaseSpinner/BaseSpinner';
+import BaseSpinner from '@/components/BaseSpinner';
 
 export default {
   components: { BaseSpinner, MainFooter, MainHeader },

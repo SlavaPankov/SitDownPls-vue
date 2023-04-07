@@ -125,3 +125,66 @@ a {
 .page--ios .dis-scroll {
   position: relative;
 }
+
+.slider-connect {
+  background: var(--primary) !important;
+  border-radius: 3px !important;
+}
+
+.slider-horizontal {
+  height: 3px !important;
+}
+
+.slider-connects {
+  border-radius: 3px !important;
+}
+
+.slider-horizontal .slider-handle {
+  width: 13px !important;
+  height: 13px !important;
+  top: -6px !important;
+}
+
+.slider-handle {
+  position: relative;
+  transition: box-shadow .3s ease-in-out;
+  border: 6.5px solid transparent !important;
+  border-bottom: 13px solid var(--primary) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.slider-handle-upper {
+  right: -6px !important;
+}
+
+.slider-handle-lower {
+  right: -7px !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+.swiper-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet,
+.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 var(--swiper-pagination-bullet-horizontal-gap,8px) !important;
+  bottom: 23px !important;
+}
+
+.swiper-pagination-bullet {
+  width: 14px !important;
+  height: 14px !important;
+
+  &-active {
+    background-color: var(--black) !important;
+  }
+}

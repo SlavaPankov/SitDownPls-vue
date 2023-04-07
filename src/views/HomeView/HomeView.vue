@@ -63,14 +63,14 @@
 </template>
 
 <script>
-import MainSlider from '@/components/MainSlider/MainSlider';
-import SpecialsSlider from '@/components/SpecialsSlider/SpecialsSlider';
-import RatingList from '@/components/RatingList/RatingList';
-import CategoriesList from '@/components/CategoriesList/CategoriesList';
+import MainSlider from '@/components/MainSlider';
+import SpecialsSlider from '@/components/SpecialsSlider';
+import RatingList from '@/components/RatingList';
+import CategoriesList from '@/components/CategoriesList';
 import './styles.scss';
 import { mapGetters } from 'vuex';
-import UsefulSlider from '@/components/UsefulSlider/UsefulSlider';
-import BaseCallback from '@/components/BaseCallback/BaseCallback';
+import UsefulSlider from '@/components/UsefulSlider';
+import BaseCallback from '@/components/BaseCallback';
 
 export default {
   name: 'HomeView',

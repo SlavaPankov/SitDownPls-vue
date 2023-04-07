@@ -17,8 +17,7 @@
 </template>
 
 <script>
-import UsefulCard from '@/components/UsefulCard/UsefulCard';
-import './styles.scss';
+import UsefulCard from '@/components/UsefulCard';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper';
 import { mapGetters } from 'vuex';
@@ -46,3 +45,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.useful {
+  &__slider {
+    width: 100%;
+  }
+}
+</style>

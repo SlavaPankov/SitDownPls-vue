@@ -18,13 +18,12 @@
 
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import DiscountCard from '@/components/DiscountCard/DiscountCard';
+import DiscountCard from '@/components/DiscountCard';
 import { Navigation } from 'swiper';
 import { mapGetters } from 'vuex';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
-import './styles.scss';
 
 export default {
   name: 'SpecialsSlider',
@@ -49,3 +48,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.specials {
+  &__slider {
+    width: 100%;
+  }
+}
+
+.swiper-button-lock {
+  display: block;
+}
+</style>

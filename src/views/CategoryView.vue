@@ -11,26 +11,33 @@
       :max-range="maxRange"
     />
     <div class="category__right">
-      <ul class="products-list list-reset">
-        <li class="products-list__item" v-for="product in filteredProducts" :key="product.id">
-          <item-card :product="product" />
-        </li>
-      </ul>
+      <h1 class="heading-reset category__heading">
+        {{ currentCategory.name }}
+      </h1>
+      <products-list :products="paginatedProducts" />
+      <base-pagination
+        :count-per-page="countPerPage"
+        v-model:current-page="currentPage"
+        :total-count="filteredProducts.length"
+        v-if="filteredProducts.length > countPerPage"
+        />
     </div>
   </div>
 </template>
 
 <script>
 // eslint-disable-next-line import/no-extraneous-dependencies
-import ItemCard from '@/components/ItemCard/ItemCard';
 import { mapGetters } from 'vuex';
 import CatalogFilters from '@/components/CatalogFilters';
+import BasePagination from '@/components/BasePagination';
+import ProductsList from '@/components/ProductsList';
 
 export default {
   name: 'CategoryView',
 
   components: {
-    ItemCard,
+    BasePagination,
+    ProductsList,
     CatalogFilters,
   },
 
@@ -43,6 +50,8 @@ export default {
       colorSlug: [],
       maxRange: 100,
       productsByCategory: [],
+      countPerPage: 9,
+      currentPage: 1,
     };
   },
 
@@ -82,6 +91,19 @@ export default {
           ? product.old_price - product.price > this.discount
           : product.old_price - product.price < this.discount) || this.discount === 0));
     },
+
+    paginatedProducts() {
+      return this.filteredProducts.slice(
+        this.countPerPage * (this.currentPage - 1),
+        this.countPerPage * this.currentPage,
+      );
+    },
+  },
+
+  watch: {
+    filteredProducts() {
+      this.currentPage = 1;
+    },
   },
 
   created() {
@@ -115,12 +137,14 @@ export default {
     max-width: 952px;
     width: 100%;
   }
-}
 
-.products-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
+  &__heading {
+    margin-bottom: 24px;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 130%;
+    color: var(--black);
+  }
 }
 
 </style>

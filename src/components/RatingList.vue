@@ -7,8 +7,7 @@
 </template>
 
 <script>
-import './styles.scss';
-import ItemCard from '@/components/ItemCard/ItemCard';
+import ItemCard from '@/components/ItemCard';
 
 export default {
   name: 'RatingList',
@@ -21,3 +20,12 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.rating-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-bottom: 32px;
+}
+</style>

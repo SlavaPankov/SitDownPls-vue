@@ -15,7 +15,7 @@
     >
       <picture class="special-card__picture">
         <img loading="lazy"
-             src="../../assets/img/1-specials.png"
+             src="../assets/img/1-specials.png"
              class="image special-card__image"
              :alt="product.name"
         >
@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import './styles.scss';
-
 export default {
   name: 'DiscountCard',
   props: {
@@ -89,3 +87,21 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../assets/scss/_mixins.scss";
+
+.special-card {
+  @include special-card;
+}
+
+.specials__slider .swiper-slide {
+  flex-basis: 25%;
+  max-width: 296px;
+
+  &:nth-child(3n+2) {
+    flex-basis: 50%;
+    max-width: 624px;
+  }
+}
+</style>

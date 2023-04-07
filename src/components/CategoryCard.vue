@@ -17,7 +17,7 @@
       </a>
     </h3>
     <picture>
-      <img loading="lazy" src="../../assets/img/1-top-categories.png"
+      <img loading="lazy" src="../assets/img/1-top-categories.png"
            class="image"
            :alt="category.name">
     </picture>
@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import './styles.scss';
-
 export default {
   name: 'CategoryCard',
   props: {
@@ -46,3 +44,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../assets/scss/_mixins.scss";
+
+.top-card {
+  @include top-card;
+}
+</style>

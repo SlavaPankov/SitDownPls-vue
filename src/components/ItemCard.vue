@@ -2,13 +2,13 @@
   <article class="rating__card rating-card">
     <div class="rating-card__grade">
       <svg class="rating-card__icon">
-        <use xlink:href="../../assets/img/sprite.svg#rating-star"></use>
+        <use xlink:href="@/assets/img/sprite.svg#rating-star"></use>
       </svg>
       {{ roundRating }}
     </div>
     <picture class="rating-card__picture">
       <img loading="lazy"
-           src="../../assets/img/1-rating.png"
+           src="../assets/img/1-rating.png"
            class="image"
            :alt="product.name">
     </picture>
@@ -41,8 +41,6 @@
 </template>
 
 <script>
-import './styles.scss';
-
 export default {
   name: 'ItemCard',
   props: {
@@ -82,3 +80,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../assets/scss/_mixins.scss";
+
+.rating-card {
+  max-width: 296px;
+  width: 100%;
+  @include card;
+}
+</style>

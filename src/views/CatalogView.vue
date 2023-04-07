@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import CategoriesList from '@/components/CategoriesList/CategoriesList';
+import CategoriesList from '@/components/CategoriesList';
 import { mapGetters } from 'vuex';
 
 export default {
