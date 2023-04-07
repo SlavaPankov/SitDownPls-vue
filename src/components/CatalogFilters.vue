@@ -66,10 +66,10 @@
               <input class="custom-checkbox__field visually-hidden"
                      type="radio"
                      name="discount"
-                     value="more"
+                     value="5000"
                      id="more"
-                     v-model="currentDiscount"
-                     @change="this.$emit('update:discount', currentDiscount)"
+                     v-model.number="currentDiscount"
+                     @change="this.$emit('update:discount', +currentDiscount)"
               >
               <span class="custom-checkbox__content"></span>
               Более 5 000
@@ -80,10 +80,10 @@
               <input class="custom-checkbox__field visually-hidden"
                      type="radio"
                      name="discount"
-                     value="less"
+                     value="-5000"
                      id="less"
-                     v-model="currentDiscount"
-                     @change="this.$emit('update:discount', currentDiscount)"
+                     v-model.number="currentDiscount"
+                     @change="this.$emit('update:discount', +currentDiscount)"
               >
               <span class="custom-checkbox__content"></span>
               Менее 5 000
@@ -94,10 +94,10 @@
               <input class="custom-checkbox__field visually-hidden"
                      type="radio"
                      name="discount"
-                     value="dont"
+                     value="0"
                      id="dont"
-                     v-model="currentDiscount"
-                     @change="this.$emit('update:discount', currentDiscount)"
+                     v-model.number="currentDiscount"
+                     @change="this.$emit('update:discount', +currentDiscount)"
               >
               <span class="custom-checkbox__content"></span>
               Не важно
@@ -142,28 +142,28 @@ export default {
 
   props: {
     categorySlug: {
-      require: true,
+      required: true,
       type: Array,
     },
     priceFrom: {
-      require: true,
+      required: true,
       type: Number,
     },
     priceTo: {
-      require: true,
+      required: true,
       type: Number,
     },
     discount: {
-      require: true,
-      type: String,
+      required: true,
+      type: Number,
     },
     colorSlug: {
       require: true,
       type: Array,
     },
     categoryData: {
-      type: Object,
       required: true,
+      type: Object,
     },
     maxRange: {
       type: Number,

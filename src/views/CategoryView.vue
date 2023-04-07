@@ -12,7 +12,7 @@
     />
     <div class="category__right">
       <ul class="products-list list-reset">
-        <li class="products-list__item" v-for="product in productByCategory" :key="product.id">
+        <li class="products-list__item" v-for="product in filteredProducts" :key="product.id">
           <item-card :product="product" />
         </li>
       </ul>
@@ -39,19 +39,20 @@ export default {
       categorySlug: [],
       priceFrom: 0,
       priceTo: 0,
-      discount: '',
+      discount: 0,
       colorSlug: [],
       maxRange: 100,
+      productsByCategory: [],
     };
   },
 
   methods: {
     maxPrice() {
-      if (this.productByCategory.length === 0) {
+      if (this.productsByCategory.length === 0) {
         return 100;
       }
 
-      const maxPriceProduct = this.productByCategory
+      const maxPriceProduct = this.productsByCategory
         .reduce((acc, value) => (acc.price > value.price ? acc : value));
 
       return Number(maxPriceProduct.price);
@@ -61,25 +62,33 @@ export default {
   computed: {
     ...mapGetters(['getProducts', 'getCategories']),
 
-    productByCategory() {
-      return this.getProducts
-        .filter((product) => product.categories
-          .some((category) => category.slug === this.$route.params.category));
-    },
-
     currentCategory() {
       return this.getCategories
         .filter((category) => category.slug === this.$route.params.category)[0];
     },
-  },
 
-  watch: {
-    categorySlug() {
-      console.log(this.categorySlug);
+    filteredProducts() {
+      // eslint-disable-next-line func-names,array-callback-return,max-len
+      return this.productsByCategory.filter((product) =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+        (product.subcategories
+          .some((subcategory) => this.categorySlug.includes(subcategory.slug))
+          || this.categorySlug.length === 0)
+        && (product.price >= this.priceFrom || this.priceFrom === 0)
+        && (product.price <= this.priceTo || this.priceTo === this.maxPrice())
+        && (product.colors.some((color) => this.colorSlug.includes(color.slug))
+          || this.colorSlug.length === 0)
+        && ((this.discount > 0
+          ? product.old_price - product.price > this.discount
+          : product.old_price - product.price < this.discount) || this.discount === 0));
     },
   },
 
   created() {
+    this.productsByCategory = this.getProducts
+      .filter((product) => product.categories
+        .some((category) => category.slug === this.$route.params.category));
+
     this.priceTo = this.maxPrice();
     this.maxRange = this.maxPrice();
   },
