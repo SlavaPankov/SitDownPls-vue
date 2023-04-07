@@ -31,7 +31,7 @@ const routes = [
     name: 'personal',
   },
   {
-    path: '/:category/:subcategory/:slug',
+    path: '/:category/:slug',
     name: 'product',
     component: ProductView,
   },

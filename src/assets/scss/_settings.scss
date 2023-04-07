@@ -188,3 +188,7 @@ input[type="number"]::-webkit-inner-spin-button {
     background-color: var(--black) !important;
   }
 }
+
+.mySwiper .swiper-wrapper {
+  align-items: center !important;
+}

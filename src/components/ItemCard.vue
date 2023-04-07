@@ -6,18 +6,26 @@
       </svg>
       {{ roundRating }}
     </div>
+    <router-link class="rating-card__link" :to="{
+      name: 'product',
+        params: {
+          category: product.categories[0].slug,
+          slug: product.slug
+        }
+      }"
+    >
     <picture class="rating-card__picture">
       <img loading="lazy"
            src="../assets/img/1-rating.png"
            class="image"
            :alt="product.name">
     </picture>
+    </router-link>
     <router-link
       :to="{
         name: 'product',
         params: {
           category: product.categories[0].slug,
-          subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
           slug: product.slug
         }
       }"
@@ -31,7 +39,6 @@
         name: 'product',
         params: {
           category: product.categories[0].slug,
-          subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
           slug: product.slug
         }
       }" class="btn-reset rating-card__button">
@@ -88,5 +95,10 @@ export default {
   max-width: 296px;
   width: 100%;
   @include card;
+  box-sizing: border-box;
+
+  &__link {
+    margin-bottom: 16px;
+  }
 }
 </style>

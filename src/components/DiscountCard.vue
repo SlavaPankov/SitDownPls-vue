@@ -7,7 +7,6 @@
       name: 'product',
           params: {
             slug: product.slug,
-            subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
             category: product.categories[0].slug
           }
         }"
@@ -25,7 +24,6 @@
       :to="{ name: 'product',
              params: {
                 slug: product.slug,
-                subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
                 category: product.categories[0].slug } }"
       class="heading-reset special-card__title"
     >
@@ -43,7 +41,6 @@
       :to="{ name: 'product',
              params: {
               slug: product.slug,
-              subcategory: product.subcategories[0] ? product.subcategories[0].slug : 'test',
               category: product.categories[0].slug } }"
       class="special-card__button btn-reset">
       Купить
