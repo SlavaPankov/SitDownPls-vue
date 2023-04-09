@@ -39,6 +39,10 @@ export default createStore({
       return state.basket;
     },
 
+    getCountProductsBasket(state) {
+      return Object.keys(state.basket).length !== 0 ? state.basket.products.length : 0;
+    },
+
     getTopCategories(state) {
       return state.categories.slice(0, 5);
     },
@@ -138,6 +142,17 @@ export default createStore({
       return axios
         .get(`${BASE_URL}/api/colors`)
         .then((response) => ctx.commit('updateColors', response.data.payload));
+    },
+
+    addProductToCart(ctx, { productId, quantity }) {
+      return axios.post(`${BASE_URL}/api/baskets`, {
+        productId,
+        quantity,
+      }, {
+        params: {
+          userAccessToken: ctx.state.userAccessToken,
+        },
+      }).then((response) => ctx.commit('updateBasket', response.data.payload));
     },
   },
   modules: {

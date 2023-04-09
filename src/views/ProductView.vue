@@ -129,8 +129,46 @@
         <div class="product__price">
           {{ formattedPrice(product.price) }} руб
         </div>
-        <button class="btn-reset product__button">
-          Добавить в корзину
+        <div class="product__quantity quantity">
+          <button class="btn-reset quantity__button"
+                  @click="quantity <= 1 ? 1 : quantity--"
+          >
+            -
+          </button>
+          <label for="quantity" class="quantity__label">
+            <input class="input-reset quantity__input"
+                   type="number"
+                   name="quantity"
+                   id="quantity"
+                   v-model="quantity"
+            >
+          </label>
+          <button class="btn-reset quantity__button"
+                  @click="quantity++"
+          >
+            +
+          </button>
+        </div>
+        <button
+          class="btn-reset product__button"
+          @click.prevent="addToCart"
+          :disabled="productAddSending"
+        >
+          <span v-show="!productAddSending && !productAdded">Добавить в корзину</span>
+          <svg v-show="productAdded" height="16" width="16" version="1.1" id="Capa_1"
+               xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+               viewBox="0 0 17.837 17.837" xml:space="preserve">
+                <g>
+                  <!--                 eslint-disable-next-line max-len -->
+                  <path style="fill:#ffffff;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"/>
+                </g>
+                </svg>
+          <svg v-show="productAddSending" width="16" height="16" viewBox="0 0 18 18"
+               xmlns="http://www.w3.org/2000/svg">
+            <!--                 eslint-disable-next-line max-len -->
+            <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
+                  class="spinner_P7sC"/>
+          </svg>
         </button>
       </div>
     </div>
@@ -240,7 +278,7 @@ import SimilarSlider from '@/components/SimilarSlider';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Thumbs } from 'swiper';
 import { BASE_URL } from '@/api/config';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import 'swiper/css';
 import 'swiper/css/thumbs';
@@ -274,10 +312,15 @@ export default {
       dataIsLoaded: false,
       openModalSlider: false,
       similar: [],
+      quantity: 1,
+      productAddSending: false,
+      productAdded: false,
     };
   },
 
   methods: {
+    ...mapActions(['addProductToCart']),
+
     loadProduct() {
       this.dataIsLoaded = false;
       this.dataIsLoading = true;
@@ -322,6 +365,28 @@ export default {
         // eslint-disable-next-line max-len
         .filter((item) => item.subcategories.some((subcategory) => subcategoriesSlug.includes(subcategory.slug)) && item.id !== this.product.id)
         .slice(0, 12);
+    },
+
+    addToCart() {
+      this.productAdded = false;
+      this.productAddSending = true;
+
+      this.addProductToCart({
+        productId: this.product.id,
+        quantity: this.quantity,
+      }).then(() => {
+        this.productAdded = true;
+        this.productAddSending = false;
+        this.changeProductAdded();
+      });
+    },
+
+    changeProductAdded() {
+      if (this.productAdded) {
+        setTimeout(() => {
+          this.productAdded = false;
+        }, 1500);
+      }
     },
   },
 
@@ -405,6 +470,8 @@ export default {
 
   &__button {
     @include btn-primary;
+    max-width: 256px;
+    width: 100%;
   }
 }
 
@@ -494,6 +561,55 @@ export default {
     &--next {
       @include arrow-round-right;
     }
+  }
+}
+
+.quantity {
+  max-width: 256px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 21px;
+  gap: 15px;
+
+  &__label {
+    max-width: calc(256px - 30px - 62px);
+  }
+
+  &__input {
+    max-width: 100%;
+    padding: 4px 15px;
+    border: 1px solid var(--grey);
+    border-radius: 2px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--black);
+  }
+
+  &__button {
+    width: 31px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include btn-secondary;
+    border-radius: 5px;
+    padding: 0;
+    border-width: 1px;
+    font-weight: 400;
+  }
+}
+
+.spinner_P7sC {
+  transform-origin: center;
+  animation: spinner_svv2 .75s infinite linear;
+  fill: var(--primary);
+}
+
+@keyframes spinner_svv2 {
+  100% {
+    transform: rotate(360deg)
   }
 }
 </style>

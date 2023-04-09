@@ -161,12 +161,7 @@
             </a>
           </li>
           <li class="personals-list__item">
-            <a href="/" class="personals-list__link basket-link">
-              <span class="basket-link__count">0</span>
-              <svg class="personals-list__icon">
-                <use xlink:href="../assets/img/sprite.svg#basket"></use>
-              </svg>
-            </a>
+            <cart-icon />
           </li>
         </ul>
       </div>
@@ -176,9 +171,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import CartIcon from '@/components/CartIcon';
 
 export default {
   name: 'MainHeader',
+  components: { CartIcon },
   data() {
     return {
       isRegionOpen: false,

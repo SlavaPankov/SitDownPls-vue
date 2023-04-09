@@ -4,6 +4,7 @@ import CategoryView from '@/views/CategoryView';
 import ProductView from '@/views/ProductView';
 import HomeView from '@/views/HomeView/HomeView';
 import NotFoundView from '@/views/NotFoundView';
+import CartView from '@/views/CartView';
 
 const routes = [
   {
@@ -34,6 +35,11 @@ const routes = [
     path: '/:category/:slug',
     name: 'product',
     component: ProductView,
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: CartView,
   },
 ];
 
