@@ -5,6 +5,7 @@ import ProductView from '@/views/ProductView';
 import HomeView from '@/views/HomeView/HomeView';
 import NotFoundView from '@/views/NotFoundView';
 import CartView from '@/views/CartView';
+import OrderView from '@/views/OrderView';
 
 const routes = [
   {
@@ -40,6 +41,11 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: CartView,
+  },
+  {
+    name: 'createOrder',
+    path: '/order',
+    component: OrderView,
   },
 ];
 

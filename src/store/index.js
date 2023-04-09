@@ -39,6 +39,10 @@ export default createStore({
       return state.basket;
     },
 
+    getBasketProducts(state) {
+      return Object.keys(state.basket).length !== 0 ? state.basket.products : [];
+    },
+
     getCountProductsBasket(state) {
       return Object.keys(state.basket).length !== 0 ? state.basket.products.length : 0;
     },
@@ -62,6 +66,11 @@ export default createStore({
 
     getStateIsLoaded(state) {
       return state.dataIsLoaded;
+    },
+
+    cartTotalPrice(state) {
+      // eslint-disable-next-line max-len
+      return state.basket.products.reduce((acc, item) => (item.price * item.pivot.quantity) + acc, 0);
     },
   },
   mutations: {
@@ -95,6 +104,17 @@ export default createStore({
 
     updateIsLoaded(state, value) {
       state.dataIsLoaded = value;
+    },
+
+    updateCartProductCount(state, {
+      productId,
+      quantity,
+    }) {
+      const item = state.basket.products.find((p) => p.id === productId);
+
+      if (item) {
+        item.pivot.quantity = quantity;
+      }
     },
   },
   actions: {
@@ -145,6 +165,30 @@ export default createStore({
     },
 
     addProductToCart(ctx, { productId, quantity }) {
+      return axios.post(`${BASE_URL}/api/baskets`, {
+        productId,
+        quantity,
+      }, {
+        params: {
+          userAccessToken: ctx.state.userAccessToken,
+        },
+      }).then((response) => ctx.commit('updateBasket', response.data.payload));
+    },
+
+    updateCartProductCount(ctx, {
+      productId,
+      quantity,
+    }) {
+      ctx.commit('updateCartProductCount', {
+        productId,
+        quantity,
+      });
+
+      if (quantity < 1) {
+        return;
+      }
+
+      // eslint-disable-next-line consistent-return
       return axios.post(`${BASE_URL}/api/baskets`, {
         productId,
         quantity,
