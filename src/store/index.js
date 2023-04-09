@@ -9,6 +9,8 @@ export default createStore({
     products: [],
     posts: [],
     colors: [],
+    paymentTypes: [],
+    deliveryTypes: [],
     basket: {},
     userAccessToken: '',
     dataIsLoaded: false,
@@ -72,6 +74,14 @@ export default createStore({
       // eslint-disable-next-line max-len
       return state.basket.products.reduce((acc, item) => (item.price * item.pivot.quantity) + acc, 0);
     },
+
+    getDeliveryTypes(state) {
+      return state.deliveryTypes;
+    },
+
+    getPaymentTypes(state) {
+      return state.paymentTypes;
+    },
   },
   mutations: {
     updateCategories(state, value) {
@@ -115,6 +125,14 @@ export default createStore({
       if (item) {
         item.pivot.quantity = quantity;
       }
+    },
+
+    updateDeliveryTypes(state, value) {
+      state.deliveryTypes = value;
+    },
+
+    updatePaymentTypes(state, value) {
+      state.paymentTypes = value;
     },
   },
   actions: {
@@ -162,6 +180,16 @@ export default createStore({
       return axios
         .get(`${BASE_URL}/api/colors`)
         .then((response) => ctx.commit('updateColors', response.data.payload));
+    },
+
+    loadDeliveryTypes(ctx) {
+      return axios.get(`${BASE_URL}/api/delivery-types`)
+        .then((response) => ctx.commit('updateDeliveryTypes', response.data.payload));
+    },
+
+    loadPaymentTypes(ctx) {
+      return axios.get(`${BASE_URL}/api/payment-types`)
+        .then((response) => ctx.commit('updatePaymentTypes', response.data.payload));
     },
 
     addProductToCart(ctx, { productId, quantity }) {
