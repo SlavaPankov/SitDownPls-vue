@@ -7,56 +7,40 @@
       <div class="order__content">
         <div class="order__left">
           <form class="order-form" action="" @submit.prevent="submit">
-            <label class="order-form__label" for="surName">
-              <span>Фамилия:</span>
-              <input class="input-reset order-form__input"
-                     type="text"
-                     name="surName"
-                     id="surName"
-                     placeholder="Фамилия"
-                     v-model="formData.surName"
-              >
-            </label>
-            <label class="order-form__label" for="name">
-              <span>Имя:</span>
-              <input class="input-reset order-form__input"
-                     type="text"
-                     name="name"
-                     id="name"
-                     placeholder="Имя"
-                     v-model="formData.name"
-              >
-            </label>
-            <label class="order-form__label" for="middleName">
-              <span>Отчество:</span>
-              <input class="input-reset order-form__input"
-                     type="text"
-                     name="middleName"
-                     id="middleName"
-                     placeholder="Отчество"
-                     v-model="formData.middleName"
-              >
-            </label>
-            <label class="order-form__label order-form__label--phone" for="phone">
-              <span>Телефон:</span>
-              <input class="input-reset order-form__input"
-                     type="tel"
-                     name="phone"
-                     id="phone"
-                     placeholder="Телефон"
-                     v-model="formData.phone"
-              >
-            </label>
-            <label class="order-form__label order-form__label--email" for="email">
-              <span>Email:</span>
-              <input class="input-reset order-form__input"
-                     type="email"
-                     name="email"
-                     id="email"
-                     placeholder="Email"
-                     v-model="formData.email"
-              >
-            </label>
+            <base-form-text-input title="Фамилия:"
+                                  placeholder="Фамилия"
+                                  type="text"
+                                  name="surName"
+                                  :require="true"
+                                  :error="formError.surName"
+                                  v-model:value="formData.surName"/>
+            <base-form-text-input title="Имя:"
+                                  placeholder="Имя"
+                                  type="text"
+                                  name="name"
+                                  :require="true"
+                                  :error="formError.name"
+                                  v-model:value="formData.name"/>
+            <base-form-text-input title="Отчество:"
+                                  placeholder="Отчество"
+                                  type="text"
+                                  name="middleName"
+                                  :error="formError.middleName"
+                                  v-model:value="formData.middleName"/>
+            <base-form-text-input class="order-form__label--phone" title="Телефон:"
+                                  placeholder="+7 (999)-999-99-99"
+                                  type="tel"
+                                  name="phone"
+                                  :require="true"
+                                  :error="formError.phone"
+                                  v-model:value="formData.phone"/>
+            <base-form-text-input class="order-form__label--email" title="Email:"
+                                  placeholder="example@email.com"
+                                  type="email"
+                                  name="email"
+                                  :require="true"
+                                  :error="formError.email"
+                                  v-model:value="formData.email"/>
             <fieldset>
               Способ получения:
               <label class="custom-checkbox"
@@ -70,20 +54,20 @@
                        :id="delivery.name"
                        :value="delivery.id"
                        v-model="formData.deliveryId"
+                       required
                 >
                 <span class="custom-checkbox__content"></span>
                 {{ delivery.name }}
               </label>
             </fieldset>
-            <label class="order-form__label" for="address" v-if="formData.deliveryId === 1">
-              <span>Адрес доставки:</span>
-              <input class="input-reset order-form__input"
-                     name="address"
-                     id="address"
-                     placeholder="Адрес доставки"
-                     v-model="formData.address"
-              >
-            </label>
+            <base-form-text-input v-if="formData.deliveryId === 1"
+                                  title="Адрес доставки:"
+                                  placeholder="Адрес"
+                                  type="text"
+                                  name="address"
+                                  :require="formData.deliveryId === 1"
+                                  :error="formError.address"
+                                  v-model:value="formData.address"/>
             <fieldset>
               Способ оплаты:
               <label class="custom-checkbox"
@@ -93,16 +77,17 @@
               >
                 <input class="custom-checkbox__field visually-hidden"
                        type="radio"
-                       name="delivery"
+                       name="payment"
                        :id="payment.name"
                        :value="payment.id"
                        v-model="formData.paymentId"
+                       required
                 >
                 <span class="custom-checkbox__content"></span>
                 {{ payment.name }}
               </label>
             </fieldset>
-            <button type="submit">Оформить заказ</button>
+            <button class="btn-reset order-form__button" type="submit">Оформить заказ</button>
           </form>
         </div>
         <div class="order__right">
@@ -137,14 +122,16 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import BaseSpinner from '@/components/BaseSpinner';
+import BaseFormTextInput from '@/components/BaseFormTextInput';
 
 export default {
   name: 'OrderView',
-  components: { BaseSpinner },
+  components: { BaseFormTextInput, BaseSpinner },
   data() {
     return {
       formData: {},
       formError: {},
+      formErrorGlobal: {},
       deliveryIsLoaded: false,
       paymentIsLoaded: false,
     };
@@ -163,7 +150,40 @@ export default {
     ...mapActions(['loadDeliveryTypes', 'loadPaymentTypes']),
 
     submit() {
-      console.log(this.formData);
+      this.formError = {};
+
+      this.formError.surName = this.checkLength(this.formData.surName.length)
+        || this.isValidTextInput(this.formData.surName);
+      this.formError.name = this.checkLength(this.formData.name.length)
+        || this.isValidTextInput(this.formData.name);
+      this.formError.phone = this.checkPhoneLength(this.formData.phone.length);
+
+      return null;
+    },
+
+    // eslint-disable-next-line consistent-return
+    checkLength(value) {
+      if (value < 3) {
+        return 'Минимальная длина 3 символа';
+      }
+
+      if (value > 30) {
+        return 'Максимальная длина 30 символов';
+      }
+    },
+
+    // eslint-disable-next-line consistent-return
+    checkPhoneLength(value) {
+      if (value < 18) {
+        return 'Некорректный формат';
+      }
+    },
+
+    // eslint-disable-next-line consistent-return
+    isValidTextInput(value) {
+      if (!/^[а-я-]+$/i.test(value)) {
+        return 'Неверный формат';
+      }
     },
 
     formattedPrice(price) {
@@ -247,20 +267,11 @@ export default {
     color: var(--black);
   }
 
+  &__button {
+    @include btn-primary;
+  }
+
   &__label {
-    width: 100%;
-    max-width: 100%;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 19px;
-    color: var(--black);
-
-    & span {
-      padding-left: 8px;
-      display: block;
-      margin-bottom: 5px;
-    }
-
     &--phone {
       max-width: calc(50% - 15px);
     }
@@ -268,10 +279,6 @@ export default {
     &--email {
       max-width: 50%;
     }
-  }
-
-  &__input {
-    @include input-primary;
   }
 }
 
