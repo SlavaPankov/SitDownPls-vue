@@ -192,10 +192,11 @@ export default createStore({
         .then((response) => ctx.commit('updatePaymentTypes', response.data.payload));
     },
 
-    addProductToCart(ctx, { productId, quantity }) {
+    addProductToCart(ctx, { productId, quantity, colorId }) {
       return axios.post(`${BASE_URL}/api/baskets`, {
         productId,
         quantity,
+        colorId,
       }, {
         params: {
           userAccessToken: ctx.state.userAccessToken,
@@ -206,6 +207,7 @@ export default createStore({
     updateCartProductCount(ctx, {
       productId,
       quantity,
+      colorId,
     }) {
       ctx.commit('updateCartProductCount', {
         productId,
@@ -220,6 +222,7 @@ export default createStore({
       return axios.post(`${BASE_URL}/api/baskets`, {
         productId,
         quantity,
+        colorId,
       }, {
         params: {
           userAccessToken: ctx.state.userAccessToken,

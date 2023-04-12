@@ -129,6 +129,25 @@
         <div class="product__price">
           {{ formattedPrice(product.price) }} руб
         </div>
+        <div class="product__colors">
+          <ul class="colors-list list-reset">
+            <li class="colors-list__item" v-for="color in product.colors" :key="color.id">
+              <label :for="color.slug" class="custom-checkbox">
+                  <input class="custom-checkbox__field"
+                         type="radio"
+                         name="colorId"
+                         :id="color.slug"
+                         :value="color.id"
+                         v-model="colorId"
+                  >
+                  <span class="custom-checkbox__content"
+                        :style="{ backgroundColor: color.code }"
+                  >
+                  </span>
+              </label>
+            </li>
+          </ul>
+        </div>
         <div class="product__quantity quantity">
           <button class="btn-reset quantity__button"
                   @click="quantity <= 1 ? 1 : quantity--"
@@ -313,6 +332,7 @@ export default {
       openModalSlider: false,
       similar: [],
       quantity: 1,
+      colorId: 0,
       productAddSending: false,
       productAdded: false,
     };
@@ -330,6 +350,7 @@ export default {
       })
         .then((response) => {
           this.product = response.data.payload;
+          this.colorId = response.data.payload.colors[0].id;
 
           if (response.data.error === null) {
             this.dataIsLoaded = true;
@@ -374,6 +395,7 @@ export default {
       this.addProductToCart({
         productId: this.product.id,
         quantity: this.quantity,
+        colorId: this.colorId,
       }).then(() => {
         this.productAdded = true;
         this.productAddSending = false;
@@ -611,5 +633,52 @@ export default {
   100% {
     transform: rotate(360deg)
   }
+}
+
+.colors-list {
+  display: flex;
+  align-items: center;
+  margin-bottom: 21px;
+
+  &__item {
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}
+
+.custom-checkbox {
+  @include custom-checkbox;
+
+  &__content {
+    display: block;
+    padding: 2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+
+    &::before {
+      display: none;
+    }
+
+    &::after {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      background: transparent;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+.custom-checkbox__field:checked + .custom-checkbox__content::after {
+  border-color: var(--primary);
+}
+
+.custom-checkbox__field:focus + .custom-checkbox__content::after {
+  border-color: var(--primary);
 }
 </style>

@@ -15,18 +15,23 @@
              :alt="product.name">
       </picture>
     </router-link>
-    <h2 class="heading-reset cart-item__heading">
-      <router-link :to="{
+    <div class="cart-item__head">
+      <h2 class="heading-reset cart-item__heading">
+        <router-link :to="{
                 name: 'product',
                 params: {
                   category: product.categories[0].slug,
                   slug: product.slug
                 }
               }"
-      >
-        {{ product.name }}
-      </router-link>
-    </h2>
+        >
+          {{ product.name }}
+        </router-link>
+      </h2>
+      <div class="cart-item__color">
+        <span class="cart-item__bold">Цвет:</span> {{ product.colors.name }}
+      </div>
+    </div>
     <div class="quantity">
       <button class="btn-reset quantity__button" @click="quantity === 1 ? quantity : quantity--">
         -
@@ -68,7 +73,11 @@ export default {
       },
 
       set(value) {
-        this.updateCartProductCount({ productId: this.product.id, quantity: value });
+        this.updateCartProductCount({
+          productId: this.product.id,
+          quantity: value,
+          colorId: this.product.colors.id,
+        });
       },
     },
 
@@ -122,6 +131,17 @@ export default {
     line-height: 130%;
     color: var(--grey_shade);
     text-align: right;
+  }
+
+  &__color {
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 400;
+    color: var(--black);
+  }
+
+  &__bold {
+    font-weight: 600;
   }
 }
 
