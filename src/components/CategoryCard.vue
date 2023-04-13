@@ -6,15 +6,19 @@
         v-for="subcategory in category.subcategories"
         :key="subcategory.id"
       >
-        <a href="#" class="top-card__list-link">
+        <router-link :to="{ name: 'category', params: { category: category.slug } }"
+                     class="top-card__list-link"
+        >
           <span class="top-card__list-text">{{ subcategory.name }}</span>
-        </a>
+        </router-link>
       </li>
     </ul>
     <h3 class="heading-reset top-card__heading">
-      <a href="#" class="top-card__heading-link">
+      <router-link :to="{ name: 'category', params: { category: category.slug } }"
+                   class="top-card__heading-link"
+      >
         {{ category.name }}
-      </a>
+      </router-link>
     </h3>
     <picture>
       <img loading="lazy" src="../assets/img/1-top-categories.png"

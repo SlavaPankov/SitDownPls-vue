@@ -227,6 +227,12 @@ export default {
     this.loadDeliveryTypes().then(() => this.deliveryIsLoaded = true);
     // eslint-disable-next-line no-return-assign
     this.loadPaymentTypes().then(() => this.paymentIsLoaded = true);
+
+    this.formData.surName = this.getBasket.user.sur_name;
+    this.formData.name = this.getBasket.user.name;
+    this.formData.middleName = this.getBasket.user.middle_name;
+    this.formData.phone = this.getBasket.user.phone;
+    this.formData.email = this.getBasket.user.email;
   },
 };
 </script>
