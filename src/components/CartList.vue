@@ -1,20 +1,21 @@
 <template>
   <ul class="list-reset basket-list">
-    <li class="basket-list__item" v-for="product in getBasketProducts" :key="product.id">
+    <li class="basket-list__item" v-for="product in products" :key="product.id">
       <cart-item :product="product" />
     </li>
   </ul>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import CartItem from '@/components/CartItem';
 
 export default {
   name: 'CartList',
   components: { CartItem },
-  computed: {
-    ...mapGetters(['getBasketProducts']),
+  props: {
+    products: {
+      type: Array,
+    },
   },
 };
 </script>

@@ -1,20 +1,34 @@
 <template>
   <section class="cart">
     <div class="container cart__container">
-      <h1 class="heading-reset">
+      <h1 class="cart__heading heading-reset">
         Корзина
       </h1>
-      <cart-list />
-      <div class="cart__total">
-        <h3 class="heading-reset cart__total-heading">
-          Сумма заказа:
-        </h3>
-        <span class="cart__total-price">{{ formattedPrice(cartTotalPrice) }} руб.</span>
-        <router-link :to="{ name: 'createOrder' }"
-                     class="btn-reset cart__order"
-        >
-          Оформить заказ
-        </router-link>
+      <div v-if="getBasketProducts.length > 0">
+        <cart-list :products="getBasketProducts" />
+        <div class="cart__total">
+          <h3 class="heading-reset cart__total-heading">
+            Сумма заказа:
+          </h3>
+          <span class="cart__total-price">{{ formattedPrice(cartTotalPrice) }} руб.</span>
+          <router-link :to="{ name: 'createOrder' }"
+                       class="btn-reset cart__order"
+          >
+            Оформить заказ
+          </router-link>
+        </div>
+      </div>
+      <div class="cart__empty" v-if="getBasketProducts.length === 0">
+        <svg class="cart__empty-icon">
+            <use xlink:href="@/assets/img/sprite.svg#basket"></use>
+        </svg>
+        Ваша корзина пустая.
+        <span class="block">Перейдите в
+          <router-link class="cart__empty-link" :to="{ name: 'catalog' }">
+            каталог
+          </router-link>
+          для покупок
+        </span>
       </div>
     </div>
   </section>
@@ -36,7 +50,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['cartTotalPrice']),
+    ...mapGetters(['cartTotalPrice', 'getBasketProducts']),
   },
 };
 </script>
@@ -74,6 +88,35 @@ export default {
       font-weight: 400;
       font-size: 16px;
       line-height: 16px;
+    }
+  }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 26px;
+
+    &-icon {
+      fill: var(--primary);
+    }
+
+    &-link {
+      color: var(--primary);
+      transition: color .3s ease-in-out;
+
+      &:hover {
+        color: var(--primary_light);
+      }
+
+      &:focus {
+        outline: 2px solid var(--primary)
+      }
+
+      &:active {
+        outline: none;
+        color: var(--primary_shade);
+      }
     }
   }
 

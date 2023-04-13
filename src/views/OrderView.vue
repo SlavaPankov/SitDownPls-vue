@@ -97,9 +97,16 @@
                   v-for="product in getBasketProducts"
                   :key="product.id"
               >
-                <span class="product__name">
+                <router-link :to="{
+                              name: 'product',
+                              params: {
+                                category: product.categories[0].slug,
+                                slug: product.slug
+                              }
+                            }"
+                             class="product__name">
                   {{ product.name }}
-                </span>
+                </router-link>
                 <span class="product__count">
                   {{ product.pivot.quantity }} шт.
                 </span>
@@ -120,9 +127,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import axios from 'axios';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import BaseSpinner from '@/components/BaseSpinner';
 import BaseFormTextInput from '@/components/BaseFormTextInput';
+import { BASE_URL } from '@/api/config';
 
 export default {
   name: 'OrderView',
@@ -139,15 +149,18 @@ export default {
 
   computed: {
     ...mapGetters([
+      'getUserAccessToken',
       'getDeliveryTypes',
       'getPaymentTypes',
       'getBasketProducts',
       'cartTotalPrice',
+      'getBasket',
     ]),
   },
 
   methods: {
-    ...mapActions(['loadDeliveryTypes', 'loadPaymentTypes']),
+    ...mapActions(['loadDeliveryTypes', 'loadPaymentTypes', 'loadBasket']),
+    ...mapMutations(['updateBasket', 'updateOrderInfo']),
 
     submit() {
       this.formError = {};
@@ -158,7 +171,25 @@ export default {
         || this.isValidTextInput(this.formData.name);
       this.formError.phone = this.checkPhoneLength(this.formData.phone.length);
 
-      return null;
+      Object.keys(this.formError).forEach((key) => {
+        if (this.formError[key] === undefined) {
+          delete this.formError[key];
+        }
+      });
+
+      if (Object.keys(this.formError).length === 0) {
+        axios.post(`${BASE_URL}/api/orders`, {
+          ...this.formData,
+        }, {
+          params: {
+            userAccessToken: this.getUserAccessToken,
+          },
+        }).then((response) => {
+          this.updateOrderInfo(response.data.payload);
+          this.loadBasket();
+          this.$router.push({ name: 'createdOrder', params: { id: response.data.payload.id } });
+        });
+      }
     },
 
     // eslint-disable-next-line consistent-return

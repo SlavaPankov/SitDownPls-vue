@@ -6,6 +6,7 @@ import HomeView from '@/views/HomeView';
 import NotFoundView from '@/views/NotFoundView';
 import CartView from '@/views/CartView';
 import OrderView from '@/views/OrderView';
+import CreatedOrder from '@/views/CreatedOrder';
 
 const routes = [
   {
@@ -46,6 +47,11 @@ const routes = [
     name: 'createOrder',
     path: '/order',
     component: OrderView,
+  },
+  {
+    name: 'createdOrder',
+    path: '/order/:id',
+    component: CreatedOrder,
   },
 ];
 

@@ -2,7 +2,7 @@
   <router-link :to="{ name: 'cart' }" class="personals-list__link basket-link">
     <span class="basket-link__count">{{ getCountProductsBasket }}</span>
     <svg class="personals-list__icon">
-      <use xlink:href="../assets/img/sprite.svg#basket"></use>
+      <use xlink:href="@/assets/img/sprite.svg#basket"></use>
     </svg>
   </router-link>
 </template>

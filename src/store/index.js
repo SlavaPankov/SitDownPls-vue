@@ -15,8 +15,13 @@ export default createStore({
     userAccessToken: '',
     dataIsLoaded: false,
     dataIsLoading: true,
+    orderInfo: null,
   },
   getters: {
+    getUserAccessToken(state) {
+      return state.userAccessToken;
+    },
+
     getCategories(state) {
       return state.categories;
     },
@@ -82,6 +87,10 @@ export default createStore({
     getPaymentTypes(state) {
       return state.paymentTypes;
     },
+
+    getOrderInfo(state) {
+      return state.orderInfo;
+    },
   },
   mutations: {
     updateCategories(state, value) {
@@ -133,6 +142,10 @@ export default createStore({
 
     updatePaymentTypes(state, value) {
       state.paymentTypes = value;
+    },
+
+    updateOrderInfo(state, value) {
+      state.orderInfo = value;
     },
   },
   actions: {
@@ -228,6 +241,18 @@ export default createStore({
           userAccessToken: ctx.state.userAccessToken,
         },
       }).then((response) => ctx.commit('updateBasket', response.data.payload));
+    },
+
+    loadOrder(ctx, orderId) {
+      return axios
+        .get(`${BASE_URL}/api/orders/${orderId}`, {
+          params: {
+            userAccessToken: ctx.state.userAccessToken,
+          },
+        })
+        .then((response) => {
+          ctx.commit('updateOrderInfo', response.data.payload);
+        });
     },
   },
   modules: {

@@ -33,7 +33,10 @@
       </div>
     </div>
     <div class="quantity">
-      <button class="btn-reset quantity__button" @click="quantity === 1 ? quantity : quantity--">
+      <button class="btn-reset quantity__button"
+              @click="quantity === 1 ? quantity : quantity--"
+              v-if="isCartPage"
+      >
         -
       </button>
       <label for="quantity" class="quantity__label">
@@ -42,9 +45,13 @@
                name="quantity"
                id="quantity"
                v-model.number="quantity"
+               :disabled="!isCartPage"
         >
       </label>
-      <button class="btn-reset quantity__button" @click="quantity++">
+      <button class="btn-reset quantity__button"
+              @click="quantity++"
+              v-if="isCartPage"
+      >
         +
       </button>
     </div>
@@ -59,6 +66,13 @@ import { mapActions } from 'vuex';
 
 export default {
   name: 'CartItem',
+
+  data() {
+    return {
+      isCartPage: this.$route.name === 'cart',
+    };
+  },
+
   props: {
     product: {
       required: true,
