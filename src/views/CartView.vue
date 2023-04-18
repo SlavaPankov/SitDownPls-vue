@@ -62,6 +62,7 @@ export default {
   &__container {
     padding-top: 32px;
     padding-bottom: 70px;
+    min-height: 53vh;
   }
 
   &__heading {

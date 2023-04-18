@@ -1,5 +1,5 @@
 <template>
-  <section class="product" v-if="dataIsLoaded">
+  <section class="product" v-show="dataIsLoaded">
     <div class="container product__container">
       <div class="product__left">
         <swiper
@@ -192,7 +192,7 @@
       </div>
     </div>
   </section>
-  <section class="similar" v-if="similar.length > 0 && dataIsLoaded">
+  <section class="similar" v-show="similar.length > 0 && dataIsLoaded">
     <div class="container similar__container">
       <h2 class="similar__heading heading-reset">
         Похожие товары
@@ -204,7 +204,7 @@
       <similar-slider :products="similar" />
     </div>
   </section>
-  <base-spinner v-if="dataIsLoading"/>
+  <base-spinner v-show="dataIsLoading"/>
   <base-modal v-model:open="openModalSlider">
     <div class="card">
       <svg class="card__cross"
@@ -341,11 +341,11 @@ export default {
   methods: {
     ...mapActions(['addProductToCart']),
 
-    loadProduct() {
+    loadProduct(slug) {
       this.dataIsLoaded = false;
       this.dataIsLoading = true;
 
-      return axios.get(`${BASE_URL}/api/products/${this.$route.params.slug}`, {
+      return axios.get(`${BASE_URL}/api/products/${slug}`, {
         method: 'GET',
       })
         .then((response) => {
@@ -416,10 +416,10 @@ export default {
     product() {
       this.similar = this.similarProducts();
     },
+  },
 
-    $route() {
-      window.location.reload();
-    },
+  beforeRouteUpdate(to) {
+    this.loadProduct(to.params.slug);
   },
 
   computed: {
@@ -427,7 +427,7 @@ export default {
   },
 
   created() {
-    this.loadProduct();
+    this.loadProduct(this.$route.params.slug);
   },
 };
 </script>

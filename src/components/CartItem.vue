@@ -58,6 +58,11 @@
     <div class="cart-item__price">
       {{ totalProductPrice }} руб.
     </div>
+    <button class="btn-reset" @click.prevent="deleteCartProduct(product.id)">
+      <svg class="delete-icon">
+          <use xlink:href="@/assets/img/sprite.svg#trash"></use>
+      </svg>
+    </button>
   </article>
 </template>
 
@@ -101,7 +106,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['updateCartProductCount']),
+    ...mapActions(['updateCartProductCount', 'deleteCartProduct']),
 
     formattedPrice(price) {
       return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(price).split(',')[0];
@@ -138,6 +143,7 @@ export default {
   }
 
   &__price {
+    margin-right: 30px;
     max-width: 150px;
     width: 100%;
     font-weight: 400;
@@ -195,6 +201,26 @@ export default {
     padding: 0;
     border-width: 1px;
     font-weight: 400;
+  }
+}
+
+.delete-icon {
+  width: 25px;
+  height: 25px;
+  fill: var(--primary);
+  transition: fill .3s ease-in-out;
+
+  &:hover {
+    fill: var(--primary_light);
+  }
+
+  &:focus {
+    outline: none;
+    fill: var(--primary_shade);
+  }
+
+  &:active {
+    fill: var(--primary_shade);
   }
 }
 </style>

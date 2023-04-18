@@ -136,6 +136,14 @@ export default createStore({
       }
     },
 
+    deleteProduct(state, productId) {
+      const item = state.basket.products.find((p) => p.id === productId);
+
+      if (item) {
+        state.basket.products = state.basket.products.filter((p) => p.id !== item.id);
+      }
+    },
+
     updateDeliveryTypes(state, value) {
       state.deliveryTypes = value;
     },
@@ -237,6 +245,19 @@ export default createStore({
         quantity,
         colorId,
       }, {
+        params: {
+          userAccessToken: ctx.state.userAccessToken,
+        },
+      }).then((response) => ctx.commit('updateBasket', response.data.payload));
+    },
+
+    deleteCartProduct(ctx, productId) {
+      ctx.commit('deleteProduct', productId);
+
+      return axios.delete(`${BASE_URL}/api/baskets/product`, {
+        data: {
+          productId,
+        },
         params: {
           userAccessToken: ctx.state.userAccessToken,
         },
