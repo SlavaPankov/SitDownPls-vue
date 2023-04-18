@@ -7,6 +7,7 @@
            :name="name"
            :id="name"
            :required="require"
+           :disabled="disabled"
            :placeholder="placeholder"
            v-model="currentValue"
     >
@@ -18,6 +19,7 @@
            :id="name"
            :placeholder="placeholder"
            :required="require"
+           :disabled="disabled"
            v-mask="'+7 (###)-###-##-##'"
            v-model="currentValue"
     >
@@ -42,6 +44,10 @@ export default {
       type: String,
     },
     require: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },

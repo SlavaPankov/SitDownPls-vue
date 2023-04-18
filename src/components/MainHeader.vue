@@ -153,12 +153,11 @@
         </form>
         <ul class="header__personals personals-list list-reset">
           <li class="personals-list__item">
-            <a href="/" class="personals-list__link">
-              <span class="visually-hidden">lorem</span>
+            <router-link :to="{ name: 'personal' }" class="personals-list__link">
               <svg class="personals-list__icon">
                 <use xlink:href="../assets/img/sprite.svg#person"></use>
               </svg>
-            </a>
+            </router-link>
           </li>
           <li class="personals-list__item">
             <cart-icon />

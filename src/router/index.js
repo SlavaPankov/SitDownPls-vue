@@ -7,6 +7,7 @@ import NotFoundView from '@/views/NotFoundView';
 import CartView from '@/views/CartView';
 import OrderView from '@/views/OrderView';
 import CreatedOrder from '@/views/CreatedOrder';
+import PersonalView from '@/views/PersonalView';
 
 const routes = [
   {
@@ -23,11 +24,6 @@ const routes = [
     path: '/catalog/:category',
     name: 'category',
     component: CategoryView,
-  },
-  {
-    path: '/:catchAll(.*)',
-    name: 'notFound',
-    component: NotFoundView,
   },
   {
     path: '/personal',
@@ -52,6 +48,16 @@ const routes = [
     name: 'createdOrder',
     path: '/order/:id',
     component: CreatedOrder,
+  },
+  {
+    path: '/personal',
+    name: 'personal',
+    component: PersonalView,
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'notFound',
+    component: NotFoundView,
   },
 ];
 

@@ -8,7 +8,7 @@
   background-color: var(--grey_light);
   border: 1px solid transparent;
   border-radius: 10px;
-  transition: background-color .3s ease-in-out, border-color .3s ease-in-out;
+  transition: line-height .3s ease-in-out, background-color .3s ease-in-out, border-color .3s ease-in-out, padding .3s ease-in-out, border-radius .3s ease-in-out;
 
   &::placeholder {
     color: var(--grey);
@@ -22,6 +22,14 @@
     outline: none;
     border-color: var(--primary);
     background-color: var(--pink_light);
+  }
+
+  &:disabled {
+    background: var(--white);
+    border-bottom: 1px solid var(--primary);
+    border-radius: 0;
+    line-height: 25px;
+    padding: 5px 18px;
   }
 
   &--valid {

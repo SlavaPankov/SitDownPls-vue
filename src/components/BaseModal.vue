@@ -18,9 +18,20 @@ export default {
     },
   },
 
+  watch: {
+    open() {
+      if (this.open) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    },
+  },
+
   methods: {
     close(event) {
       if (event.target === document.querySelector('.modal')) {
+        document.body.style.overflow = 'auto';
         this.$emit('update:open', false);
       }
     },
@@ -40,5 +51,16 @@ export default {
   justify-content: center;
   z-index: 6;
   background-color: rgba(51, 51, 51, .3);
+  animation: open .3s ease-in-out;
+}
+
+@keyframes open {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 </style>
