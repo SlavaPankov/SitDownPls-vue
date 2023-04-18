@@ -14,7 +14,7 @@
           {{ editData ? 'Сохранить' : 'Редактировать данные' }}
         </button>
       </div>
-        <form class="personal__form">
+      <form class="personal__form">
           <base-form-text-input title="Фамилия:"
                                 placeholder="Фамилия"
                                 type="text"
@@ -55,6 +55,10 @@
                                 :disabled="!editData"
                                 v-model:value="formData.email"/>
         </form>
+      <h2 class="heading-reset personal__subheading personal__subheading--history">
+        История заказов
+      </h2>
+      <orders-list :orders="user.orders" />
     </div>
   </section>
   <base-modal :open="updatingUser">
@@ -70,6 +74,7 @@ import { BASE_URL } from '@/api/config';
 import BaseFormTextInput from '@/components/BaseFormTextInput';
 import BaseSpinner from '@/components/BaseSpinner';
 import BaseModal from '@/components/BaseModal';
+import OrdersList from '@/components/OrdersList';
 
 export default {
   name: 'PersonalView',
@@ -77,6 +82,7 @@ export default {
     BaseFormTextInput,
     BaseSpinner,
     BaseModal,
+    OrdersList,
   },
 
   data() {
@@ -211,11 +217,22 @@ export default {
     line-height: 24px;
     font-weight: 400;
     color: var(--black);
+
+    &--history {
+      margin-bottom: 26px;
+    }
   }
 
   &__edit-button {
     @include btn-primary;
     padding: 20px 25px;
+  }
+
+  &__form {
+    margin-bottom: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
   }
 }
 
