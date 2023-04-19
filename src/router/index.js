@@ -8,6 +8,7 @@ import CartView from '@/views/CartView';
 import OrderView from '@/views/OrderView';
 import CreatedOrder from '@/views/CreatedOrder';
 import PersonalView from '@/views/PersonalView';
+import ResetPasswordView from '@/views/SetPasswordView';
 
 const routes = [
   {
@@ -53,6 +54,11 @@ const routes = [
     path: '/personal',
     name: 'personal',
     component: PersonalView,
+  },
+  {
+    path: '/personal/set-password',
+    name: 'resetPassword',
+    component: ResetPasswordView,
   },
   {
     path: '/:catchAll(.*)',

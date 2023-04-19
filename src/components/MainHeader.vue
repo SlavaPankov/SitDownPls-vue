@@ -153,11 +153,11 @@
         </form>
         <ul class="header__personals personals-list list-reset">
           <li class="personals-list__item">
-            <router-link :to="{ name: 'personal' }" class="personals-list__link">
+            <button @click.prevent="navigation" class="personals-list__link btn-reset">
               <svg class="personals-list__icon">
                 <use xlink:href="../assets/img/sprite.svg#person"></use>
               </svg>
-            </router-link>
+            </button>
           </li>
           <li class="personals-list__item">
             <cart-icon />
@@ -220,10 +220,18 @@ export default {
         event.target.classList.remove('search-form__input--written');
       }
     },
+
+    navigation() {
+      if (this.rememberToken === '') {
+        this.$router.push({ name: 'auth' });
+      } else {
+        this.$router.push({ name: 'personal' });
+      }
+    },
   },
 
   computed: {
-    ...mapGetters({ categories: 'getCategories' }),
+    ...mapGetters({ categories: 'getCategories', rememberToken: 'getRememberToken' }),
 
     selectedRegion() {
       return this.regionList.filter((item) => item.selected)[0];

@@ -17,8 +17,14 @@ export default {
   components: { BaseSpinner, MainFooter, MainHeader },
 
   methods: {
-    ...mapActions(['loadCategories', 'loadBasket', 'loadProducts', 'loadPosts', 'loadColors']),
-    ...mapMutations(['updateUserAccessToken']),
+    ...mapActions([
+      'loadCategories',
+      'loadBasket',
+      'loadProducts',
+      'loadPosts',
+      'loadColors',
+    ]),
+    ...mapMutations(['updateUserAccessToken', 'updateRememberToken']),
   },
 
   computed: {
@@ -58,6 +64,10 @@ export default {
 
     if (this.getColors.length === 0) {
       this.loadColors();
+    }
+
+    if (localStorage.getItem('rememberToken')) {
+      this.updateRememberToken(localStorage.getItem('rememberToken'));
     }
   },
 };

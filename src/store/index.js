@@ -13,6 +13,7 @@ export default createStore({
     deliveryTypes: [],
     basket: {},
     userAccessToken: '',
+    rememberToken: '',
     dataIsLoaded: false,
     dataIsLoading: true,
     orderInfo: null,
@@ -20,6 +21,10 @@ export default createStore({
   getters: {
     getUserAccessToken(state) {
       return state.userAccessToken;
+    },
+
+    getRememberToken(state) {
+      return state.rememberToken;
     },
 
     getCategories(state) {
@@ -107,6 +112,10 @@ export default createStore({
 
     updateUserAccessToken(state, value) {
       state.userAccessToken = value;
+    },
+
+    updateRememberToken(state, value) {
+      state.rememberToken = value;
     },
 
     updatePosts(state, value) {
