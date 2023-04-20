@@ -124,6 +124,9 @@
     </div>
   </section>
   <base-spinner v-if="!paymentIsLoaded || !deliveryIsLoaded"/>
+  <base-modal :open="orderSending">
+    <base-spinner />
+  </base-modal>
 </template>
 
 <script>
@@ -133,10 +136,11 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import BaseSpinner from '@/components/BaseSpinner';
 import BaseFormTextInput from '@/components/BaseFormTextInput';
 import { BASE_URL } from '@/api/config';
+import BaseModal from '@/components/BaseModal';
 
 export default {
   name: 'OrderView',
-  components: { BaseFormTextInput, BaseSpinner },
+  components: { BaseFormTextInput, BaseSpinner, BaseModal },
   data() {
     return {
       formData: {},
@@ -144,6 +148,7 @@ export default {
       formErrorGlobal: {},
       deliveryIsLoaded: false,
       paymentIsLoaded: false,
+      orderSending: false,
     };
   },
 
@@ -164,6 +169,7 @@ export default {
 
     submit() {
       this.formError = {};
+      this.orderSending = true;
 
       this.formError.surName = this.checkLength(this.formData.surName.length)
         || this.isValidTextInput(this.formData.surName);
@@ -185,6 +191,7 @@ export default {
             userAccessToken: this.getUserAccessToken,
           },
         }).then((response) => {
+          this.orderSending = false;
           this.updateOrderInfo(response.data.payload);
           this.loadBasket();
           this.$router.push({ name: 'createdOrder', params: { id: response.data.payload.id } });

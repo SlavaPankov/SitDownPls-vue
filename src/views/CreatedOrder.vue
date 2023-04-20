@@ -1,5 +1,5 @@
 <template>
-  <section class="order" v-if="getOrderInfo">
+  <section class="order" v-if="orderLoaded">
     <div class="container order__container">
       <h1 class="order__heading heading-reset">
         Заказ №{{ getOrderInfo.id }}
@@ -49,7 +49,7 @@
       <router-link class="order__link" :to="{ name: 'home' }">На главную</router-link>
     </div>
   </section>
-  <base-spinner v-if="!getOrderInfo" />
+  <base-spinner v-if="!orderLoaded" />
 </template>
 
 <script>
@@ -64,6 +64,12 @@ export default {
     BaseSpinner,
   },
 
+  data() {
+    return {
+      orderLoaded: false,
+    };
+  },
+
   computed: {
     ...mapGetters(['getOrderInfo']),
   },
@@ -73,7 +79,9 @@ export default {
   },
 
   created() {
-    this.loadOrder(this.$route.params.id);
+    this.loadOrder(this.$route.params.id).then(() => {
+      this.orderLoaded = true;
+    });
   },
 };
 </script>

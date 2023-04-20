@@ -192,6 +192,10 @@ export default {
   },
 
   created() {
+    if (this.getRememberToken === '') {
+      this.$router.push({ name: 'auth' });
+    }
+
     this.loadUserInfo();
   },
 };
