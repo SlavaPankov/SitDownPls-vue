@@ -10,34 +10,148 @@
         внутренних резервов и ресурсов.
         <span class="callback__tooltip"></span>
       </div>
-      <form class="callback__form callback-form" action="#" method="post">
-        <label class="callback-form__label" for="name">
-          <input class="input-reset callback-form__input callback-form__input--name" type="text"
-                 name="name" id="name" placeholder="Как вас зовут?">
-        </label>
-        <label class="callback-form__label" for="phone">
-          <input class="input-reset callback-form__input callback-form__input--phone" type="tel"
-                 name="phone" id="phone" placeholder="Ваш телефон">
-        </label>
-        <label class="callback-form__label" for="email">
-          <input class="input-reset callback-form__input callback-form__input--email" type="email"
-                 name="email" id="email" placeholder="Ваш e-mail">
-        </label>
+      <form class="callback__form callback-form"
+            @submit.prevent="submit"
+            method="post"
+      >
+        <base-form-text-input placeholder="Как вас зовут?"
+                              type="text"
+                              class="callback-form__label"
+                              :class=" {
+                                'invalid': this.formError.name
+                              }"
+                              name="surName"
+                              :require="true"
+                              :error="formError.name"
+                              v-model:value="formData.name"/>
+        <base-form-text-input placeholder="Ваш телефон"
+                              type="tel"
+                              class="callback-form__label"
+                              name="phone"
+                              :require="true"
+                              :error="formError.phone"
+                              v-model:value="formData.phone"/>
+        <base-form-text-input placeholder="Ваш e-mail"
+                              type="text"
+                              class="callback-form__label"
+                              name="email"
+                              :require="true"
+                              :error="formError.email"
+                              v-model:value="formData.email"/>
         <input class="callback-form__button" type="submit" value="Отправить">
         <label class="callback-form__label agreement-label custom-checkbox" for="agreement">
-          <input class="custom-checkbox__field agreement-checkbox visually-hidden" type="checkbox"
-                 name="agreement" id="agreement">
+          <input class="custom-checkbox__field agreement-checkbox visually-hidden"
+                 type="checkbox"
+                 name="agreement"
+                 id="agreement"
+                 value="true"
+                 v-model="formData.agreement"
+          >
           <span class="custom-checkbox__content"></span>
           Принимаю <a class="callback-form__link" href="#">пользовательское соглашение</a>
         </label>
       </form>
     </div>
   </section>
+  <base-modal :open="dataSending">
+    <base-spinner v-if="dataSend" />
+    <article v-if="sendSuccess" class="callback-success">
+      <svg class="callback-success__icon">
+          <use xlink:href="@/assets/img/sprite.svg#elephant"></use>
+      </svg>
+      <h2 class="heading-reset callback-success__heading">
+        Спасибо, мы вам перезвоним!
+      </h2>
+    </article>
+  </base-modal>
 </template>
 
 <script>
+// eslint-disable-next-line import/no-extraneous-dependencies
+import axios from 'axios';
+import { BASE_URL } from '@/api/config';
+import BaseFormTextInput from '@/components/BaseFormTextInput';
+import BaseSpinner from '@/components/BaseSpinner';
+import BaseModal from '@/components/BaseModal';
+
 export default {
   name: 'BaseCallback',
+
+  components: {
+    BaseFormTextInput,
+    BaseModal,
+    BaseSpinner,
+  },
+
+  data() {
+    return {
+      formData: {},
+      formError: {},
+      dataSending: false,
+      dataSend: false,
+      sendSuccess: false,
+    };
+  },
+
+  methods: {
+    submit() {
+      this.formError = {};
+      this.dataSend = true;
+      this.dataSending = true;
+
+      this.formError.name = this.checkLength(this.formData.name.length)
+        || this.isValidTextInput(this.formData.name);
+      this.formError.phone = this.checkPhoneLength(this.formData.phone.length);
+
+      Object.keys(this.formError).forEach((key) => {
+        if (this.formError[key] === undefined) {
+          delete this.formError[key];
+        }
+      });
+
+      if (Object.entries(this.formError).length === 0) {
+        axios.post(`${BASE_URL}/api/callback`, {
+          ...this.formData,
+        }).then((response) => {
+          if (response.data.error === null) {
+            this.formData = {};
+            this.dataSend = false;
+            this.sendSuccess = true;
+
+            setTimeout(() => {
+              this.sendSuccess = false;
+              this.dataSending = false;
+            }, 1500);
+          }
+        });
+      }
+    },
+
+    // eslint-disable-next-line consistent-return
+    checkLength(value) {
+      if (value < 3) {
+        return 'Минимальная длина 3 символа';
+      }
+
+      if (value > 30) {
+        return 'Максимальная длина 30 символов';
+      }
+    },
+
+    // eslint-disable-next-line consistent-return
+    checkPhoneLength(value) {
+      if (value < 18) {
+        return 'Некорректный формат';
+      }
+    },
+
+    // eslint-disable-next-line consistent-return
+    isValidTextInput(value) {
+      if (!/^[а-я-]+$/i.test(value)) {
+        return 'Неверный формат';
+      }
+    },
+  },
 };
 </script>
 
@@ -109,7 +223,7 @@ export default {
   &__label {
     width: 100%;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     margin-bottom: 28.5px;
   }
 
@@ -145,12 +259,30 @@ export default {
   @include custom-checkbox;
 }
 
-.invalid {
-  margin-bottom: 6px;
-  padding-left: 18px;
-  font-size: 12px;
-  line-height: 16.34px;
-  font-weight: 400;
-  color: var(--red_input);
+.callback-success {
+  padding: 122px 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--white);
+  border-radius: 10px;
+
+  &__icon {
+    margin-bottom: 32px;
+    width: 172px;
+    height: 117px;
+    fill: var(--secondary);
+
+    & path {
+      opacity: 1;
+    }
+  }
+
+  &__heading {
+    font-size: 32px;
+    line-height: 100%;
+    font-weight: 400;
+    color: var(--black);
+  }
 }
 </style>

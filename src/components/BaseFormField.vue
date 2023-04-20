@@ -1,7 +1,7 @@
 <template>
   <!--  eslint-disable-next-line -->
   <label class="order-form__label" :for="forId">
-    <span>{{ title }}</span>
+    <span v-if="title">{{ title }}</span>
     <slot />
     <span class="order-form__error" v-if="error">{{ error }}</span>
   </label>
@@ -13,7 +13,6 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Заголовок',
     },
     error: {
       type: String,
