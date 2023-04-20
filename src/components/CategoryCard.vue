@@ -6,7 +6,15 @@
         v-for="subcategory in category.subcategories"
         :key="subcategory.id"
       >
-        <router-link :to="{ name: 'category', params: { category: category.slug } }"
+        <router-link :to="{
+            name: 'category',
+            params: {
+              category: category.slug
+            },
+            query: {
+              subcategories: subcategory.slug
+            }
+          }"
                      class="top-card__list-link"
         >
           <span class="top-card__list-text">{{ subcategory.name }}</span>

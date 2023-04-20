@@ -1,7 +1,10 @@
 <template>
-  <div class="catalog__container container">
-    <categories-list :categories="getCategories" />
-  </div>
+  <section class="catalog" v-if="this.$route.name === 'catalog'">
+    <div class="catalog__container container">
+      <categories-list :categories="getCategories" />
+    </div>
+  </section>
+  <router-view v-if="this.$route.name !== 'catalog'" />
 </template>
 
 <script>

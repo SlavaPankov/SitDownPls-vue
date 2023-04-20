@@ -14,7 +14,9 @@ import MainFooter from '@/components/MainFooter';
 import BaseSpinner from '@/components/BaseSpinner';
 
 export default {
-  components: { BaseSpinner, MainFooter, MainHeader },
+  components: {
+    BaseSpinner, MainFooter, MainHeader,
+  },
 
   methods: {
     ...mapActions([

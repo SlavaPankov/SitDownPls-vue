@@ -49,16 +49,19 @@
       <router-link class="order__link" :to="{ name: 'home' }">На главную</router-link>
     </div>
   </section>
+  <base-spinner v-if="!getOrderInfo" />
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CartList from '@/components/CartList';
+import BaseSpinner from '@/components/BaseSpinner';
 
 export default {
   name: 'CreatedOrder',
   components: {
     CartList,
+    BaseSpinner,
   },
 
   computed: {

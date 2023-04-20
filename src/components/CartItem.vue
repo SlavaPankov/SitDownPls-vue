@@ -58,7 +58,10 @@
     <div class="cart-item__price">
       {{ totalProductPrice }} руб.
     </div>
-    <button class="btn-reset" @click.prevent="deleteCartProduct(product.id)">
+    <button class="btn-reset"
+            @click.prevent="deleteCartProduct(product.id)"
+            v-if="isCartPage"
+    >
       <svg class="delete-icon">
           <use xlink:href="@/assets/img/sprite.svg#trash"></use>
       </svg>

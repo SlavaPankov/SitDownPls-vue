@@ -20,7 +20,7 @@
                      :value="subcategory.slug"
                      :id="subcategory.slug"
                      v-model="currentCategorySlug"
-                     @change="this.$emit('update:categorySlug', currentCategorySlug);"
+                     @change="saveFilterToQueryParams(currentCategorySlug, 'subcategories')"
               >
               <span class="custom-checkbox__content"></span>
               {{ subcategory.name }}
@@ -73,7 +73,7 @@
                      value="5000"
                      id="more"
                      v-model.number="currentDiscount"
-                     @change="this.$emit('update:discount', +currentDiscount)"
+                     @change="saveFilterToQueryParams(currentDiscount, 'discount')"
               >
               <span class="custom-checkbox__content"></span>
               Более 5 000
@@ -87,7 +87,7 @@
                      value="-5000"
                      id="less"
                      v-model.number="currentDiscount"
-                     @change="this.$emit('update:discount', +currentDiscount)"
+                     @change="saveFilterToQueryParams(currentDiscount, 'discount')"
               >
               <span class="custom-checkbox__content"></span>
               Менее 5 000
@@ -101,7 +101,7 @@
                      value="0"
                      id="dont"
                      v-model.number="currentDiscount"
-                     @change="this.$emit('update:discount', +currentDiscount)"
+                     @change="saveFilterToQueryParams(currentDiscount, 'discount')"
               >
               <span class="custom-checkbox__content"></span>
               Не важно
@@ -122,7 +122,7 @@
                      :value="color.slug"
                      :id="color.slug"
                      v-model="currentColorSlug"
-                     @change="this.$emit('update:colorSlug', currentColorSlug)"
+                     @change="saveFilterToQueryParams(currentColorSlug ,'colors')"
               >
               <span class="custom-checkbox__content"></span>
               {{ color.name }}
@@ -145,7 +145,7 @@ export default {
   },
 
   props: {
-    categorySlug: {
+    subcategories: {
       required: true,
       type: Array,
     },
@@ -161,7 +161,7 @@ export default {
       required: true,
       type: Number,
     },
-    colorSlug: {
+    colors: {
       require: true,
       type: Array,
     },
@@ -186,21 +186,44 @@ export default {
       }).format(price)
         .split(',')[0];
     },
+
+    saveFilterToQueryParams(value, key) {
+      let strValue = value;
+
+      if (Array.isArray(value)) {
+        strValue = value.join(' ');
+      }
+
+      const url = new URL(window.location);
+      url.searchParams.set(key, strValue);
+      window.history.pushState({}, '', url);
+
+      this.$emit('update:subcategories', this.currentCategorySlug);
+      this.$emit('update:discount', +this.currentDiscount);
+      this.$emit('update:colors', this.currentColorSlug);
+    },
   },
 
   data() {
     return {
       prices: [this.priceFrom, this.priceTo],
-      currentCategorySlug: this.categorySlug,
+      currentCategorySlug: this.subcategories,
       currentDiscount: this.discount,
-      currentColorSlug: this.colorSlug,
+      currentColorSlug: this.colors,
     };
   },
 
   watch: {
-    prices() {
-      this.$emit('update:priceFrom', this.prices[0]);
-      this.$emit('update:priceTo', this.prices[1]);
+    prices(newValue, oldValue) {
+      if (newValue[0] !== oldValue[0]) {
+        this.$emit('update:priceFrom', this.prices[0]);
+        this.saveFilterToQueryParams(this.prices[0], 'priceFrom');
+      }
+
+      if (newValue[1] !== oldValue[1]) {
+        this.$emit('update:priceTo', this.prices[1]);
+        this.saveFilterToQueryParams(this.prices[1], 'priceTo');
+      }
     },
   },
 };

@@ -3,7 +3,7 @@
     <li class="paginate-list__item paginate-bw">
       <button
         class="btn-reset paginate-list__button paginate-list__button--bw"
-        :disabled="currentPage === 1"
+        :disabled="page === 1"
         @click.prevent="saveCurrentPage(paginationBackward)"
       >
       </button>
@@ -11,7 +11,7 @@
     <li class="paginate-list__item" v-for="page in pages" :key="page">
       <button
         class="btn-reset paginate-list__button"
-        :class="page === +this.currentPage ? 'paginate-list__button--current' : ''"
+        :class="page === +this.page ? 'paginate-list__button--current' : ''"
         @click.prevent="saveCurrentPage(page)"
       >
         {{ page }}
@@ -20,7 +20,7 @@
     <li class="paginate-list__item paginate-fw">
       <button
         class="btn-reset paginate-list__button paginate-list__button--fw"
-        :disabled="currentPage >= pages"
+        :disabled="page >= pages"
         @click.prevent="saveCurrentPage(paginationForward)"
       >
       </button>
@@ -33,7 +33,7 @@ export default {
   name: 'BasePagination',
 
   props: {
-    currentPage: {
+    page: {
       required: true,
       type: Number,
     },
@@ -53,17 +53,17 @@ export default {
     },
 
     paginationForward() {
-      return this.currentPage >= this.pages ? +this.currentPage : +this.currentPage + 1;
+      return this.page >= this.pages ? +this.page : +this.page + 1;
     },
 
     paginationBackward() {
-      return this.currentPage === 1 ? +this.currentPage : +this.currentPage - 1;
+      return this.page === 1 ? +this.page : +this.page - 1;
     },
   },
 
   methods: {
     saveCurrentPage(page) {
-      this.$emit('update:currentPage', page);
+      this.$emit('update:page', page);
     },
   },
 };

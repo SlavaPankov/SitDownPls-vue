@@ -16,55 +16,66 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
-  },
-  {
-    path: '/catalog',
-    name: 'catalog',
-    component: CatalogView,
-  },
-  {
-    path: '/catalog/:category',
-    name: 'category',
-    component: CategoryView,
-  },
-  {
-    path: '/personal',
-    name: 'personal',
-  },
-  {
-    path: '/:category/:slug',
-    name: 'product',
-    component: ProductView,
-  },
-  {
-    path: '/cart',
-    name: 'cart',
-    component: CartView,
-  },
-  {
-    name: 'createOrder',
-    path: '/order',
-    component: OrderView,
-  },
-  {
-    name: 'createdOrder',
-    path: '/order/:id',
-    component: CreatedOrder,
-  },
-  {
-    path: '/personal',
-    name: 'personal',
-    component: PersonalView,
+    meta: {
+      breadCrumb: 'Главная',
+    },
+    children: [
+      {
+        path: '/catalog',
+        name: 'catalog',
+        component: CatalogView,
+        meta: {
+          breadCrumb: 'Каталог',
+        },
+        children: [
+          {
+            path: '/catalog/:category',
+            name: 'category',
+            component: CategoryView,
+            meta: {
+              breadCrumb: 'Категория',
+            },
+            children: [
+              {
+                path: '/:category/:slug',
+                name: 'product',
+                component: ProductView,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: '/cart',
+        name: 'cart',
+        component: CartView,
+      },
+      {
+        name: 'createOrder',
+        path: '/order',
+        component: OrderView,
+      },
+      {
+        name: 'createdOrder',
+        path: '/order/:id',
+        component: CreatedOrder,
+      },
+      {
+        path: '/personal',
+        name: 'personal',
+        component: PersonalView,
+      },
+      {
+        path: '/personal/login',
+        name: 'auth',
+        component: LogInView,
+      },
+    ],
   },
   {
     path: '/personal/set-password',
     name: 'resetPassword',
     component: ResetPasswordView,
-  },
-  {
-    path: '/personal/login',
-    name: 'auth',
-    component: LogInView,
   },
   {
     path: '/:catchAll(.*)',

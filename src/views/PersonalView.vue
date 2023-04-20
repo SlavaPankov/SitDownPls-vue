@@ -1,5 +1,5 @@
 <template>
-  <section class="personal">
+  <section class="personal" v-if="pageLoaded">
     <div class="container personal__container">
       <h1 class="heading-reset personal__heading">
         Личный кабинет
@@ -64,6 +64,7 @@
   <base-modal :open="updatingUser">
     <base-spinner class="spinner" />
   </base-modal>
+  <base-spinner v-if="pageLoading" />
 </template>
 
 <script>
@@ -93,23 +94,31 @@ export default {
       editData: false,
       updatingUser: false,
       updatedUser: true,
+      pageLoading: true,
+      pageLoaded: false,
     };
   },
 
   computed: {
-    ...mapGetters(['getUserAccessToken']),
+    ...mapGetters(['getRememberToken']),
   },
 
   methods: {
     loadUserInfo() {
-      return axios.get(`${BASE_URL}/api/users/${this.getUserAccessToken}`)
+      return axios.get(`${BASE_URL}/api/users/${this.getRememberToken}`)
         .then((response) => {
-          this.user = response.data.payload;
-          this.formData.surName = this.user.sur_name;
-          this.formData.name = this.user.name;
-          this.formData.middleName = this.user.middle_name;
-          this.formData.phone = this.user.phone;
-          this.formData.email = this.user.email;
+          if (response.data.error === null) {
+            this.pageLoaded = true;
+            this.pageLoading = false;
+            this.user = response.data.payload;
+            this.formData.surName = this.user.sur_name;
+            this.formData.name = this.user.name;
+            this.formData.middleName = this.user.middle_name;
+            this.formData.phone = this.user.phone;
+            this.formData.email = this.user.email;
+          } else {
+            this.$router.push({ name: 'auth' });
+          }
         });
     },
 
@@ -141,7 +150,7 @@ export default {
       this.updatingUser = true;
       this.updatedUser = false;
 
-      return axios.put(`${BASE_URL}/api/users/${this.getUserAccessToken}`, {
+      return axios.put(`${BASE_URL}/api/users/${this.getRememberToken}`, {
         ...this.formData,
       })
         .then((response) => {

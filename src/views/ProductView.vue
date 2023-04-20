@@ -428,6 +428,8 @@ export default {
 
   created() {
     this.loadProduct(this.$route.params.slug);
+
+    this.$route.meta.breadCrumb = 'test';
   },
 };
 </script>
