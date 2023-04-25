@@ -174,12 +174,6 @@ input[type="number"]::-webkit-inner-spin-button {
   display: none;
 }
 
-.swiper-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet,
-.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
-  margin: 0 var(--swiper-pagination-bullet-horizontal-gap,8px) !important;
-  bottom: 23px !important;
-}
-
 .swiper-pagination-bullet {
   width: 14px !important;
   height: 14px !important;
