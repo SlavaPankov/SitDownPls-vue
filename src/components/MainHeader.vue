@@ -32,42 +32,34 @@
             +7 (495) 885-45-47
           </span>
         </a>
-        <nav class="header-top__nav top-nav nav" title="Навигация">
-          <ul class="top-nav__list list-reset">
-            <li class="top-nav__item">
-              <a href="#" class="top-nav__link">
-                <span class="top-nav__text">
-                  О компании
-                </span>
-              </a>
-            </li>
-            <li class="top-nav__item">
-              <a href="#" class="top-nav__link">
-                <span class="top-nav__text">
-                  Гарантия и возврат
-                </span>
-              </a>
-            </li>
-            <li class="top-nav__item">
-              <a href="#" class="top-nav__link">
-                <span class="top-nav__text">
-                  Корпоративным клиентам
-                </span>
-              </a>
-            </li>
-            <li class="top-nav__item">
-              <a href="#" class="top-nav__link">
-                <span class="top-nav__text">
-                  Дизайн-решение
-                </span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <top-nav class="top-nav--1024"/>
+      </div>
+    </div>
+    <div class="header__top header-top header-top--1024">
+      <div class="container header-top__container">
+        <router-link :to="{ name: 'home' }" class="header__logo logo logo--mobile">
+          <picture>
+            <source srcset="../assets/img/logo.webp" type="image/webp">
+            <img loading="lazy"
+                 src="../assets/img/logo.png"
+                 class="image"
+                 width="187"
+                 height="27"
+                 alt="Логотип">
+          </picture>
+        </router-link>
+        <top-nav/>
+        <personal-list/>
       </div>
     </div>
     <div class="header__middle header-middle">
       <div class="container header-middle__container">
+        <button class="header__burger burger"
+                aria-label="Открыть меню"
+                @click.prevent="burgerOpen"
+        >
+          <span class="burger__line"></span>
+        </button>
         <router-link :to="{ name: 'home' }" class="header__logo logo">
           <picture>
             <source srcset="../assets/img/logo.webp" type="image/webp">
@@ -79,7 +71,13 @@
                  alt="Логотип">
           </picture>
         </router-link>
-        <nav class="nav header-middle__nav middle-nav" title="">
+        <nav class="nav header-middle__nav middle-nav"
+             :class="{ open: burgerIsOpen }"
+             title="Меню"
+        >
+          <svg class="middle-nav__icon" @click.prevent="burgerOpen" @keydown="burgerOpen">
+            <use xlink:href="@/assets/img/sprite.svg#cross"></use>
+          </svg>
           <ul class="middle-nav__list list-reset">
             <li class="middle-nav__item">
               <router-link :to="{ name: 'catalog' }" class="middle-nav__link">
@@ -112,7 +110,9 @@
               </a>
             </li>
           </ul>
+          <top-nav class="top-nav--mobile" />
         </nav>
+        <personal-list />
       </div>
     </div>
     <div class="header__bottom header-bottom">
@@ -151,18 +151,7 @@
             </ul>
           </div>
         </form>
-        <ul class="header__personals personals-list list-reset">
-          <li class="personals-list__item">
-            <button @click.prevent="navigation" class="personals-list__link btn-reset">
-              <svg class="personals-list__icon">
-                <use xlink:href="../assets/img/sprite.svg#person"></use>
-              </svg>
-            </button>
-          </li>
-          <li class="personals-list__item">
-            <cart-icon />
-          </li>
-        </ul>
+        <personal-list class="personals-list--1024"/>
       </div>
     </div>
   </header>
@@ -170,11 +159,15 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import CartIcon from '@/components/CartIcon';
+import TopNav from '@/components/TopNav';
+import PersonalList from '@/components/PersonalList';
 
 export default {
   name: 'MainHeader',
-  components: { CartIcon },
+  components: {
+    TopNav,
+    PersonalList,
+  },
   data() {
     return {
       isRegionOpen: false,
@@ -192,6 +185,7 @@ export default {
         name: 'Пермь',
         selected: false,
       }],
+      burgerIsOpen: false,
     };
   },
 
@@ -221,27 +215,37 @@ export default {
       }
     },
 
-    navigation() {
-      if (this.rememberToken === '') {
-        this.$router.push({ name: 'auth' });
+    burgerOpen() {
+      this.burgerIsOpen = !this.burgerIsOpen;
+
+      if (this.burgerIsOpen) {
+        document.body.style.overflow = 'hidden';
       } else {
-        this.$router.push({ name: 'personal' });
+        document.body.style.overflow = 'auto';
       }
     },
   },
 
   computed: {
-    ...mapGetters({ categories: 'getCategories', rememberToken: 'getRememberToken' }),
+    ...mapGetters({
+      categories: 'getCategories',
+    }),
 
     selectedRegion() {
       return this.regionList.filter((item) => item.selected)[0];
+    },
+  },
+
+  watch: {
+    $route() {
+      this.burgerIsOpen = false;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/scss/_mixins.scss";
+@import "@/assets/scss/_mixins.scss";
 
 .header {
   display: flex;
@@ -257,24 +261,90 @@ export default {
 .header-top {
   background-color: var(--grey_light);
 
+  @include big-desktop {
+    background-color: transparent;
+  }
+
+  @include extra-mobile {
+    order: 2;
+  }
+
   &__container {
     display: flex;
     align-items: center;
     padding-top: 15px;
     padding-bottom: 15px;
+
+    @include big-desktop {
+      justify-content: space-between;
+    }
+
+    @include mobile {
+      flex-wrap: wrap;
+      row-gap: 18px;
+    }
+  }
+
+  &--1024 {
+    display: none;
+
+    @include big-desktop {
+      display: block;
+      background-color: var(--grey_light);
+    }
+
+    @include extra-mobile {
+      order: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    & .personals-list {
+      @include extra-tablet {
+        display: none;
+      }
+    }
+
+    & .top-nav {
+      @include extra-mobile {
+        display: none;
+      }
+    }
   }
 }
 
 .header-middle {
+  @include extra-mobile {
+    order: 3;
+  }
+
   &__container {
+    position: relative;
     padding-top: 32px;
     padding-bottom: 32px;
     display: flex;
     align-items: center;
+
+    @include extra-tablet {
+      justify-content: space-between;
+    }
+  }
+
+  & .personals-list {
+    display: none;
+
+    @include extra-tablet {
+      display: flex;
+    }
   }
 }
 
 .header-bottom {
+  @include extra-mobile {
+    order: 4;
+  }
+
   &__container {
     padding-bottom: 32px;
     display: flex;
@@ -372,13 +442,16 @@ export default {
   padding: 0;
   height: 0;
   overflow: hidden;
-  border: 2px solid var(--grey_light);
+  border: 0 solid var(--grey_light);
   background-color: var(--white);
-  transition: padding .3s ease-in-out, height .3s ease-in-out;
+  transition: padding .3s ease-in-out, height .3s ease-in-out, border-width .3s ease-in-out;
 
   &--open {
+    border-width: 2px;
     padding: 16px;
     height: fit-content;
+    overflow: auto;
+    z-index: 6;
   }
 
   &__item {
@@ -481,66 +554,25 @@ export default {
 }
 
 .top-nav {
-  margin-left: auto;
-
-  &__list {
-    display: flex;
-    align-items: center;
-  }
-
-  &__item {
-    &:not(:last-child) {
-      margin-right: 64px;
+  &--1024 {
+    @include big-desktop {
+      display: none;
     }
   }
 
-  &__link {
-    position: relative;
-    font-size: 14px;
-    line-height: 14px;
-    font-weight: 400;
-    color: var(--grey);
-    transition: color .3s ease-in-out;
+  &--mobile {
+    display: none;
 
-    &::after {
-      content: '';
-      position: absolute;
-      top: -1px;
-      left: -3px;
-      width: calc(100% + 6px);
-      height: calc(100% + 2px);
-      background-color: transparent;
-      transition: background-color .3s ease-in-out;
-      z-index: 1;
-    }
-
-    &:hover {
-      color: var(--primary);
-    }
-
-    &:focus {
-      outline: none;
-      color: var(--primary_shade);
-
-      &::after {
-        background-color: var(--pink_violet);
-      }
-    }
-
-    &:active {
-      color: var(--primary_shade);
-
-      &::after {
-        background-color: transparent;
-      }
+    @include extra-mobile {
+      display: block;
     }
   }
+}
 
-  &__text {
-    position: relative;
-    z-index: 2;
+.personals-list--1024 {
+  @include big-desktop {
+    display: none !important;
   }
-
 }
 
 .middle-nav {
@@ -548,10 +580,71 @@ export default {
   max-width: 952px;
   width: 100%;
 
+  @include big-desktop {
+    max-width: 701px;
+  }
+
+  @include extra-tablet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    transform: translateX(-101%);
+    transition: transform .3s ease-in-out;
+    padding: 24px 36px 60px;
+    z-index: 5;
+    background: url("@/assets/img/svg/elephant.svg")
+                right 72px bottom 60px
+                no-repeat
+                var(--white);
+    background-size: 161px 112px;
+  }
+
+  @include extra-mobile {
+    padding: 12px 0 26px;
+  }
+
+  @include extra-mobile {
+    padding: 12px 0 0;
+    background: var(--white) none;
+  }
+
   &__list {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @include extra-tablet {
+      display: block;
+      column-count: 2;
+      max-width: 309px;
+    }
+
+    @include extra-tablet {
+      padding: 0 72px 26px;
+      max-width: 100%;
+    }
+
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 41px;
+      padding: 0 12px;
+    }
+  }
+
+  &__item {
+    &:not(:nth-child(3n)) {
+      @include extra-tablet {
+        margin-bottom: 41px;
+      }
+
+      @include mobile {
+        margin: 0;
+      }
+    }
   }
 
   &__link {
@@ -600,6 +693,27 @@ export default {
     position: relative;
     z-index: 2;
   }
+
+  &__icon {
+    display: none;
+    width: 24px;
+    height: 24px;
+    margin-bottom: 34px;
+    fill: var(--primary);
+
+    @include extra-tablet {
+      display: block;
+    }
+
+    @include extra-mobile {
+      margin-bottom: 26px;
+      margin-left: 72px;
+    }
+
+    @include mobile {
+      margin-left: 12px;
+    }
+  }
 }
 
 .search-form {
@@ -607,10 +721,31 @@ export default {
   max-width: 1061px;
   width: 100%;
 
+  @include big-desktop {
+    max-width: 100%;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: 16px;
+  }
+
   &__label {
     position: relative;
     max-width: 761px;
     width: 100%;
+
+    @include big-desktop {
+      max-width: calc(100% - 300px);
+    }
+
+    @include extra-tablet {
+      max-width: calc(100% - 189px);
+    }
+
+    @include mobile {
+      max-width: 100%;
+    }
   }
 
   &__icon {
@@ -661,6 +796,10 @@ export default {
     &--written + svg {
       fill: var(--primary);
     }
+
+    @include mobile {
+      border-radius: 10px;
+    }
   }
 
   &__button {
@@ -677,6 +816,14 @@ export default {
   position: relative;
   max-width: 300px;
   width: 100%;
+
+  @include extra-tablet {
+    max-width: 189px;
+  }
+
+  @include mobile {
+    max-width: 100%;
+  }
 
   &__list {
     position: absolute;
@@ -725,6 +872,10 @@ export default {
       outline: none;
       background-color: var(--white);
       border-color: var(--primary_shade);
+    }
+
+    @include mobile {
+      border-radius: 10px;
     }
   }
 }
@@ -791,86 +942,35 @@ export default {
   }
 }
 
-.personals-list {
-  display: flex;
-  margin-left: auto;
+.burger {
+  @include burger;
+  display: none;
 
-  &__item {
-    &:not(:last-child) {
-      margin-right: 28px;
-    }
-  }
-
-  &__link {
-    position: relative;
+  @include extra-tablet {
     display: block;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: -5%;
-      left: -5%;
-      width: 110%;
-      height: 110%;
-      background-color: transparent;
-      transition: background-color .3s ease-in-out;
-      z-index: -1;
-    }
-  }
-
-  &__link:hover &__icon {
-    fill: var(--primary_light);
-  }
-
-  &__link:focus {
-    outline: none;
-  }
-
-  &__link:focus::after {
-    background-color: var(--primary_light);
-  }
-
-  &__link:focus &__icon {
-    fill: var(--white);
-  }
-
-  &__link:active &__icon {
-    fill: var(--primary_shade);
-  }
-
-  &__link:active::after {
-    background-color: transparent;
-  }
-
-  &__icon {
-    display: block;
-    width: 26px;
-    height: 28px;
-    fill: var(--primary);
-    transition: fill .3s ease-in-out;
   }
 }
 
-.basket-link {
-  position: relative;
-  padding-left: 15px;
+.logo {
+  @include extra-mobile {
+    display: none;
+  }
 
-  &__count {
-    position: absolute;
-    top: 52%;
-    left: 0;
-    transform: translateY(-70%);
-    width: 15px;
-    height: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    line-height: 10px;
-    font-weight: 400;
-    color: var(--white);
-    background-color: var(--secondary);
-    border-radius: 100%;
+  &--mobile {
+    display: none;
+
+    @include extra-mobile {
+      display: block;
+    }
+  }
+}
+
+.open {
+  transform: none;
+
+  @include extra-mobile {
+    overflow: auto;
+    height: fit-content;
   }
 }
 </style>
