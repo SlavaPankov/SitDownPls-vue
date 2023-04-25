@@ -169,7 +169,6 @@ export default {
 
     submit() {
       this.formError = {};
-      this.orderSending = true;
 
       this.formError.surName = this.checkLength(this.formData.surName.length)
         || this.isValidTextInput(this.formData.surName);
@@ -184,6 +183,8 @@ export default {
       });
 
       if (Object.keys(this.formError).length === 0) {
+        this.orderSending = true;
+
         axios.post(`${BASE_URL}/api/orders`, {
           ...this.formData,
         }, {

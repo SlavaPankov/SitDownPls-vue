@@ -96,8 +96,6 @@ export default {
   methods: {
     submit() {
       this.formError = {};
-      this.dataSend = true;
-      this.dataSending = true;
 
       this.formError.name = this.checkLength(this.formData.name.length)
         || this.isValidTextInput(this.formData.name);
@@ -110,6 +108,9 @@ export default {
       });
 
       if (Object.entries(this.formError).length === 0) {
+        this.dataSend = true;
+        this.dataSending = true;
+
         axios.post(`${BASE_URL}/api/callback`, {
           ...this.formData,
         }).then((response) => {

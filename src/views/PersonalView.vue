@@ -58,7 +58,12 @@
       <h2 class="heading-reset personal__subheading personal__subheading--history">
         История заказов
       </h2>
-      <orders-list :orders="user.orders" />
+      <orders-list :orders="paginatedOrders" />
+      <base-pagination v-if="user.orders.length > countPerPage"
+                       :total-count="user.orders.length"
+                       :count-per-page="countPerPage"
+                       v-model:page="page"
+      />
     </div>
   </section>
   <base-modal :open="updatingUser">
@@ -76,6 +81,7 @@ import BaseFormTextInput from '@/components/BaseFormTextInput';
 import BaseSpinner from '@/components/BaseSpinner';
 import BaseModal from '@/components/BaseModal';
 import OrdersList from '@/components/OrdersList';
+import BasePagination from '@/components/BasePagination';
 
 export default {
   name: 'PersonalView',
@@ -84,6 +90,7 @@ export default {
     BaseSpinner,
     BaseModal,
     OrdersList,
+    BasePagination,
   },
 
   data() {
@@ -96,11 +103,20 @@ export default {
       updatedUser: true,
       pageLoading: true,
       pageLoaded: false,
+      page: 1,
+      countPerPage: 8,
     };
   },
 
   computed: {
     ...mapGetters(['getRememberToken']),
+
+    paginatedOrders() {
+      return this.user.orders.slice(
+        this.countPerPage * (this.page - 1),
+        this.countPerPage * this.page,
+      );
+    },
   },
 
   methods: {
