@@ -24,6 +24,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+
 .top-categories {
   &__list {
     display: grid;
@@ -31,18 +33,35 @@ export default {
     column-gap: 32px;
     grid-auto-flow: row dense;
     row-gap: 32px;
+
+    @include tablet {
+      grid-template-columns: repeat(9, 1fr);
+    }
+
+    @include small-tablet {
+      grid-template-columns: repeat(6, 1fr);
+      gap: 32px 16px;
+    }
   }
 
   &__item {
     grid-column: span 4;
-  }
 
-  &__item:nth-child(5n+1) {
-    grid-column: span 6;
-  }
+    @include tablet {
+      grid-column: span 3;
+    }
 
-  &__item:nth-child(5n+2) {
-    grid-column: span 6;
+    &:nth-child(5n+1) {
+      grid-column: span 6;
+    }
+
+    &:nth-child(5n+2) {
+      grid-column: span 6;
+
+      @include tablet {
+        grid-column: span 3;
+      }
+    }
   }
 }
 </style>

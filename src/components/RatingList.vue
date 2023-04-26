@@ -22,10 +22,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+
 .rating-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, 296px);
+  justify-content: center;
   gap: 32px;
   margin-bottom: 32px;
+
+  @include tablet {
+    grid-template-columns: repeat(auto-fill, calc(33% - 32px));
+  }
+
+  @include small-tablet {
+    grid-template-columns: repeat(auto-fill, calc(50% - 32px));
+  }
+
+  @include mobile {
+    grid-template-columns: repeat(auto-fill, calc(50% - 16px));
+    justify-content: space-between;
+    gap: 16px;
+  }
 }
 </style>

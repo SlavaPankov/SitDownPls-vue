@@ -25,7 +25,8 @@
       <router-link :to="{ name: 'category', params: { category: category.slug } }"
                    class="top-card__heading-link"
       >
-        {{ category.name }}
+        <span>{{ category.name }}</span>
+        <button class="top-card__button--mobile"></button>
       </router-link>
     </h3>
     <picture>

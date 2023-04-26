@@ -239,6 +239,7 @@ export default {
   watch: {
     $route() {
       this.burgerIsOpen = false;
+      document.body.style.overflow = 'auto';
     },
   },
 };
@@ -601,7 +602,11 @@ export default {
     background-size: 161px 112px;
   }
 
-  @include extra-mobile {
+  @include extra-tablet {
+    padding: 12px 36px 26px;
+  }
+
+  @include small-tablet {
     padding: 12px 0 26px;
   }
 
@@ -621,7 +626,7 @@ export default {
       max-width: 309px;
     }
 
-    @include extra-tablet {
+    @include small-tablet {
       padding: 0 72px 26px;
       max-width: 100%;
     }
@@ -703,10 +708,10 @@ export default {
 
     @include extra-tablet {
       display: block;
+      margin-bottom: 26px;
     }
 
-    @include extra-mobile {
-      margin-bottom: 26px;
+    @include small-tablet {
       margin-left: 72px;
     }
 

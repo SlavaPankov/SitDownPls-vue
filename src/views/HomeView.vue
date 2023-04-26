@@ -84,11 +84,11 @@ export default {
     CategoriesList,
     BaseCallback,
   },
+
   data() {
     return {
       RatingListLength: 0,
-      ratingStep: 4,
-      offsetStep: 8,
+      offsetStep: window.innerWidth <= 1024 ? 6 : 8,
     };
   },
 
@@ -103,6 +103,18 @@ export default {
     slicedProducts() {
       return this.getHighRatingProducts.slice(0, this.offsetStep);
     },
+
+    ratingStep() {
+      if (window.innerWidth <= 1024 && window.innerWidth > 768) {
+        return 3;
+      }
+
+      if (window.innerWidth <= 768) {
+        return 2;
+      }
+
+      return 4;
+    },
   },
 
   methods: {
@@ -111,6 +123,30 @@ export default {
 
       return this.slicedProducts;
     },
+
+    resizeHandler(evt) {
+      if (evt.target.innerWidth <= 1024) {
+        this.offsetStep = 6;
+      } else {
+        this.offsetStep = 8;
+      }
+
+      if (evt.target.innerWidth <= 1024 && evt.target.innerWidth > 768) {
+        this.ratingStep = 3;
+      } else if (evt.target.innerWidth <= 768) {
+        this.ratingStep = 2;
+      } else {
+        this.ratingStep = 4;
+      }
+    },
+  },
+
+  created() {
+    window.addEventListener('resize', this.resizeHandler);
+  },
+
+  unmounted() {
+    window.removeEventListener('resize', this.resizeHandler);
   },
 };
 </script>
@@ -190,16 +226,35 @@ export default {
     @include btn-primary;
     display: block;
     margin: 0 auto;
+    padding: 22px 36.5px;
   }
 }
 
 .commercial {
-  background: url("../assets/img/commercial.jpg") center center no-repeat var(--grey);
+  background: url("@/assets/img/commercial.webp") center center no-repeat var(--grey);
   background-size: 100% 100%;
+
+  @include tablet {
+    background: url("@/assets/img/commercial-1024.webp") center center no-repeat var(--grey);
+  }
+
+  @include small-tablet {
+    background: url("@/assets/img/commercial-768.webp") center center no-repeat var(--grey);
+  }
+
+  @include mobile {
+    background: url("@/assets/img/commercial-320.png") center top no-repeat var(--white);
+    background-size: 100% 65.63vw;
+  }
 
   &__container {
     padding-top: 150px;
     padding-bottom: 150px;
+
+    @include mobile {
+      padding-top: 30px;
+      padding-bottom: 35px;
+    }
   }
 
   &__heading {
@@ -208,6 +263,11 @@ export default {
     line-height: 72px;
     font-weight: 900;
     color: var(--gold);
+
+    @include mobile {
+      font-size: 24px;
+      line-height: 28px;
+    }
   }
 
   &__subtitle {
@@ -217,10 +277,21 @@ export default {
     line-height: 57.6px;
     font-weight: 400;
     color: var(--white);
+
+    @include mobile {
+      max-width: 187px;
+      font-size: 16px;
+      line-height: 120%;
+      margin-bottom: 50vw;
+    }
   }
 
   &__button {
     @include btn-primary;
+
+    @include mobile {
+      width: 100%;
+    }
   }
 }
 

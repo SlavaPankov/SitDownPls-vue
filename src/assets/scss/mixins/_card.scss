@@ -10,12 +10,8 @@
   border-radius: 10px;
 
   @include mobile {
-    height: 342px;
-    padding: 16px;
-  }
-
-  @include small-mobile {
     height: 278px;
+    padding: 16px;
   }
 
   &__grade {
