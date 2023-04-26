@@ -57,7 +57,7 @@
           <button class="useful__button useful__button--prev btn-reset"></button>
           <button class="useful__button useful__button--next btn-reset"></button>
         </div>
-        <useful-slider/>
+        <useful-slider class="useful__swiper" />
       </div>
     </section>
     <base-callback />
@@ -89,6 +89,17 @@ export default {
     return {
       RatingListLength: 0,
       offsetStep: window.innerWidth <= 1024 ? 6 : 8,
+      ratingStep() {
+        if (window.innerWidth <= 1024 && window.innerWidth > 768) {
+          return 3;
+        }
+
+        if (window.innerWidth <= 768) {
+          return 2;
+        }
+
+        return 4;
+      },
     };
   },
 
@@ -103,23 +114,11 @@ export default {
     slicedProducts() {
       return this.getHighRatingProducts.slice(0, this.offsetStep);
     },
-
-    ratingStep() {
-      if (window.innerWidth <= 1024 && window.innerWidth > 768) {
-        return 3;
-      }
-
-      if (window.innerWidth <= 768) {
-        return 2;
-      }
-
-      return 4;
-    },
   },
 
   methods: {
     showMore() {
-      this.offsetStep += this.ratingStep;
+      this.offsetStep += this.ratingStep();
 
       return this.slicedProducts;
     },
@@ -131,13 +130,7 @@ export default {
         this.offsetStep = 8;
       }
 
-      if (evt.target.innerWidth <= 1024 && evt.target.innerWidth > 768) {
-        this.ratingStep = 3;
-      } else if (evt.target.innerWidth <= 768) {
-        this.ratingStep = 2;
-      } else {
-        this.ratingStep = 4;
-      }
+      this.ratingStep();
     },
   },
 
@@ -319,12 +312,21 @@ export default {
 
   &__heading {
     @include h2;
+
+    @include mobile {
+      order: 1;
+    }
   }
 
   &__buttons {
     display: flex;
     align-items: center;
     margin-left: auto;
+
+    @include mobile {
+      order: 3;
+      margin: 0 auto;
+    }
   }
 
   &__button {
@@ -345,6 +347,12 @@ export default {
 
     &--next {
       @include arrow-round-right;
+    }
+  }
+
+  &__swiper {
+    @include mobile {
+      order: 2;
     }
   }
 }

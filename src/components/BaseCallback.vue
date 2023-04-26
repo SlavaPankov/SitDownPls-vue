@@ -178,6 +178,10 @@ export default {
         url('../assets/img/1-contacts-768.png') right 38px top 112px no-repeat transparent;
       background-size: 187px 444px;
     }
+
+    @include mobile {
+      background: none;
+    }
   }
 
   &__heading {
@@ -219,6 +223,10 @@ export default {
 
   @include tablet {
     max-width: 405px;
+  }
+
+  @include mobile {
+    max-width: 100%;
   }
 
   &__label {

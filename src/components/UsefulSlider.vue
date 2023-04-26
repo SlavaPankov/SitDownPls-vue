@@ -6,6 +6,7 @@
     :space-between="32"
     :navigation="navigation"
     :modules="modules"
+    :breakpoints="breakpoints"
   >
     <swiper-slide
       v-for="post in getPosts"
@@ -36,6 +37,29 @@ export default {
         nextEl: '.useful__button--next',
         prevEl: '.useful__button--prev',
       },
+
+      breakpoints: {
+        1025: {
+          slidesPerView: 2,
+          slidesPerGroup: 2,
+        },
+
+        769: {
+          slidesPerView: 3,
+          slidesPerGroup: 3,
+        },
+
+        577: {
+          slidesPerGroup: 2,
+          slidesPerView: 2,
+        },
+
+        320: {
+          slidesPerView: 1,
+          slidesPerGroup: 1,
+        },
+      },
+
       modules: [Navigation],
     };
   },

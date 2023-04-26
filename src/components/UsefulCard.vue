@@ -60,6 +60,12 @@ export default {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+
+    @include tablet {
+      font-size: 16px;
+      line-height: 21.79px;
+      -webkit-line-clamp: 5;
+    }
   }
 
   &__link {

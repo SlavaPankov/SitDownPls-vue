@@ -29,12 +29,12 @@ export default {
         this.$router.push({ name: 'personal' });
       }
     },
+  },
 
-    computed: {
-      ...mapGetters({
-        rememberToken: 'getRememberToken',
-      }),
-    },
+  computed: {
+    ...mapGetters({
+      rememberToken: 'getRememberToken',
+    }),
   },
 };
 </script>
