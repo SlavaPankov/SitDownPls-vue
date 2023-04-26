@@ -10,7 +10,7 @@
           <button class="specials__button specials__button--prev btn-reset"></button>
           <button class="specials__button specials__button--next btn-reset"></button>
         </div>
-        <specials-slider/>
+        <specials-slider class="specials__swiper" />
       </div>
     </section>
     <section class="rating">
@@ -130,12 +130,21 @@ export default {
 
   &__heading {
     @include h2;
+
+    @include mobile {
+      order: 1;
+    }
   }
 
   &__buttons {
     display: flex;
     align-items: center;
     margin-left: auto;
+
+    @include mobile {
+      order: 3;
+      margin: 0 auto;
+    }
   }
 
   &__button {
@@ -156,6 +165,12 @@ export default {
 
     &--next {
       @include arrow-round-right;
+    }
+  }
+
+  &__swiper {
+    @include mobile {
+      order: 2;
     }
   }
 }

@@ -6,6 +6,7 @@
     :space-between="32"
     :navigation="navigation"
     :modules="modules"
+    :breakpoints="breakpoints"
     :loop="true"
   >
     <swiper-slide
@@ -38,6 +39,22 @@ export default {
       navigation: {
         nextEl: '.specials__button--next',
         prevEl: '.specials__button--prev',
+      },
+      breakpoints: {
+        1024: {
+          slidesPerView: 3,
+          slidesPerGroup: 3,
+        },
+
+        699: {
+          slidesPerGroup: 2,
+          slidesPerView: 2,
+        },
+
+        320: {
+          slidesPerGroup: 1,
+          slidesPerView: 1,
+        },
       },
       modules: [Navigation],
     };
