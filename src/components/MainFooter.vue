@@ -174,6 +174,10 @@ export default {
     @include small-tablet {
       padding-right: 72px;
     }
+
+    @include mobile {
+      padding-right: 12px;
+    }
   }
 
   &__logo {
@@ -197,6 +201,11 @@ export default {
       margin-left: 0;
       justify-content: space-between;
     }
+
+    @include extra-mobile {
+      flex-wrap: wrap;
+      gap: 24px;
+    }
   }
 
   &__left {
@@ -205,6 +214,11 @@ export default {
       justify-content: space-between;
       align-items: center;
       margin-bottom: 25px;
+    }
+
+    @include extra-mobile {
+      flex-direction: column;
+      gap: 24px;
     }
   }
 }
@@ -272,6 +286,11 @@ export default {
 
 .list-container {
   padding-top: 2px;
+
+  @include extra-mobile {
+    flex-basis: 45%;
+    margin: 0 !important;
+  }
 
   &:first-child {
     margin-right: 112px;
