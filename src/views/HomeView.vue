@@ -62,7 +62,6 @@
     </section>
     <base-callback />
   </main>
-  <router-view v-if="this.$route.name !== 'home'" />
 </template>
 
 <script>

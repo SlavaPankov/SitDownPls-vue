@@ -26,7 +26,7 @@
                      :value="subcategory.slug"
                      :id="subcategory.slug"
                      v-model="currentCategorySlug"
-                     @change="saveFilterToQueryParams(currentCategorySlug, 'subcategories')"
+                     @change="filtration(currentCategorySlug, 'subcategories')"
               >
               <span class="custom-checkbox__content"></span>
               {{ subcategory.name }}
@@ -86,7 +86,7 @@
                      value="5000"
                      id="more"
                      v-model.number="currentDiscount"
-                     @change="saveFilterToQueryParams(currentDiscount, 'discount')"
+                     @change="filtration(currentDiscount, 'discount')"
               >
               <span class="custom-checkbox__content"></span>
               Более 5 000
@@ -100,7 +100,7 @@
                      value="-5000"
                      id="less"
                      v-model.number="currentDiscount"
-                     @change="saveFilterToQueryParams(currentDiscount, 'discount')"
+                     @change="filtration(currentDiscount, 'discount')"
               >
               <span class="custom-checkbox__content"></span>
               Менее 5 000
@@ -114,7 +114,7 @@
                      value="0"
                      id="dont"
                      v-model.number="currentDiscount"
-                     @change="saveFilterToQueryParams(currentDiscount, 'discount')"
+                     @change="filtration(currentDiscount, 'discount')"
               >
               <span class="custom-checkbox__content"></span>
               Не важно
@@ -138,7 +138,7 @@
                      :value="color.slug"
                      :id="color.slug"
                      v-model="currentColorSlug"
-                     @change="saveFilterToQueryParams(currentColorSlug ,'colors')"
+                     @change="filtration(currentColorSlug ,'colors')"
               >
               <span class="custom-checkbox__content"></span>
               {{ color.name }}
@@ -213,24 +213,30 @@ export default {
         .split(',')[0];
     },
 
-    saveFilterToQueryParams(value, key) {
+    filtration(value, key) {
       let strValue = value;
 
       if (Array.isArray(value)) {
         strValue = value.join(' ');
       }
 
-      const url = new URL(window.location);
-      url.searchParams.set(key, strValue);
-      window.history.pushState({}, '', url);
+      this.saveQueryParam(strValue, key);
 
       this.$emit('update:subcategories', this.currentCategorySlug);
       this.$emit('update:discount', +this.currentDiscount);
       this.$emit('update:colors', this.currentColorSlug);
     },
 
+    saveQueryParam(value, key) {
+      const url = new URL(window.location);
+      url.searchParams.set(key, value);
+      window.history.pushState({}, '', url);
+    },
+
     toggleListOpen(evt) {
-      evt.target.classList.toggle('list-open');
+      if (window.innerWidth <= 1024) {
+        evt.target.classList.toggle('list-open');
+      }
     },
   },
 
@@ -238,12 +244,12 @@ export default {
     prices(newValue, oldValue) {
       if (newValue[0] !== oldValue[0]) {
         this.$emit('update:priceFrom', this.prices[0]);
-        this.saveFilterToQueryParams(this.prices[0], 'priceFrom');
+        this.filtration(this.prices[0], 'priceFrom');
       }
 
       if (newValue[1] !== oldValue[1]) {
         this.$emit('update:priceTo', this.prices[1]);
-        this.saveFilterToQueryParams(this.prices[1], 'priceTo');
+        this.filtration(this.prices[1], 'priceTo');
       }
     },
   },

@@ -4,7 +4,6 @@
       <categories-list :categories="getCategories" />
     </div>
   </section>
-  <router-view v-if="this.$route.name !== 'catalog'" />
 </template>
 
 <script>

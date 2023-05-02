@@ -34,7 +34,6 @@
       </div>
     </div>
   </section>
-  <router-view v-if="this.$route.name !== 'category'" />
 </template>
 
 <script>
