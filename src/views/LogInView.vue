@@ -80,6 +80,7 @@ export default {
             this.$router.push({ name: 'personal' });
           }, 300);
         } else {
+          this.authProceed = false;
           this.globalError = response.data.error;
         }
       });
@@ -98,6 +99,10 @@ export default {
     padding-bottom: 70px;
     max-width: 100%;
     width: 50%;
+
+    @include small-tablet {
+      width: 100%;
+    }
   }
 
   &__heading {
@@ -119,5 +124,11 @@ export default {
     @include btn-primary;
     margin-top: 9px;
   }
+}
+
+.error {
+  font-size: 14px;
+  line-height: 120%;
+  color: var(--red_input);
 }
 </style>

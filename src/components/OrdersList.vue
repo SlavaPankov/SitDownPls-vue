@@ -24,10 +24,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/_mixins.scss";
+
 .orders-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, 300px);
   gap: 26px;
   margin-bottom: 26px;
+
+  @include small-tablet {
+    grid-template-columns: repeat(auto-fill, 190px);
+  }
+
+  @include mobile {
+    grid-template-columns: repeat(auto-fill, calc(50% - 13px));
+    justify-items: center;
+  }
+
+  @include small-mobile {
+    grid-template-columns: repeat(auto-fill, 100%);
+  }
+
+  &__item {
+    @include mobile {
+      width: 100%;
+    }
+  }
 }
 </style>
