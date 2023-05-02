@@ -265,16 +265,28 @@ export default {
   &__content {
     display: flex;
     gap: 32px;
+
+    @include extra-tablet {
+      flex-direction: column-reverse;
+    }
   }
 
   &__left {
     max-width: 66%;
     width: 100%;
+
+    @include extra-tablet {
+      max-width: 100%;
+    }
   }
 
   &__right {
     max-width: 33%;
     width: 100%;
+
+    @include extra-tablet {
+      max-width: 100%;
+    }
   }
 
   &__info {

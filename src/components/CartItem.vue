@@ -225,6 +225,7 @@ export default {
   gap: 15px;
 
   @include small-tablet {
+    justify-content: center;
     grid-area: 2 / 1 / 3 / 3;
     margin: 0;
   }

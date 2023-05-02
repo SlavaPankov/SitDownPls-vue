@@ -44,7 +44,9 @@
         </li>
       </ul>
       <p class="heading-reset">
-        <span class="order__bold">Сумма заказа:</span> {{ getOrderInfo.total_price }}
+        <span class="order__bold">
+          Сумма заказа:
+        </span> {{ formattedPrice(getOrderInfo.total_price) }} руб.
       </p>
       <router-link class="order__link" :to="{ name: 'home' }">На главную</router-link>
     </div>
@@ -76,6 +78,10 @@ export default {
 
   methods: {
     ...mapActions(['loadOrder']),
+
+    formattedPrice(price) {
+      return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(price).split(',')[0];
+    },
   },
 
   created() {
@@ -131,6 +137,10 @@ export default {
   width: 100%;
   margin-bottom: 26px;
 
+  @include small-tablet {
+    max-width: 100%;
+  }
+
   &__item {
     position: relative;
     display: flex;
@@ -143,8 +153,8 @@ export default {
       top: 70%;
       left: 0;
       width: 100%;
-      height: 2px;
-      border: 1px dashed var(--black);
+      height: 1px;
+      border-bottom: 1px dashed var(--black);
       z-index: -1;
     }
 
