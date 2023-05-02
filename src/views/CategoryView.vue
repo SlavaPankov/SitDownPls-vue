@@ -1,6 +1,12 @@
 <template>
   <section class="category" v-if="this.$route.name === 'category'">
     <div class="category__container container">
+      <div class="category__head category__head--tablet">
+        <h1 class="heading-reset category__heading">
+          {{ currentCategory.name }}
+        </h1>
+        <tags-list v-model:tags="tags" />
+      </div>
       <catalog-filters
         class="category__left"
         v-model:subcategories="subcategories"
@@ -12,9 +18,12 @@
         :max-range="maxRange"
       />
       <div class="category__right">
-        <h1 class="heading-reset category__heading">
-          {{ currentCategory.name }}
-        </h1>
+        <div class="category__head">
+          <h1 class="heading-reset category__heading">
+            {{ currentCategory.name }}
+          </h1>
+          <tags-list v-model:tags="tags" />
+        </div>
         <products-list :products="paginatedProducts" />
         <base-pagination
           :count-per-page="countPerPage"
@@ -34,6 +43,7 @@ import { mapGetters } from 'vuex';
 import CatalogFilters from '@/components/CatalogFilters';
 import BasePagination from '@/components/BasePagination';
 import ProductsList from '@/components/ProductsList';
+import TagsList from '@/components/TagsList';
 
 export default {
   name: 'CategoryView',
@@ -42,6 +52,7 @@ export default {
     BasePagination,
     ProductsList,
     CatalogFilters,
+    TagsList,
   },
 
   data() {
@@ -55,6 +66,7 @@ export default {
       productsByCategory: [],
       countPerPage: 9,
       page: 1,
+      tags: [],
     };
   },
 
@@ -68,6 +80,14 @@ export default {
         .reduce((acc, value) => (acc.price > value.price ? acc : value));
 
       return Number(maxPriceProduct.price);
+    },
+
+    checkWindowSize(evt) {
+      if (evt.target.innerWidth <= 995) {
+        this.countPerPage = 6;
+      } else {
+        this.countPerPage = 9;
+      }
     },
   },
 
@@ -132,6 +152,16 @@ export default {
         }
       }
     });
+
+    if (window.innerWidth <= 995) {
+      this.countPerPage = 6;
+    }
+
+    window.addEventListener('resize', this.checkWindowSize);
+  },
+
+  unmount() {
+    window.addEventListener('resize', this.checkWindowSize);
   },
 };
 </script>
@@ -145,11 +175,27 @@ export default {
     gap: 32px;
     padding-top: 32px;
     padding-bottom: 70px;
+
+    @include tablet {
+      flex-direction: column;
+    }
   }
 
   &__left {
     max-width: 296px;
     width: 100%;
+
+    @include tablet {
+      max-width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    @include extra-tablet {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
   }
 
   &__right {
@@ -157,13 +203,30 @@ export default {
     width: 100%;
   }
 
-  &__heading {
+  &__head {
     margin-bottom: 24px;
+    display: flex;
+    gap: 17px;
+
+    @include extra-tablet {
+      display: none;
+    }
+
+    &--tablet {
+      display: none;
+
+      @include extra-tablet {
+        display: flex;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__heading {
     font-weight: 400;
     font-size: 24px;
     line-height: 130%;
     color: var(--black);
   }
 }
-
 </style>

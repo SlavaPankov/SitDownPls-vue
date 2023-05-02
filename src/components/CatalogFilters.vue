@@ -3,12 +3,18 @@
     <h2 class="filters__heading heading-reset">
       Фильтровать по:
     </h2>
+    <h2 class="heading-reset filters__heading filters__heading--tablet">
+      Фильтры:
+    </h2>
     <form action="" class="filters__form">
       <fieldset class="filters__category category">
-        <h3 class="category__heading filters__subheading heading-reset">
+        <h3 class="category__heading filters__subheading heading-reset"
+            @click="toggleListOpen"
+            @keydown.space="toggleListOpen"
+        >
           Категория
         </h3>
-        <ul class="category__list list-reset" v-if="categoryData">
+        <ul class="category__list filter-list list-open list-reset">
           <li class="category__item filters__item"
               v-for="subcategory in categoryData.subcategories"
               :key="subcategory.id"
@@ -29,10 +35,13 @@
         </ul>
       </fieldset>
       <fieldset class="filters__price price">
-        <h3 class="price__heading filters__subheading heading-reset">
+        <h3 class="price__heading filters__subheading heading-reset"
+            @click="toggleListOpen"
+            @keydown.space="toggleListOpen"
+        >
           Цена
         </h3>
-        <div class="price__inputs">
+        <div class="price__inputs filter-list">
           <label class="price__label" for="priceFrom">
             от
             <input
@@ -54,17 +63,21 @@
             >
           </label>
         </div>
-        <Slider v-model="prices"
+        <Slider class="filters__range"
+                v-model="prices"
                 :max="maxRange"
                 :tooltips="false"
                 :lazy="false"
                 :step="1000"/>
       </fieldset>
       <fieldset class="filters__category discount">
-        <h3 class="discount__heading filters__subheading heading-reset">
+        <h3 class="discount__heading filters__subheading heading-reset"
+            @click="toggleListOpen"
+            @keydown.space="toggleListOpen"
+        >
           Скидка
         </h3>
-        <ul class="discount__list list-reset">
+        <ul class="discount__list filter-list list-reset">
           <li class="discount__item filters__item">
             <label class="custom-checkbox" for="more">
               <input class="custom-checkbox__field visually-hidden"
@@ -110,10 +123,13 @@
         </ul>
       </fieldset>
       <fieldset class="filters__category color">
-        <h3 class="color__heading filters__subheading heading-reset">
+        <h3 class="color__heading filters__subheading heading-reset"
+            @click="toggleListOpen"
+            @keydown.space="toggleListOpen"
+        >
           Цвет
         </h3>
-        <ul class="color__list list-reset">
+        <ul class="color__list filter-list list-reset">
           <li class="color__item filters__item" v-for="color in getColors" :key="color.id">
             <label class="custom-checkbox" :for="color.slug">
               <input class="custom-checkbox__field agreement-checkbox visually-hidden"
@@ -174,6 +190,16 @@ export default {
     },
   },
 
+  data() {
+    return {
+      prices: [this.priceFrom, this.priceTo],
+      currentCategorySlug: this.subcategories,
+      currentDiscount: this.discount,
+      currentColorSlug: this.colors,
+      isOpenSubcategories: false,
+    };
+  },
+
   computed: {
     ...mapGetters(['getColors']),
   },
@@ -202,15 +228,10 @@ export default {
       this.$emit('update:discount', +this.currentDiscount);
       this.$emit('update:colors', this.currentColorSlug);
     },
-  },
 
-  data() {
-    return {
-      prices: [this.priceFrom, this.priceTo],
-      currentCategorySlug: this.subcategories,
-      currentDiscount: this.discount,
-      currentColorSlug: this.colors,
-    };
+    toggleListOpen(evt) {
+      evt.target.classList.toggle('list-open');
+    },
   },
 
   watch: {
@@ -250,6 +271,23 @@ export default {
     font-size: 18px;
     line-height: 130%;
     color: var(--black);
+
+    @include tablet {
+      display: none;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 130%;
+      margin-bottom: 0;
+    }
+
+    &--tablet {
+      display: none;
+
+      @include tablet {
+        display: block;
+        margin-right: 43px;
+      }
+    }
   }
 
   & fieldset {
@@ -258,6 +296,20 @@ export default {
 
     &:not(:last-child) {
       margin-bottom: 27px;
+
+      @include tablet {
+        margin: 0;
+      }
+    }
+
+    @include tablet {
+      max-width: 187px;
+      margin: 0;
+      width: 100%;
+    }
+
+    @include mobile {
+      max-width: 140px;
     }
   }
 
@@ -267,6 +319,43 @@ export default {
     font-size: 16px;
     line-height: 130%;
     color: var(--grey_shade);
+    transition: color .3s ease-in-out,
+                background-color .3s ease-in-out,
+                border-color .3s ease-in-out;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      width: 7px;
+      height: 7px;
+      transform: translateY(-50%) rotate(45deg);
+      border-bottom: 1px solid var(--primary);
+      border-right: 1px solid var(--primary);
+      display: none;
+      transition: transform .3s ease-in-out;
+    }
+
+    @include tablet {
+      position: relative;
+      padding: 9px 15px;
+      border-radius: 10px;
+      font-weight: 400;
+      background-color: var(--grey_light);
+      border: 2px solid transparent;
+      color: var(--black);
+      margin: 0;
+      z-index: 4;
+
+      &::after {
+        display: block;
+      }
+    }
+
+    @include extra-tablet {
+      z-index: 1;
+    }
   }
 
   &__item {
@@ -274,14 +363,55 @@ export default {
       margin-bottom: 6px;
     }
   }
+
+  &__form {
+    @include tablet {
+      display: flex;
+      gap: 32px;
+      max-width: 843px;
+      width: 100%;
+    }
+
+    @include extra-tablet {
+      max-width: 100%;
+      flex-wrap: wrap;
+      gap: 16px 32px;
+      justify-content: flex-start;
+    }
+
+    @include mobile {
+      gap: 16px;
+    }
+  }
+
+  &__range {
+    @include tablet {
+      display: none;
+    }
+  }
 }
 
 .price {
+  position: relative;
+
   &__inputs {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+
+    @include tablet {
+      flex-direction: column;
+      gap: 12px;
+      position: absolute;
+      top: calc(100% - 18px);
+      left: 0;
+      width: 100%;
+      background-color: var(--white);
+      border-radius: 10px;
+      z-index: 3;
+      transition: height .3s ease-in-out, border-width .3s ease-in-out, padding .3s ease-in-out;
+    }
   }
 
   &__label {
@@ -303,6 +433,101 @@ export default {
     font-size: 16px;
     line-height: 130%;
     color: var(--grey_shade);
+  }
+}
+
+.category {
+  @include tablet {
+    position: relative;
+  }
+
+  &__list {
+    @include tablet {
+      position: absolute;
+      top: calc(100% - 18px);
+      left: 0;
+      width: 100%;
+      padding: 0;
+      height: 0;
+      background-color: var(--white);
+      border-radius: 10px;
+      border: 0 solid var(--md_grey);
+      z-index: 3;
+      overflow: hidden;
+      transition: height .3s ease-in-out, border-width .3s ease-in-out, padding .3s ease-in-out;
+    }
+  }
+}
+
+.discount {
+  position: relative;
+
+  &__list {
+    @include tablet {
+      position: absolute;
+      top: calc(100% - 18px);
+      left: 0;
+      width: 100%;
+      padding: 40px 13px 30px 30px;
+      background-color: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--md_grey);
+      z-index: 3;
+    }
+  }
+}
+
+.color {
+  position: relative;
+  z-index: 2;
+
+  &__list {
+    @include tablet {
+      position: absolute;
+      top: calc(100% - 18px);
+      left: 0;
+      width: 100%;
+      padding: 40px 13px 30px 30px;
+      background-color: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--md_grey);
+      z-index: 3;
+    }
+  }
+}
+
+.list-open {
+  border-color: var(--primary_shade);
+  background-color: var(--white);
+
+  &::after {
+    transform: translateY(0%) rotate(225deg);
+  }
+}
+
+.filter-list {
+  transition: height .3s ease-in-out, border-width .3s ease-in-out, padding .3s ease-in-out;
+
+  @include tablet {
+    padding: 0;
+    height: 0;
+    border: 0 solid var(--md_grey);
+    overflow: hidden;
+  }
+}
+
+.list-open {
+  z-index: 4;
+}
+
+.list-open + ul,
+.list-open + div {
+  padding: 40px 13px 30px 30px;
+  height: fit-content;
+  z-index: 3;
+
+  @include mobile {
+    padding: 40px 13px 30px 15px;
   }
 }
 </style>
