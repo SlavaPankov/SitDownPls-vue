@@ -1,122 +1,122 @@
 <template>
   <section class="product" v-show="dataIsLoaded">
     <div class="container product__container">
-      <div class="product__left">
-        <swiper
-          @click="openModalSlider = true"
-          :loop="true"
-          :spaceBetween="10"
-          :thumbs="{ swiper: thumbsSwiper }"
-          :modules="[Thumbs]"
-          class="mySwiper2"
-        >
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/1-product-card.png"
-                   class="image"
-                   width="624"
-                   height="245"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/2-product-card.png"
-                   class="image"
-                   height="245"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/3-product-card.png"
-                   class="image"
-                   height="245"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/4-product-card.png"
-                   class="image"
-                   height="245"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/5-product-card.png"
-                   class="image"
-                   height="245"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-        </swiper>
-        <swiper
-          @swiper="setThumbsSwiper"
-          :loop="true"
-          :spaceBetween="38"
-          :slidesPerView="4"
-          :watchSlidesProgress="true"
-          :modules="[Thumbs]"
-          class="mySwiper"
-        >
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/1-product-card-small.png"
-                   class="image"
-                   height="61"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/2-product-card-small.png"
-                   class="image"
-                   height="61"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/3-product-card-small.png"
-                   class="image"
-                   height="61"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/4-product-card-small.png"
-                   class="image"
-                   height="61"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-          <swiper-slide>
-            <picture>
-              <img loading="lazy"
-                   src="@/assets/img/5-product-card-small.png"
-                   class="image"
-                   height="61"
-                   :alt="product.name">
-            </picture>
-          </swiper-slide>
-        </swiper>
-        <p class="heading-reset product__description">
+      <swiper
+        @click="openModalSlider = true"
+        :loop="true"
+        :spaceBetween="10"
+        :thumbs="{ swiper: thumbsSwiper }"
+        :modules="[Thumbs]"
+        class="mySwiper2"
+      >
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/1-product-card.png"
+                 class="image"
+                 width="624"
+                 height="245"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/2-product-card.png"
+                 class="image"
+                 height="245"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/3-product-card.png"
+                 class="image"
+                 height="245"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/4-product-card.png"
+                 class="image"
+                 height="245"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/5-product-card.png"
+                 class="image"
+                 height="245"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+      </swiper>
+      <swiper
+        @swiper="setThumbsSwiper"
+        :loop="true"
+        :spaceBetween="38"
+        :slidesPerView="4"
+        :watchSlidesProgress="true"
+        :modules="[Thumbs]"
+        :breakpoints="breakpoints"
+        class="mySwiper"
+      >
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/1-product-card-small.png"
+                 class="image"
+                 height="61"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/2-product-card-small.png"
+                 class="image"
+                 height="61"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/3-product-card-small.png"
+                 class="image"
+                 height="61"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/4-product-card-small.png"
+                 class="image"
+                 height="61"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+        <swiper-slide>
+          <picture>
+            <img loading="lazy"
+                 src="@/assets/img/5-product-card-small.png"
+                 class="image"
+                 height="61"
+                 :alt="product.name">
+          </picture>
+        </swiper-slide>
+      </swiper>
+      <p class="heading-reset product__description">
           {{ product.description }}
         </p>
-      </div>
-      <div class="product__right">
+      <div class="product__actions">
+
         <div class="product__grade">
           <svg class="product__icon">
             <use xlink:href="@/assets/img/sprite.svg#rating-star"></use>
@@ -133,16 +133,16 @@
           <ul class="colors-list list-reset">
             <li class="colors-list__item" v-for="color in product.colors" :key="color.id">
               <label :for="color.slug" class="custom-checkbox">
-                  <input class="custom-checkbox__field"
-                         type="radio"
-                         name="colorId"
-                         :id="color.slug"
-                         :value="color.id"
-                         v-model="colorId"
-                  >
-                  <span class="custom-checkbox__content"
-                        :style="{ backgroundColor: color.code }"
-                  >
+                <input class="custom-checkbox__field"
+                       type="radio"
+                       name="colorId"
+                       :id="color.slug"
+                       :value="color.id"
+                       v-model="colorId"
+                >
+                <span class="custom-checkbox__content"
+                      :style="{ backgroundColor: color.code }"
+                >
                   </span>
               </label>
             </li>
@@ -201,7 +201,7 @@
         <button class="similar__button similar__button--prev btn-reset"></button>
         <button class="similar__button similar__button--next btn-reset"></button>
       </div>
-      <similar-slider :products="similar" />
+      <similar-slider :products="similar" class="similar__swiper" />
     </div>
   </section>
   <base-spinner v-show="dataIsLoading"/>
@@ -321,6 +321,21 @@ export default {
       Thumbs,
       thumbsSwiper,
       setThumbsSwiper,
+      breakpoints: {
+        995: {
+          direction: 'horizontal',
+        },
+
+        577: {
+          direction: 'vertical',
+          slidesPerView: 4,
+        },
+
+        320: {
+          direction: 'horizontal',
+          slidesPerView: 2.5,
+        },
+      },
     };
   },
 
@@ -428,8 +443,6 @@ export default {
 
   created() {
     this.loadProduct(this.$route.params.slug);
-
-    this.$route.meta.breadCrumb = 'test';
   },
 };
 </script>
@@ -439,31 +452,68 @@ export default {
 
 .product {
   &__container {
-    display: flex;
-    gap: 32px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px 32px;
+    padding-top: 35px;
     padding-bottom: 40px;
+
+    @include tablet {
+      grid-template-columns: repeat(9, 1fr);
+    }
+
+    @include extra-tablet {
+      grid-template-columns: repeat(6, 1fr);
+    }
   }
 
-  &__left,
-  &__right {
-    flex-basis: 50%;
-    max-width: 50%;
-    width: 100%;
+  &__actions {
+    grid-area: 1 / 7 / 2 / 13;
+
+    @include tablet {
+      grid-area: 1 / 6 / 2 / 10;
+    }
+
+    @include extra-tablet {
+      grid-area: 2 / 3 / 3 / 7;
+      align-self: center;
+    }
+
+    @include mobile {
+      grid-area: 3 / 1 / 4 / 7;
+    }
   }
 
   &__heading {
-    margin-bottom: 40px;
+    margin-bottom: 21px;
     font-weight: 400;
     font-size: 24px;
     line-height: 130%;
     color: var(--black);
+
+    @include mobile {
+      font-size: 16px;
+    }
   }
 
   &__description {
+    grid-area: 3 / 1 / 4 / 7;
     font-weight: 400;
     font-size: 14px;
     line-height: 180%;
     color: var(--black);
+
+    @include tablet {
+      grid-area: 3 / 1 / 4 / 6;
+    }
+
+    @include extra-tablet {
+      grid-area: 3 / 1 / 4 / 6;
+    }
+
+    @include mobile {
+      grid-area: 4 / 1 / 5 / 7;
+    }
   }
 
   &__price {
@@ -472,6 +522,10 @@ export default {
     font-size: 36px;
     line-height: 130%;
     color: var(--black);
+
+    @include mobile {
+      font-size: 24px;
+    }
   }
 
   &__grade {
@@ -496,13 +550,36 @@ export default {
     @include btn-primary;
     max-width: 256px;
     width: 100%;
+
+    @include mobile {
+      max-width: 100%;
+    }
   }
 }
 
 .mySwiper {
+  max-width: 624px;
+  width: 100%;
+  grid-area: 2 / 1 / 3 / 7;
   margin-bottom: 32px;
   padding: 10px 25px;
   background-color: var(--grey_light);
+
+  @include tablet {
+    grid-area: 2 / 1 / 3 / 6;
+  }
+
+  @include extra-tablet {
+    grid-area: 2 / 1 / 3 / 3;
+    max-height: 349px;
+    margin-bottom: 0;
+    padding: 25px 10px;
+  }
+
+  @include mobile {
+    grid-area: 2 / 1 / 3 / 7;
+    padding: 10px;
+  }
 
   & .swiper-slide {
     display: flex;
@@ -513,12 +590,36 @@ export default {
 }
 
 .mySwiper2 {
+  max-width: 624px;
+  width: 100%;
+  grid-area: 1 / 1 / 2 / 7;
   margin-bottom: 16px;
+
+  @include tablet {
+    grid-area: 1 / 1 / 2 / 6;
+  }
+
+  @include extra-tablet {
+    grid-area: 1 / 1 / 2 / 7;
+  }
 
   & .swiper-slide {
     display: flex;
     justify-content: center;
     cursor: pointer;
+
+    & picture {
+      @include mobile {
+        display: flex;
+        align-items: center;
+      }
+
+      & img {
+        @include small-mobile {
+          max-height: 146px;;
+        }
+      }
+    }
   }
 }
 
@@ -553,17 +654,32 @@ export default {
     row-gap: 26px;
   }
 
+  &__swiper {
+    @include mobile {
+      order: 2;
+    }
+  }
+
   &__heading {
     font-weight: 400;
     font-size: 24px;
     line-height: 130%;
     color: var(--black);
+
+    @include mobile {
+      order: 1;
+    }
   }
 
   &__buttons {
     display: flex;
     align-items: center;
     margin-left: auto;
+
+    @include mobile {
+      order: 3;
+      margin: 0 auto;
+    }
   }
 
   &__button {
@@ -596,8 +712,16 @@ export default {
   margin-bottom: 21px;
   gap: 15px;
 
+  @include mobile {
+    max-width: 100%;
+  }
+
   &__label {
     max-width: calc(256px - 30px - 62px);
+
+    @include mobile {
+      max-width: calc(100% - 30px - 62px);
+    }
   }
 
   &__input {
@@ -625,18 +749,6 @@ export default {
   }
 }
 
-.spinner_P7sC {
-  transform-origin: center;
-  animation: spinner_svv2 .75s infinite linear;
-  fill: var(--primary);
-}
-
-@keyframes spinner_svv2 {
-  100% {
-    transform: rotate(360deg)
-  }
-}
-
 .colors-list {
   display: flex;
   align-items: center;
@@ -659,6 +771,11 @@ export default {
     height: 30px;
     border-radius: 100%;
 
+    @include mobile {
+      width: 20px;
+      height: 20px;
+    }
+
     &::before {
       display: none;
     }
@@ -672,6 +789,11 @@ export default {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+
+      @include mobile {
+        width: 30px;
+        height: 30px;
+      }
     }
   }
 }
