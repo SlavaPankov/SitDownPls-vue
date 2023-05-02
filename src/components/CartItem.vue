@@ -58,7 +58,7 @@
     <div class="cart-item__price">
       {{ totalProductPrice }} руб.
     </div>
-    <button class="btn-reset"
+    <button class="btn-reset delete-button"
             @click.prevent="deleteCartProduct(product.id)"
             v-if="isCartPage"
     >
@@ -125,6 +125,26 @@ export default {
   display: flex;
   align-items: center;
 
+  @include small-tablet {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px 32px;
+  }
+
+  @include mobile {
+    justify-items: center;
+  }
+
+  &__head {
+    @include small-tablet {
+      grid-area: 1 / 3 / 2 / 6;
+    }
+
+    @include mobile {
+      grid-area: 2 / 1 / 3 / 7;
+    }
+  }
+
   &__heading {
     font-weight: 400;
     font-size: 24px;
@@ -133,6 +153,13 @@ export default {
     & a {
       color: var(--black);
       transition: color .3s ease-in-out;
+
+      @include small-tablet {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
 
       &:hover {
         color: var(--primary);
@@ -143,6 +170,15 @@ export default {
   &__link {
     max-width: 150px;
     margin-right: 21px;
+
+    @include small-tablet {
+      grid-area: 1 / 1 / 2 / 3;
+    }
+
+    @include mobile {
+      grid-area: 1 / 1 / 2 / 7;
+      margin: 0;
+    }
   }
 
   &__price {
@@ -154,6 +190,17 @@ export default {
     line-height: 130%;
     color: var(--grey_shade);
     text-align: right;
+
+    @include small-tablet {
+      grid-area: 2 / 3 / 3 / 6;
+      margin-right: 0;
+      text-align: left;
+    }
+
+    @include mobile {
+      grid-area: 4 / 1 / 5 / 7;
+      text-align: center;
+    }
   }
 
   &__color {
@@ -176,6 +223,15 @@ export default {
   align-items: center;
   margin-right: 21px;
   gap: 15px;
+
+  @include small-tablet {
+    grid-area: 2 / 1 / 3 / 3;
+    margin: 0;
+  }
+
+  @include mobile {
+    grid-area: 3 / 1 / 4 / 7;
+  }
 
   &__label {
     max-width: calc(150px - 30px - 62px);
@@ -224,6 +280,19 @@ export default {
 
   &:active {
     fill: var(--primary_shade);
+  }
+}
+
+.delete-button {
+  @include small-tablet {
+    grid-area: 1 / 6 / 3 / 7;
+    align-self: center;
+    text-align: right;
+  }
+
+  @include mobile {
+    grid-area: 5 / 1 / 6 / 7;
+    text-align: center;
   }
 }
 </style>

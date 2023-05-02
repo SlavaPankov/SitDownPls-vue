@@ -77,6 +77,12 @@ export default {
     display: flex;
     align-items: center;
 
+    @include mobile {
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
     &-heading {
       font-weight: 600;
       font-size: 20px;
@@ -89,6 +95,10 @@ export default {
       font-weight: 400;
       font-size: 16px;
       line-height: 16px;
+
+      @include mobile {
+        margin: 0 0 16px;
+      }
     }
   }
 
