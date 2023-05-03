@@ -285,6 +285,10 @@ export default {
     $route() {
       this.burgerIsOpen = false;
       document.body.style.overflow = 'auto';
+
+      if (this.$route.name !== 'search') {
+        this.searchInput = '';
+      }
     },
   },
 };
