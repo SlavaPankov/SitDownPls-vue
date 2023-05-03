@@ -105,9 +105,9 @@
               </a>
             </li>
             <li class="middle-nav__item">
-              <a href="#" class="middle-nav__link">
+              <router-link :to="{ name: 'contacts' }" class="middle-nav__link">
                 <span class="middle-nav__text">Контакты</span>
-              </a>
+              </router-link>
             </li>
           </ul>
           <top-nav class="top-nav--mobile" />

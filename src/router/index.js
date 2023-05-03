@@ -10,6 +10,7 @@ import CreatedOrder from '@/views/CreatedOrder';
 import PersonalView from '@/views/PersonalView';
 import ResetPasswordView from '@/views/SetPasswordView';
 import LogInView from '@/views/LogInView';
+import ContactsView from '@/views/ContactsView';
 
 const routes = [
   {
@@ -70,6 +71,11 @@ const routes = [
     path: '/personal/set-password',
     name: 'resetPassword',
     component: ResetPasswordView,
+  },
+  {
+    path: '/contacts',
+    name: 'contacts',
+    component: ContactsView,
   },
   {
     path: '/:catchAll(.*)',
