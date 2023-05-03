@@ -11,6 +11,7 @@ import PersonalView from '@/views/PersonalView';
 import ResetPasswordView from '@/views/SetPasswordView';
 import LogInView from '@/views/LogInView';
 import ContactsView from '@/views/ContactsView';
+import SearchView from '@/views/SearchView';
 
 const routes = [
   {
@@ -76,6 +77,11 @@ const routes = [
     path: '/contacts',
     name: 'contacts',
     component: ContactsView,
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: SearchView,
   },
   {
     path: '/:catchAll(.*)',

@@ -117,12 +117,13 @@
     </div>
     <div class="header__bottom header-bottom">
       <div class="container header-bottom__container">
-        <form class="header__form search-form" action="#" method="get">
+        <form class="header__form search-form" action="#" method="get" @submit.prevent="search">
           <label class="search-form__label" for="search">
             <input class="search-form__input input-reset"
                    type="text"
                    name="search"
                    id="search"
+                   v-model="searchInput"
                    placeholder="Я хочу купить..."
                    @input=isWritten>
             <svg class="search-form__icon">
@@ -137,15 +138,26 @@
               @click="categoriesDropdownOpen"
               @keydown.space="categoriesDropdownOpen"
             >
-              Категория
+              {{ categorySelected }}
             </div>
             <ul class="list-reset categories__list categories-list"
-                :class="{ 'categories-list--open': isCategoriesOpen }">
+                :class="{ 'categories-list--open': isCategoriesOpen }"
+            >
+              <li class="categories-list__item"
+                  @click="selectCategory"
+                  @keydown.space="selectCategory"
+              >
+                Все
+              </li>
               <li class="categories-list__item"
                   v-for="category in categories"
                   :key="category.id"
+                  :data-id="category.id"
                   :data-slug="category.slug"
-                  tabindex="0">
+                  tabindex="0"
+                  @click="selectCategory"
+                  @keydown.space="selectCategory"
+              >
                 {{ category.name }}
               </li>
             </ul>
@@ -186,6 +198,9 @@ export default {
         selected: false,
       }],
       burgerIsOpen: false,
+      searchInput: '',
+      currentCategory: 0,
+      categorySelected: 'Категория',
     };
   },
 
@@ -223,6 +238,36 @@ export default {
       } else {
         document.body.style.overflow = 'auto';
       }
+    },
+
+    search() {
+      const route = {
+        name: 'search',
+        query: {
+          q: this.searchInput,
+        },
+      };
+
+      if (this.currentCategory !== 0) {
+        route.query.category = this.currentCategory.name;
+      }
+
+      this.$router.push(route);
+    },
+
+    selectCategory(evt) {
+      if (!evt.target.dataset.id) {
+        this.categorySelected = 'Категория';
+        this.currentCategory = 0;
+        this.categoriesDropdownOpen();
+        return;
+      }
+
+      this.currentCategory = this.categories
+        .find((category) => category.id === +evt.target.dataset.id);
+
+      this.categorySelected = this.currentCategory.name;
+      this.categoriesDropdownOpen();
     },
   },
 
@@ -899,7 +944,7 @@ export default {
   transition: height .3s ease-in-out, padding .3s ease-in-out;
 
   &--open {
-    height: 200px;
+    height: fit-content;
     padding: 30px 30px 23px;
   }
 

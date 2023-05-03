@@ -50,14 +50,7 @@
                      :balloon-template="balloonTemplate(store)"
         />
       </yandex-map>
-      <div class="contacts__empty" v-if="isEmptySearch">
-        <svg class="contacts__empty-icon">
-            <use xlink:href="@/assets/img/sprite.svg#elephant"></use>
-        </svg>
-        <h2 class="contacts__empty-heading heading-reset">
-          По вашему запросу ничего не нашлось
-        </h2>
-      </div>
+      <base-empty-result v-if="isEmptySearch" />
     </div>
   </section>
   <base-spinner v-if="stores.length === 0"/>
@@ -73,12 +66,14 @@ import { yandexMap, ymapMarker } from 'vue-yandex-maps';
 import elephant from '@/assets/img/svg/elephant-secondary.svg';
 import sprite from '@/assets/img/sprite.svg';
 import BaseFormTextInput from '@/components/BaseFormTextInput';
+import BaseEmptyResult from '@/components/BaseEmptyResult';
 
 export default {
   name: 'ContactsView',
   components: {
     BaseFormTextInput,
     BaseSpinner,
+    BaseEmptyResult,
     yandexMap,
     ymapMarker,
   },
@@ -198,33 +193,6 @@ export default {
 
   &__map {
     max-height: 510px;
-  }
-
-  &__empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 510px;
-    background-color: var(--grey_light);
-    gap: 30px;
-
-    &-icon {
-      width: 161px;
-      height: 112px;
-      opacity: 0.2;
-      fill: var(--grey_shade);
-    }
-
-    &-heading {
-      max-width: 276px;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 24px;
-      line-height: 100%;
-      text-align: center;
-      color: var(--grey);
-    }
   }
 }
 
