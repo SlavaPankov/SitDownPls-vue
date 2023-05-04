@@ -60,6 +60,10 @@
                 {{ delivery.name }}
               </label>
             </fieldset>
+            <base-map :stores="getStoreIssue"
+                      v-model:chosen-store="chosenStore"
+                      v-if="formData.deliveryId === 2"
+            />
             <base-form-text-input v-if="formData.deliveryId === 1"
                                   title="Адрес доставки:"
                                   placeholder="Адрес"
@@ -87,6 +91,7 @@
                 {{ payment.name }}
               </label>
             </fieldset>
+            <span v-if="formErrorGlobal.name">{{ formErrorGlobal.name }}</span>
             <button class="btn-reset order-form__button" type="submit">Оформить заказ</button>
           </form>
         </div>
@@ -137,10 +142,16 @@ import BaseSpinner from '@/components/BaseSpinner';
 import BaseFormTextInput from '@/components/BaseFormTextInput';
 import { BASE_URL } from '@/api/config';
 import BaseModal from '@/components/BaseModal';
+import BaseMap from '@/components/BaseMap';
 
 export default {
   name: 'OrderView',
-  components: { BaseFormTextInput, BaseSpinner, BaseModal },
+  components: {
+    BaseFormTextInput,
+    BaseSpinner,
+    BaseModal,
+    BaseMap,
+  },
   data() {
     return {
       formData: {},
@@ -149,6 +160,7 @@ export default {
       deliveryIsLoaded: false,
       paymentIsLoaded: false,
       orderSending: false,
+      chosenStore: {},
     };
   },
 
@@ -160,11 +172,13 @@ export default {
       'getBasketProducts',
       'cartTotalPrice',
       'getBasket',
+      'getStores',
+      'getStoreIssue',
     ]),
   },
 
   methods: {
-    ...mapActions(['loadDeliveryTypes', 'loadPaymentTypes', 'loadBasket']),
+    ...mapActions(['loadDeliveryTypes', 'loadPaymentTypes', 'loadBasket', 'loadStores']),
     ...mapMutations(['updateBasket', 'updateOrderInfo']),
 
     submit() {
@@ -175,6 +189,11 @@ export default {
       this.formError.name = this.checkLength(this.formData.name.length)
         || this.isValidTextInput(this.formData.name);
       this.formError.phone = this.checkPhoneLength(this.formData.phone.length);
+
+      if (this.formData.deliveryId === 2 && !this.formData.storeId) {
+        this.formErrorGlobal.name = 'Выберите пункт выдачи';
+        return;
+      }
 
       Object.keys(this.formError).forEach((key) => {
         if (this.formError[key] === undefined) {
@@ -230,6 +249,12 @@ export default {
     },
   },
 
+  watch: {
+    chosenStore(newValue) {
+      this.formData.storeId = newValue.id;
+    },
+  },
+
   created() {
     // eslint-disable-next-line no-return-assign
     this.loadDeliveryTypes().then(() => this.deliveryIsLoaded = true);
@@ -241,6 +266,10 @@ export default {
     this.formData.middleName = this.getBasket.user.middle_name;
     this.formData.phone = this.getBasket.user.phone;
     this.formData.email = this.getBasket.user.email;
+
+    if (this.getStores.length === 0) {
+      this.loadStores();
+    }
   },
 };
 </script>

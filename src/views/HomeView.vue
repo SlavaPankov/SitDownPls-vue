@@ -10,7 +10,7 @@
           <button class="specials__button specials__button--prev btn-reset"></button>
           <button class="specials__button specials__button--next btn-reset"></button>
         </div>
-        <specials-slider class="specials__swiper" />
+        <specials-slider class="specials__swiper"/>
       </div>
     </section>
     <section class="rating">
@@ -57,12 +57,12 @@
           <button class="useful__button useful__button--prev btn-reset"></button>
           <button class="useful__button useful__button--next btn-reset"></button>
         </div>
-        <useful-slider class="useful__swiper" />
+        <useful-slider class="useful__swiper"/>
       </div>
     </section>
-    <base-callback />
+    <base-callback/>
   </main>
-  <router-view />
+  <router-view/>
 </template>
 
 <script>
@@ -73,6 +73,7 @@ import CategoriesList from '@/components/CategoriesList';
 import { mapGetters } from 'vuex';
 import UsefulSlider from '@/components/UsefulSlider';
 import BaseCallback from '@/components/BaseCallback';
+import ratingStar from '@/assets/img/svg/rating-star-outline.svg';
 
 export default {
   name: 'HomeView',
@@ -87,6 +88,7 @@ export default {
 
   data() {
     return {
+      startLink: ratingStar,
       RatingListLength: 0,
       offsetStep: window.innerWidth <= 1024 ? 6 : 8,
       ratingStep() {

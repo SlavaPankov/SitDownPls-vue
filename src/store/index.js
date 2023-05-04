@@ -17,6 +17,7 @@ export default createStore({
     dataIsLoaded: false,
     dataIsLoading: true,
     orderInfo: null,
+    stores: [],
   },
   getters: {
     getUserAccessToken(state) {
@@ -96,6 +97,14 @@ export default createStore({
     getOrderInfo(state) {
       return state.orderInfo;
     },
+
+    getStores(state) {
+      return state.stores;
+    },
+
+    getStoreIssue(state) {
+      return state.stores.filter((store) => store.store_types.some((type) => type.name.toLowerCase() === 'пункт выдачи'));
+    },
   },
   mutations: {
     updateCategories(state, value) {
@@ -163,6 +172,10 @@ export default createStore({
 
     updateOrderInfo(state, value) {
       state.orderInfo = value;
+    },
+
+    updateStores(state, value) {
+      state.stores = value;
     },
   },
   actions: {
@@ -282,6 +295,15 @@ export default createStore({
         })
         .then((response) => {
           ctx.commit('updateOrderInfo', response.data.payload);
+        });
+    },
+
+    loadStores(ctx) {
+      return axios.get(`${BASE_URL}/api/stores`)
+        .then((response) => {
+          if (response.data.error === null) {
+            ctx.commit('updateStores', response.data.payload);
+          }
         });
     },
   },
