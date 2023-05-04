@@ -4,16 +4,19 @@
       <h1 class="order__heading heading-reset">
         Заказ №{{ getOrderInfo.id }}
       </h1>
-      <p class="order__content heading-reset">
-        Уважаемый(-ая) {{ getOrderInfo.user.sur_name }} {{ getOrderInfo.user.name }}
-        {{ getOrderInfo.user.middle_name }},
-      </p>
-      <p class="order__content order__content--last heading-reset">
-        Благодарим за&nbsp;выбор нашего магазина. На&nbsp;Вашу почту придет письмо с&nbsp;
-        деталями заказа.
-        Наши менеджеры свяжутся с&nbsp;Вами в&nbsp;течение часа для уточнения деталей доставки. Для
-        вас создан личный кабинет, в котором вы можете отлеживать статус заказа.
-      </p>
+      <div v-if="enterFromOrderPage">
+        <p class="order__content heading-reset">
+          Уважаемый(-ая) {{ getOrderInfo.user.sur_name }} {{ getOrderInfo.user.name }}
+          {{ getOrderInfo.user.middle_name }},
+        </p>
+        <p class="order__content order__content--last heading-reset">
+          Благодарим за&nbsp;выбор нашего магазина. На&nbsp;Вашу почту придет письмо с&nbsp;
+          деталями заказа.
+          Наши менеджеры свяжутся с&nbsp;Вами в&nbsp;течение часа для уточнения деталей доставки.
+          Для
+          вас создан личный кабинет, в котором вы можете отлеживать статус заказа.
+        </p>
+      </div>
       <h2 class="order__heading heading-reset">Ваш заказ:</h2>
       <cart-list :products="getOrderInfo.basket.products"/>
       <h2 class="order__heading heading-reset">
@@ -43,6 +46,28 @@
           <span class="order__bold">Статус:</span> <span>{{ getOrderInfo.status.name }}</span>
         </li>
       </ul>
+      <div v-if="getOrderInfo.store !== null">
+        <p>
+          <span class="order__bold">
+            Адрес выдачи заказа:
+          </span>
+          {{ getOrderInfo.store.address }}
+        </p>
+        <p>
+          <span class="order__bold">
+            Часы работы:
+          </span>
+          {{ getOrderInfo.store.opening_hours }}
+        </p>
+      </div>
+      <div class="order__info" v-if="getOrderInfo.address !== null">
+        <span class="order__bold">
+          Адрес доставки:
+        </span>
+        <address class="order__address">
+          {{ getOrderInfo.address.address }}
+        </address>
+      </div>
       <p class="heading-reset">
         <span class="order__bold">
           Сумма заказа:
@@ -51,7 +76,7 @@
       <router-link class="order__link" :to="{ name: 'home' }">На главную</router-link>
     </div>
   </section>
-  <base-spinner v-if="!orderLoaded" />
+  <base-spinner v-if="!orderLoaded"/>
 </template>
 
 <script>
@@ -69,6 +94,7 @@ export default {
   data() {
     return {
       orderLoaded: false,
+      enterFromOrderPage: false,
     };
   },
 
@@ -80,14 +106,25 @@ export default {
     ...mapActions(['loadOrder']),
 
     formattedPrice(price) {
-      return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(price).split(',')[0];
+      return new Intl.NumberFormat('ru-RU', {
+        style: 'currency',
+        currency: 'RUB',
+      }).format(price)
+        .split(',')[0];
     },
   },
 
   created() {
-    this.loadOrder(this.$route.params.id).then(() => {
-      this.orderLoaded = true;
-    });
+    this.loadOrder(this.$route.params.id)
+      .then(() => {
+        this.orderLoaded = true;
+      });
+  },
+
+  beforeRouteEnter(to, from) {
+    if (from.name === 'createOrder') {
+      this.enterFromOrderPage = true;
+    }
   },
 };
 </script>
@@ -103,10 +140,7 @@ export default {
 
   &__heading {
     margin-bottom: 26px;
-    font-size: 32px;
-    line-height: 32px;
-    font-weight: 400;
-    color: var(--black);
+    @include h2;
   }
 
   &__content {
@@ -129,6 +163,16 @@ export default {
     max-width: fit-content;
     display: block;
     margin: 26px auto 0;
+  }
+
+  &__info {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__address {
+    font-style: normal;
   }
 }
 
