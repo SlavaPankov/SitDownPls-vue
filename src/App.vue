@@ -1,5 +1,6 @@
 <template>
   <main-header />
+  <base-breadcrumbs v-if="$route.name !== 'home'" />
 
   <router-view v-if="getStateIsLoaded"/>
   <base-spinner v-if="getStateIsLoading"/>
@@ -12,10 +13,14 @@ import MainHeader from '@/components/MainHeader';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import MainFooter from '@/components/MainFooter';
 import BaseSpinner from '@/components/BaseSpinner';
+import BaseBreadcrumbs from '@/views/BaseBreadcrumbs';
 
 export default {
   components: {
-    BaseSpinner, MainFooter, MainHeader,
+    BaseSpinner,
+    MainFooter,
+    MainHeader,
+    BaseBreadcrumbs,
   },
 
   methods: {

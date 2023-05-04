@@ -4,6 +4,7 @@
       <categories-list :categories="getCategories" />
     </div>
   </section>
+  <router-view />
 </template>
 
 <script>

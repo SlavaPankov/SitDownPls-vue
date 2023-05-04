@@ -34,6 +34,7 @@
       </div>
     </div>
   </section>
+  <router-view />
 </template>
 
 <script>
@@ -157,6 +158,8 @@ export default {
     }
 
     window.addEventListener('resize', this.checkWindowSize);
+
+    this.$breadcrumbs.value[this.$breadcrumbs.value.length - 1].label = this.currentCategory.name;
   },
 
   unmount() {

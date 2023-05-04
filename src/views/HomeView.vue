@@ -62,6 +62,7 @@
     </section>
     <base-callback />
   </main>
+  <router-view />
 </template>
 
 <script>

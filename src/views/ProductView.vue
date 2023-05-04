@@ -297,8 +297,8 @@ import SimilarSlider from '@/components/SimilarSlider';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Thumbs } from 'swiper';
 import { BASE_URL } from '@/api/config';
-import { mapGetters, mapActions } from 'vuex';
 
+import { mapGetters, mapActions } from 'vuex';
 import 'swiper/css';
 import 'swiper/css/thumbs';
 
@@ -364,10 +364,12 @@ export default {
         method: 'GET',
       })
         .then((response) => {
-          this.product = response.data.payload;
-          this.colorId = response.data.payload.colors[0].id;
-
           if (response.data.error === null) {
+            this.product = response.data.payload;
+            this.colorId = response.data.payload.colors[0].id;
+            this.$breadcrumbs.value[this.$breadcrumbs.value.length - 1].label = this.product.name;
+            // eslint-disable-next-line max-len
+            this.$breadcrumbs.value[this.$breadcrumbs.value.length - 2].label = this.product.categories[0].name;
             this.dataIsLoaded = true;
             this.dataIsLoading = false;
           }

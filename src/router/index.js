@@ -19,69 +19,108 @@ const routes = [
     name: 'home',
     component: HomeView,
     meta: {
-      breadCrumb: 'Главная',
-    },
-  },
-  {
-    path: '/catalog',
-    name: 'catalog',
-    component: CatalogView,
-    meta: {
-      breadCrumb: 'Каталог',
+      breadcrumb: 'Главная',
     },
     children: [
-
+      {
+        path: '/catalog',
+        name: 'catalog',
+        component: CatalogView,
+        meta: {
+          breadcrumb: 'Каталог',
+        },
+        children: [
+          {
+            path: '/catalog/:category',
+            name: 'category',
+            component: CategoryView,
+            meta: {
+              breadcrumb(route) {
+                return `${route.params.category}`;
+              },
+            },
+            children: [
+              {
+                path: '/catalog/:category/:slug',
+                name: 'product',
+                component: ProductView,
+                meta: {
+                  breadcrumb(route) {
+                    return `${route.params.slug}`;
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: '/cart',
+        name: 'cart',
+        component: CartView,
+        meta: {
+          breadcrumb: 'Корзина',
+        },
+      },
+      {
+        name: 'createOrder',
+        path: '/order',
+        component: OrderView,
+        meta: {
+          breadcrumb: 'Оформление заказа',
+        },
+      },
+      {
+        name: 'createdOrder',
+        path: '/order/:id',
+        component: CreatedOrder,
+        meta: {
+          breadcrumb(route) {
+            return `Заказ №${route.params.id}`;
+          },
+        },
+      },
+      {
+        path: '/personal',
+        name: 'personal',
+        component: PersonalView,
+        meta: {
+          breadcrumb: 'Личный кабинет',
+        },
+      },
+      {
+        path: '/personal/login',
+        name: 'auth',
+        component: LogInView,
+        meta: {
+          breadcrumb: 'Войти',
+        },
+      },
+      {
+        path: '/personal/set-password',
+        name: 'resetPassword',
+        component: ResetPasswordView,
+        meta: {
+          breadcrumb: 'Установить пароль',
+        },
+      },
+      {
+        path: '/contacts',
+        name: 'contacts',
+        component: ContactsView,
+        meta: {
+          breadcrumb: 'Контакты',
+        },
+      },
+      {
+        path: '/search',
+        name: 'search',
+        component: SearchView,
+        meta: {
+          breadcrumb: 'Результаты поиска',
+        },
+      },
     ],
-  },
-  {
-    path: '/catalog/:category',
-    name: 'category',
-    component: CategoryView,
-  },
-  {
-    path: '/:category/:slug',
-    name: 'product',
-    component: ProductView,
-  },
-  {
-    path: '/cart',
-    name: 'cart',
-    component: CartView,
-  },
-  {
-    name: 'createOrder',
-    path: '/order',
-    component: OrderView,
-  },
-  {
-    name: 'createdOrder',
-    path: '/order/:id',
-    component: CreatedOrder,
-  },
-  {
-    path: '/personal',
-    name: 'personal',
-    component: PersonalView,
-  },
-  {
-    path: '/personal/login',
-    name: 'auth',
-    component: LogInView,
-  },
-  {
-    path: '/personal/set-password',
-    name: 'resetPassword',
-    component: ResetPasswordView,
-  },
-  {
-    path: '/contacts',
-    name: 'contacts',
-    component: ContactsView,
-  },
-  {
-    path: '/search',
-    name: 'search',
-    component: SearchView,
   },
   {
     path: '/:catchAll(.*)',
