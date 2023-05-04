@@ -8,6 +8,7 @@
       <base-pagination :total-count="searchResult.length"
                        :count-per-page="countPerPage"
                        v-model:page="page"
+                       v-if="searchResult.length > countPerPage"
       />
     </div>
   </section>
@@ -74,7 +75,9 @@ export default {
 
   watch: {
     $route() {
-      this.loadQueryResults();
+      if (this.$route.name === 'search') {
+        this.loadQueryResults();
+      }
     },
   },
 

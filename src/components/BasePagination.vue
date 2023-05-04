@@ -8,13 +8,55 @@
       >
       </button>
     </li>
-    <li class="paginate-list__item" v-for="page in pages" :key="page">
+    <li class="paginate-list__item">
       <button
         class="btn-reset paginate-list__button"
-        :class="page === +this.page ? 'paginate-list__button--current' : ''"
-        @click.prevent="saveCurrentPage(page)"
+        :class="this.page === 1 ? 'paginate-list__button--current' : ''"
+        @click.prevent="saveCurrentPage(1)"
       >
-        {{ page }}
+        1
+      </button>
+    </li>
+    <li class="paginate-list__item"
+        v-if="first"
+    >
+      <button
+        class="btn-reset paginate-list__button"
+        @click.prevent="saveCurrentPage(page - 3)"
+      >
+        ...
+      </button>
+    </li>
+    <li class="paginate-list__item"
+        v-for="page in pages - 2"
+        :key="page"
+        v-show="Math.abs(page - this.page) < 3"
+    >
+      <button
+        class="btn-reset paginate-list__button"
+        :class="page + 1 === +this.page ? 'paginate-list__button--current' : ''"
+        @click.prevent="saveCurrentPage(page + 1)"
+      >
+        {{ page + 1 }}
+      </button>
+    </li>
+    <li class="paginate-list__item"
+        v-if="last"
+    >
+      <button
+        class="btn-reset paginate-list__button"
+        @click.prevent="saveCurrentPage(page + 3)"
+      >
+        ...
+      </button>
+    </li>
+    <li class="paginate-list__item">
+      <button
+        class="btn-reset paginate-list__button"
+        :class="this.page === pages ? 'paginate-list__button--current' : ''"
+        @click.prevent="saveCurrentPage(pages)"
+      >
+        {{ pages }}
       </button>
     </li>
     <li class="paginate-list__item paginate-fw">
@@ -58,6 +100,14 @@ export default {
 
     paginationBackward() {
       return this.page === 1 ? +this.page : +this.page - 1;
+    },
+
+    last() {
+      return Math.abs(this.page - this.pages) > 3;
+    },
+
+    first() {
+      return Math.abs(this.page - this.pages) < 10 && this.pages > 3;
     },
   },
 
@@ -150,5 +200,9 @@ export default {
       }
     }
   }
+}
+
+.d-none {
+  display: none;
 }
 </style>

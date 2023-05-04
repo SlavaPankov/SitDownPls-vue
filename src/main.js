@@ -18,4 +18,3 @@ createApp(App)
 // TODO: add address to order
 // TODO: add user rating to product
 // TODO: add reviews to product
-// TODO: add breadcrumbs
