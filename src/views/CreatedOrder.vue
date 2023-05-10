@@ -121,9 +121,15 @@ export default {
       });
   },
 
-  beforeRouteEnter(to, from) {
+  beforeRouteEnter(to, from, next) {
     if (from.name === 'createOrder') {
-      this.enterFromOrderPage = true;
+      next((page) => {
+        page.enterFromOrderPage = true;
+      });
+    } else {
+      next((page) => {
+        page.enterFromOrderPage = false;
+      });
     }
   },
 };

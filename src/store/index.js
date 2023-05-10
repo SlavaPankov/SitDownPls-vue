@@ -12,6 +12,7 @@ export default createStore({
     paymentTypes: [],
     deliveryTypes: [],
     basket: {},
+    user: {},
     userAccessToken: '',
     rememberToken: '',
     dataIsLoaded: false,
@@ -105,6 +106,10 @@ export default createStore({
     getStoreIssue(state) {
       return state.stores.filter((store) => store.store_types.some((type) => type.name.toLowerCase() === 'пункт выдачи'));
     },
+
+    getUser(state) {
+      return state.user;
+    },
   },
   mutations: {
     updateCategories(state, value) {
@@ -176,6 +181,10 @@ export default createStore({
 
     updateStores(state, value) {
       state.stores = value;
+    },
+
+    updateUser(state, value) {
+      state.user = value;
     },
   },
   actions: {
@@ -304,6 +313,16 @@ export default createStore({
           if (response.data.error === null) {
             ctx.commit('updateStores', response.data.payload);
           }
+        });
+    },
+
+    loadUserInfo(ctx) {
+      return axios.get(`${BASE_URL}/api/users/${ctx.state.rememberToken}`)
+        .then((response) => {
+          if (response.data.error === null) {
+            ctx.commit('updateUser', response.data.payload);
+          }
+          return response;
         });
     },
   },

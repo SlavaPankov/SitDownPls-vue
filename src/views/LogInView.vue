@@ -4,24 +4,10 @@
       <h1 class="heading-reset login__heading">
         Добро пожаловать
       </h1>
-      <form class="login__form" @submit.prevent="submit">
-        <base-form-text-input title="Логин:"
-                              placeholder="Логин"
-                              type="text"
-                              name="login"
-                              :error="formError.login"
-                              v-model:value="formData.login"
-        />
-        <base-form-text-input title="Пароль:"
-                              placeholder="Пароль"
-                              type="password"
-                              name="password"
-                              :error="formError.password"
-                              v-model:value="formData.password"
-        />
-        <span class="error" v-if="globalError">{{ globalError }}</span>
-        <button class="btn-reset login__button">Войти</button>
-      </form>
+      <auth-form v-model:form-data="formData"
+                 v-model:success="isSuccess"
+                 v-model:global-error="globalError"
+      />
     </div>
   </section>
   <base-modal :open="authProceed">
@@ -30,43 +16,38 @@
 </template>
 
 <script>
-import BaseFormTextInput from '@/components/BaseFormTextInput';
 import BaseModal from '@/components/BaseModal';
 import BaseSpinner from '@/components/BaseSpinner';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 import { mapMutations } from 'vuex';
 import { BASE_URL } from '@/api/config';
+import AuthForm from '@/components/AuthForm';
 
 export default {
   name: 'LogInView',
   components: {
-    BaseFormTextInput,
     BaseModal,
     BaseSpinner,
+    AuthForm,
   },
 
   data() {
     return {
       formData: {},
-      formError: {},
       globalError: '',
       authProceed: false,
+      isSuccess: false,
     };
   },
 
   methods: {
     ...mapMutations(['updateRememberToken']),
 
-    submit() {
-      this.globalError = '';
+    auth() {
       this.authProceed = true;
-
-      if (Object.entries(this.formData).length === 0) {
-        this.globalError = 'Неверный логин или пароль';
-        this.authProceed = false;
-        return;
-      }
+      this.isSuccess = false;
+      this.globalError = '';
 
       axios.post(`${BASE_URL}/api/login`, {
         ...this.formData,
@@ -84,6 +65,14 @@ export default {
           this.globalError = response.data.error;
         }
       });
+    },
+  },
+
+  watch: {
+    isSuccess(newValue) {
+      if (newValue) {
+        this.auth();
+      }
     },
   },
 

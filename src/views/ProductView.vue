@@ -116,7 +116,6 @@
           {{ product.description }}
         </p>
       <div class="product__actions">
-
         <div class="product__grade">
           <svg class="product__icon">
             <use xlink:href="@/assets/img/sprite.svg#rating-star"></use>
@@ -126,6 +125,9 @@
         <h1 class="heading-reset product__heading">
           {{ product.name }}
         </h1>
+        <div class="product__old-price" v-if="product.old_price">
+          {{ formattedPrice(product.old_price) }} руб
+        </div>
         <div class="product__price">
           {{ formattedPrice(product.price) }} руб
         </div>
@@ -190,6 +192,22 @@
           </svg>
         </button>
       </div>
+    </div>
+  </section>
+  <section class="reviews" v-if="dataIsLoaded">
+    <div class="container reviews__container">
+      <div class="reviews__head">
+        <h2 class="heading-reset reviews__heading">
+          Отзывы
+        </h2>
+        <button class="btn-reset reviews__button" @click="openModalReview = true">
+          Оставить отзыв
+        </button>
+      </div>
+      <div class="reviews__empty" v-if="product.reviews.length === 0">
+        Нет отзывов
+      </div>
+      <reviews-list :reviews="product.reviews" v-else />
     </div>
   </section>
   <section class="similar" v-show="similar.length > 0 && dataIsLoaded">
@@ -285,6 +303,29 @@
       </swiper>
     </div>
   </base-modal>
+  <base-modal v-model:open="openModalReview">
+      <review-form v-if="rememberToken"
+                   v-model:form-data="reviewFormData"
+                   :name="user.name"
+                   :surName="user.sur_name"
+                   v-model:success="isReviewSuccess"
+      />
+      <auth-form class="auth-form"
+                 v-model:form-data="authFormData"
+                 v-model:success="isAuthSuccess"
+                 v-if="isOpenAuth && !isAuthSuccess" />
+      <base-spinner v-if="isAuthSuccess && !rememberToken" />
+      <div class="reviews__auth reviews-auth" v-if="!rememberToken && !isOpenAuth">
+        <p class="heading-reset reviews-auth__text">
+          Чтобы оставить отзыв необходимо авторизоваться
+        </p>
+        <button class="button-reset reviews-auth__button"
+                @click="handlerAuthBtn"
+        >
+          Авторизоваться
+        </button>
+      </div>
+    </base-modal>
 </template>
 
 <script>
@@ -296,20 +337,26 @@ import BaseSpinner from '@/components/BaseSpinner';
 import SimilarSlider from '@/components/SimilarSlider';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Thumbs } from 'swiper';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import ReviewForm from '@/components/ReviewForm';
+import AuthForm from '@/components/AuthForm';
 import { BASE_URL } from '@/api/config';
 
-import { mapGetters, mapActions } from 'vuex';
 import 'swiper/css';
 import 'swiper/css/thumbs';
+import ReviewsList from '@/components/ReviewsList';
 
 export default {
   name: 'ProductView',
   components: {
+    ReviewsList,
     SimilarSlider,
     BaseSpinner,
     Swiper,
     SwiperSlide,
     BaseModal,
+    ReviewForm,
+    AuthForm,
   },
 
   setup() {
@@ -342,19 +389,28 @@ export default {
   data() {
     return {
       product: {},
-      dataIsLoading: true,
-      dataIsLoaded: false,
-      openModalSlider: false,
+      authFormData: {},
+      reviewFormData: {
+        userId: null,
+      },
       similar: [],
       quantity: 1,
       colorId: 0,
+      dataIsLoading: true,
+      dataIsLoaded: false,
+      openModalSlider: false,
       productAddSending: false,
       productAdded: false,
+      openModalReview: false,
+      isOpenAuth: false,
+      isAuthSuccess: false,
+      isReviewSuccess: false,
     };
   },
 
   methods: {
-    ...mapActions(['addProductToCart']),
+    ...mapActions(['addProductToCart', 'loadUserInfo']),
+    ...mapMutations(['updateRememberToken']),
 
     loadProduct(slug) {
       this.dataIsLoaded = false;
@@ -367,11 +423,21 @@ export default {
           if (response.data.error === null) {
             this.product = response.data.payload;
             this.colorId = response.data.payload.colors[0].id;
+            this.reviewFormData.productId = response.data.payload.id;
             this.$breadcrumbs.value[this.$breadcrumbs.value.length - 1].label = this.product.name;
             // eslint-disable-next-line max-len
             this.$breadcrumbs.value[this.$breadcrumbs.value.length - 2].label = this.product.categories[0].name;
             this.dataIsLoaded = true;
             this.dataIsLoading = false;
+          }
+        });
+    },
+
+    loadProductReviews() {
+      return axios.get(`${BASE_URL}/api/reviews/${this.product.id}`)
+        .then((response) => {
+          if (response.data.error === null) {
+            this.product.reviews = response.data.payload;
           }
         });
     },
@@ -427,11 +493,59 @@ export default {
         }, 1500);
       }
     },
+
+    handlerAuthBtn() {
+      this.isOpenAuth = true;
+    },
+
+    auth() {
+      this.isSuccess = false;
+      this.globalError = '';
+
+      axios.post(`${BASE_URL}/api/login`, {
+        ...this.authFormData,
+      }).then((response) => {
+        if (response.data.error === null) {
+          this.updateRememberToken(response.data.payload);
+          localStorage.setItem('rememberToken', response.data.payload);
+          this.loadUserInfo().then((res) => {
+            this.reviewFormData.userId = res.data.payload.id;
+          });
+          this.isOpenAuth = false;
+        } else {
+          this.globalError = response.data.error;
+        }
+      });
+    },
+
+    createReview() {
+      this.isReviewSuccess = false;
+
+      return axios.post(`${BASE_URL}/api/reviews`, {
+        ...this.reviewFormData,
+      }).then((response) => {
+        if (response.data.error === null) {
+          this.product.reviews = response.data.payload;
+        }
+      });
+    },
   },
 
   watch: {
     product() {
       this.similar = this.similarProducts();
+    },
+
+    isAuthSuccess(newValue) {
+      if (newValue) {
+        this.auth();
+      }
+    },
+
+    isReviewSuccess(newValue) {
+      if (newValue) {
+        this.createReview();
+      }
     },
   },
 
@@ -440,11 +554,21 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getProducts']),
+    ...mapGetters({
+      getProducts: 'getProducts',
+      rememberToken: 'getRememberToken',
+      user: 'getUser',
+    }),
   },
 
   created() {
     this.loadProduct(this.$route.params.slug);
+
+    if (this.rememberToken) {
+      this.loadUserInfo().then((response) => {
+        this.reviewFormData.userId = response.data.payload.id;
+      });
+    }
   },
 };
 </script>
@@ -527,6 +651,18 @@ export default {
 
     @include mobile {
       font-size: 24px;
+    }
+  }
+
+  &__old-price {
+    font-size: 24px;
+    line-height: 130%;
+    font-weight: 400;
+    color: var(--grey);
+    text-decoration: line-through;
+
+    @include mobile {
+      font-size: 16px;
     }
   }
 
@@ -806,5 +942,66 @@ export default {
 
 .custom-checkbox__field:focus + .custom-checkbox__content::after {
   border-color: var(--primary);
+}
+
+.reviews {
+  &__container {
+    padding-top: 35px;
+    padding-bottom: 35px;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 26px;
+  }
+
+  &__heading {
+    font-size: 24px;
+    line-height: 130%;
+    font-weight: 400;
+    color: var(--black);
+  }
+
+  &__empty {
+    font-size: 20px;
+    line-height: 130%;
+    font-weight: 400;
+    color: var(--black);
+    text-align: center;
+  }
+
+  &__button {
+    @include btn-secondary;
+  }
+}
+
+.reviews-auth {
+  padding: 25px;
+  border-radius: 10px;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  justify-content: center;
+  align-items: center;
+
+  &__text {
+    @include h2;
+  }
+
+  &__button {
+    @include btn-primary;
+    max-width: fit-content;
+  }
+}
+
+.auth-form {
+  max-width: 750px;
+  width: 100%;
+  padding: 25px;
+  background-color: var(--white);
+  border-radius: 10px;
 }
 </style>

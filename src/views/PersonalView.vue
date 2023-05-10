@@ -75,7 +75,7 @@
 <script>
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { BASE_URL } from '@/api/config';
 import BaseFormTextInput from '@/components/BaseFormTextInput';
 import BaseSpinner from '@/components/BaseSpinner';
@@ -109,7 +109,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getRememberToken']),
+    ...mapGetters([
+      'getRememberToken',
+    ]),
 
     paginatedOrders() {
       return this.user.orders.slice(
@@ -120,23 +122,10 @@ export default {
   },
 
   methods: {
-    loadUserInfo() {
-      return axios.get(`${BASE_URL}/api/users/${this.getRememberToken}`)
-        .then((response) => {
-          if (response.data.error === null) {
-            this.pageLoaded = true;
-            this.pageLoading = false;
-            this.user = response.data.payload;
-            this.formData.surName = this.user.sur_name;
-            this.formData.name = this.user.name;
-            this.formData.middleName = this.user.middle_name;
-            this.formData.phone = this.user.phone;
-            this.formData.email = this.user.email;
-          } else {
-            this.$router.push({ name: 'auth' });
-          }
-        });
-    },
+    ...mapActions(['loadUserInfo']),
+    ...mapMutations({
+      updateUserStore: 'updateUser',
+    }),
 
     editHandle() {
       if (this.editData) {
@@ -174,6 +163,7 @@ export default {
           document.querySelector('.modal').classList.add('modal-close');
           this.updatedUser = true;
           this.editData = false;
+          this.updateUserStore(response.data.payload);
 
           setTimeout(() => {
             this.updatingUser = false;
@@ -212,7 +202,20 @@ export default {
       this.$router.push({ name: 'auth' });
     }
 
-    this.loadUserInfo();
+    this.loadUserInfo().then((response) => {
+      if (response.data.error === null) {
+        this.pageLoaded = true;
+        this.pageLoading = false;
+        this.user = response.data.payload;
+        this.formData.surName = this.user.sur_name;
+        this.formData.name = this.user.name;
+        this.formData.middleName = this.user.middle_name;
+        this.formData.phone = this.user.phone;
+        this.formData.email = this.user.email;
+      } else {
+        this.$router.push({ name: 'auth' });
+      }
+    });
   },
 };
 </script>

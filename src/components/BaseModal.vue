@@ -23,7 +23,9 @@ export default {
       if (this.open) {
         document.body.style.overflow = 'hidden';
       } else {
-        document.body.style.overflow = 'auto';
+        setTimeout(() => {
+          document.body.style.overflow = 'auto';
+        }, 300);
       }
     },
   },

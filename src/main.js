@@ -12,8 +12,6 @@ createApp(App)
   .use(breadcrumbs)
   .mount('#app');
 
-// TODO: add chose store
-// TODO: add address to order
 // TODO: add reviews to product
 // TODO: add user rating to product
 // TODO: add style to 404 page
