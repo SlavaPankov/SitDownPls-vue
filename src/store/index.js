@@ -244,7 +244,7 @@ export default createStore({
         .then((response) => ctx.commit('updatePaymentTypes', response.data.payload));
     },
 
-    addProductToCart(ctx, { productId, quantity, colorId }) {
+    addProductToCart(ctx) {
       return axios.post(`${BASE_URL}/api/baskets`, {
         productId,
         quantity,

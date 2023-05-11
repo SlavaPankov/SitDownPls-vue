@@ -1,11 +1,13 @@
 <template>
-  <div class="modal"
-       v-if="open"
-       @click="close"
-       @keydown.esc="close"
-  >
-    <slot></slot>
-  </div>
+  <transition name="fade">
+    <div class="modal"
+         v-if="open"
+         @click="close"
+         @keydown.esc="close"
+    >
+      <slot></slot>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -42,6 +44,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -53,16 +65,5 @@ export default {
   justify-content: center;
   z-index: 6;
   background-color: rgba(51, 51, 51, .3);
-  animation: open .3s ease-in-out;
-}
-
-@keyframes open {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 </style>

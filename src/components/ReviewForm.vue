@@ -17,6 +17,10 @@
                             :disabled="true"
       />
     </div>
+    <div class="review-form__rate">
+      <span class="review-form__bold">Оценка: </span>
+      <rating-stars v-model:rate="currentFormData.rate" />
+    </div>
     <base-form-text-input class="review-form__input"
                           title="Преимущества"
                           v-model:value="currentFormData.advantages"
@@ -42,10 +46,12 @@
 <script>
 import BaseFormTextInput from '@/components/BaseFormTextInput';
 import BaseFormTextArea from '@/components/BaseFormTextArea';
+import RatingStars from '@/components/RatingStars';
 
 export default {
   name: 'ReviewForm',
   components: {
+    RatingStars,
     BaseFormTextArea,
     BaseFormTextInput,
   },
@@ -73,6 +79,7 @@ export default {
     return {
       currentFormData: {
         ...this.formData,
+        rate: 0,
       },
       errorData: {},
     };

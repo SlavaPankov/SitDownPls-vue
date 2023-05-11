@@ -2,7 +2,6 @@
   <section class="product" v-show="dataIsLoaded">
     <div class="container product__container">
       <swiper
-        @click="openModalSlider = true"
         :loop="true"
         :spaceBetween="10"
         :thumbs="{ swiper: thumbsSwiper }"
@@ -200,8 +199,10 @@
         <h2 class="heading-reset reviews__heading">
           Отзывы
         </h2>
-        <button class="btn-reset reviews__button" @click="openModalReview = true">
-          Оставить отзыв
+        <button class="btn-reset reviews__button"
+                @click="openReview"
+        >
+          {{ haveOwnReview ? 'Дополнить отзыв' : 'Оставить отзыв' }}
         </button>
       </div>
       <div class="reviews__empty" v-if="product.reviews.length === 0">
@@ -223,86 +224,6 @@
     </div>
   </section>
   <base-spinner v-show="dataIsLoading"/>
-  <base-modal v-model:open="openModalSlider">
-    <div class="card">
-      <svg class="card__cross"
-           width="20"
-           height="20"
-           viewBox="0 0 20 20"
-           fill="none"
-           xmlns="http://www.w3.org/2000/svg"
-           @click="openModalSlider = false"
-           @keydown.esc="openModalSlider = false"
-      >
-        <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M2.3812 0.397739L11.2581 9.03977C11.8029 9.57009 11.8029 10.4299 11.2581
-              10.9602L2.3812 19.6023C1.83647 20.1326 0.953281 20.1326 0.408549
-              19.6023C-0.136183 19.0719 -0.136183 18.2121 0.408549 17.6818L8.29915
-               10L0.40855 2.31819C-0.136182 1.78787 -0.136181 0.928057 0.408551 0.397739C0.953283
-                -0.13258 1.83647 -0.13258 2.3812 0.397739Z"
-              fill="#999999"/>
-        <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M17.6188 0.397739L8.74188 9.03977C8.19715 9.57009 8.19715 10.4299 8.74188
-               10.9602L17.6188 19.6023C18.1635 20.1326 19.0467 20.1326 19.5915 19.6023C20.1362
-                19.0719 20.1362 18.2121 19.5915 17.6818L11.7009 10L19.5914 2.31819C20.1362 1.78787
-                 20.1362 0.928057 19.5914 0.397739C19.0467 -0.13258 18.1635
-                  -0.13258 17.6188 0.397739Z"
-              fill="#999999"/>
-      </svg>
-      <swiper
-        :loop="true"
-        :spaceBetween="10"
-        class="mySwiper2"
-      >
-        <swiper-slide>
-          <picture>
-            <img loading="lazy"
-                 src="@/assets/img/1-product-card.png"
-                 class="image"
-                 width="624"
-                 height="245"
-                 :alt="product.name">
-          </picture>
-        </swiper-slide>
-        <swiper-slide>
-          <picture>
-            <img loading="lazy"
-                 src="@/assets/img/2-product-card.png"
-                 class="image"
-                 height="245"
-                 :alt="product.name">
-          </picture>
-        </swiper-slide>
-        <swiper-slide>
-          <picture>
-            <img loading="lazy"
-                 src="@/assets/img/3-product-card.png"
-                 class="image"
-                 height="245"
-                 :alt="product.name">
-          </picture>
-        </swiper-slide>
-        <swiper-slide>
-          <picture>
-            <img loading="lazy"
-                 src="@/assets/img/4-product-card.png"
-                 class="image"
-                 height="245"
-                 :alt="product.name">
-          </picture>
-        </swiper-slide>
-        <swiper-slide>
-          <picture>
-            <img loading="lazy"
-                 src="@/assets/img/5-product-card.png"
-                 class="image"
-                 height="245"
-                 :alt="product.name">
-          </picture>
-        </swiper-slide>
-      </swiper>
-    </div>
-  </base-modal>
   <base-modal v-model:open="openModalReview">
       <review-form v-if="rememberToken"
                    v-model:form-data="reviewFormData"
@@ -310,10 +231,12 @@
                    :surName="user.sur_name"
                    v-model:success="isReviewSuccess"
       />
-      <auth-form class="auth-form"
+      <auth-form v-if="isOpenAuth && !isAuthSuccess"
+                 class="auth-form"
                  v-model:form-data="authFormData"
                  v-model:success="isAuthSuccess"
-                 v-if="isOpenAuth && !isAuthSuccess" />
+                 v-model:global-error="authGlobalError"
+      />
       <base-spinner v-if="isAuthSuccess && !rememberToken" />
       <div class="reviews__auth reviews-auth" v-if="!rememberToken && !isOpenAuth">
         <p class="heading-reset reviews-auth__text">
@@ -326,6 +249,7 @@
         </button>
       </div>
     </base-modal>
+  <rating-stars />
 </template>
 
 <script>
@@ -340,15 +264,17 @@ import { Thumbs } from 'swiper';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import ReviewForm from '@/components/ReviewForm';
 import AuthForm from '@/components/AuthForm';
-import { BASE_URL } from '@/api/config';
+import ReviewsList from '@/components/ReviewsList';
+import RatingStars from '@/components/RatingStars';
 
+import { BASE_URL } from '@/api/config';
 import 'swiper/css';
 import 'swiper/css/thumbs';
-import ReviewsList from '@/components/ReviewsList';
 
 export default {
   name: 'ProductView',
   components: {
+    RatingStars,
     ReviewsList,
     SimilarSlider,
     BaseSpinner,
@@ -390,21 +316,20 @@ export default {
     return {
       product: {},
       authFormData: {},
-      reviewFormData: {
-        userId: null,
-      },
+      reviewFormData: {},
       similar: [],
       quantity: 1,
       colorId: 0,
+      authGlobalError: '',
       dataIsLoading: true,
       dataIsLoaded: false,
-      openModalSlider: false,
       productAddSending: false,
       productAdded: false,
       openModalReview: false,
       isOpenAuth: false,
       isAuthSuccess: false,
       isReviewSuccess: false,
+      show: false,
     };
   },
 
@@ -429,15 +354,6 @@ export default {
             this.$breadcrumbs.value[this.$breadcrumbs.value.length - 2].label = this.product.categories[0].name;
             this.dataIsLoaded = true;
             this.dataIsLoading = false;
-          }
-        });
-    },
-
-    loadProductReviews() {
-      return axios.get(`${BASE_URL}/api/reviews/${this.product.id}`)
-        .then((response) => {
-          if (response.data.error === null) {
-            this.product.reviews = response.data.payload;
           }
         });
     },
@@ -500,7 +416,7 @@ export default {
 
     auth() {
       this.isSuccess = false;
-      this.globalError = '';
+      this.authGlobalError = '';
 
       axios.post(`${BASE_URL}/api/login`, {
         ...this.authFormData,
@@ -512,8 +428,10 @@ export default {
             this.reviewFormData.userId = res.data.payload.id;
           });
           this.isOpenAuth = false;
+          this.openModalReview = false;
         } else {
-          this.globalError = response.data.error;
+          this.authGlobalError = response.data.error;
+          this.isAuthSuccess = false;
         }
       });
     },
@@ -526,8 +444,32 @@ export default {
       }).then((response) => {
         if (response.data.error === null) {
           this.product.reviews = response.data.payload;
+          this.openModalReview = false;
         }
       });
+    },
+
+    updateReview() {
+      this.isReviewSuccess = false;
+
+      return axios.patch(`${BASE_URL}/api/reviews/${this.currentOwnReview.id}`, {
+        ...this.reviewFormData,
+      }).then((response) => {
+        if (response.data.error === null) {
+          this.product.reviews = response.data.payload;
+          this.openModalReview = false;
+        }
+      });
+    },
+
+    openReview() {
+      this.openModalReview = true;
+
+      if (this.haveOwnReview) {
+        this.reviewFormData.advantages = this.currentOwnReview.advantages;
+        this.reviewFormData.disadvantages = this.currentOwnReview.disadvantages;
+        this.reviewFormData.comment = this.currentOwnReview.comment;
+      }
     },
   },
 
@@ -544,7 +486,11 @@ export default {
 
     isReviewSuccess(newValue) {
       if (newValue) {
-        this.createReview();
+        if (!this.currentOwnReview) {
+          this.createReview();
+        } else {
+          this.updateReview();
+        }
       }
     },
   },
@@ -559,6 +505,22 @@ export default {
       rememberToken: 'getRememberToken',
       user: 'getUser',
     }),
+
+    haveOwnReview() {
+      return this.product.reviews
+        .filter((review) => review.user_id === this.reviewFormData.userId).length > 0;
+    },
+
+    currentOwnReview() {
+      let currentReview = {};
+
+      if (this.haveOwnReview) {
+        [currentReview] = this.product.reviews
+          .filter((review) => review.user_id === this.reviewFormData.userId);
+      }
+
+      return currentReview;
+    },
   },
 
   created() {
