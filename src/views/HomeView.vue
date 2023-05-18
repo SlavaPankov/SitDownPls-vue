@@ -13,7 +13,7 @@
         <specials-slider class="specials__swiper"/>
       </div>
     </section>
-    <section class="rating">
+    <section class="rating" v-if="getHighRatingProducts.length > 0">
       <div class="rating__container container">
         <h2 class="rating__heading heading-reset">
           Высокий рейтинг

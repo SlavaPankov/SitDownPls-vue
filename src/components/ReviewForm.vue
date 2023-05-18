@@ -19,7 +19,7 @@
     </div>
     <div class="review-form__rate">
       <span class="review-form__bold">Оценка: </span>
-      <rating-stars v-model:rate="currentFormData.rate" />
+      <rating-stars v-model:rating="currentFormData.rating" />
     </div>
     <base-form-text-input class="review-form__input"
                           title="Преимущества"
@@ -79,7 +79,6 @@ export default {
     return {
       currentFormData: {
         ...this.formData,
-        rate: 0,
       },
       errorData: {},
     };

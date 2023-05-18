@@ -7,6 +7,9 @@
       {{ review.user.name }} {{ review.user.sur_name }}
     </h2>
     <p class="heading-reset review__text reviews__advantages">
+      <span class="review__bold">Оценка: </span> <rating-stars :rating="review.rating" />
+    </p>
+    <p class="heading-reset review__text reviews__advantages">
       <span class="review__bold">Преимущества: </span> {{ review.advantages }}
     </p>
     <p class="heading-reset review__text reviews__disadvantages">
@@ -19,8 +22,11 @@
 </template>
 
 <script>
+import RatingStars from '@/components/RatingStars';
+
 export default {
   name: 'ReviewItem',
+  components: { RatingStars },
   props: {
     review: {
       type: Object,

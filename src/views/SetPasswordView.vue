@@ -71,7 +71,6 @@ export default {
   methods: {
     submit() {
       this.globalError = {};
-      this.settingPassword = true;
 
       if (this.getUserAccessToken !== this.$route.query.userAccessToken) {
         this.$router.push({ name: 'home' });
@@ -92,6 +91,8 @@ export default {
         return;
       }
 
+      this.settingPassword = true;
+
       axios.post(`${BASE_URL}/api/users/set-password`, {
         ...this.formData,
       }, {
@@ -104,7 +105,7 @@ export default {
             document.querySelector('.modal').classList.add('modal-close');
             setTimeout(() => {
               this.settingPassword = false;
-              this.$router.push({ name: 'home' });
+              this.$router.push({ name: 'auth' });
             }, 300);
           } else {
             setTimeout(() => {

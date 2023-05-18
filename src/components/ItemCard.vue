@@ -63,7 +63,12 @@ export default {
 
   computed: {
     roundRating() {
-      return Number(this.product.rating).toFixed(1).replace('.', ',');
+      if (this.product.reviews && this.product.reviews.length > 0) {
+        const sum = this.product.reviews.reduce((a, b) => a + Number(b.rating), 0);
+        return (sum / this.product.reviews.length).toFixed(1).replace('.', ',');
+      }
+
+      return 0;
     },
 
     nameLastWord() {

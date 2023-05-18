@@ -30,7 +30,7 @@
 export default {
   name: 'RatingStars',
   props: {
-    rate: {
+    rating: {
       type: Number,
       default: 0,
     },
@@ -43,21 +43,20 @@ export default {
 
   data() {
     return {
-      currentRate: this.rate,
+      currentRating: this.rating,
     };
   },
 
   methods: {
     handlerClick(value) {
-      this.currentRate = value;
-      console.log(this.currentRate);
-      this.$emit('update:rate', value);
+      this.currentRating = value;
+      this.$emit('update:rating', value);
     },
   },
 
   computed: {
     starListWidth() {
-      return (this.currentRate / this.starsLimit) * 100;
+      return (this.currentRating / this.starsLimit) * 100;
     },
 
     starListStyle() {

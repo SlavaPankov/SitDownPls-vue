@@ -359,9 +359,12 @@ export default {
     },
 
     roundRating() {
-      return Number(this.product.rating)
-        .toFixed(1)
-        .replace('.', ',');
+      if (this.product.reviews && this.product.reviews.length > 0) {
+        const sum = this.product.reviews.reduce((a, b) => a + Number(b.rating), 0);
+        return (sum / this.product.reviews.length).toFixed(1).replace('.', ',');
+      }
+
+      return 0;
     },
 
     formattedPrice(price) {
@@ -437,6 +440,7 @@ export default {
     },
 
     createReview() {
+      console.log('create');
       this.isReviewSuccess = false;
 
       return axios.post(`${BASE_URL}/api/reviews`, {
@@ -450,6 +454,7 @@ export default {
     },
 
     updateReview() {
+      console.log('update');
       this.isReviewSuccess = false;
 
       return axios.patch(`${BASE_URL}/api/reviews/${this.currentOwnReview.id}`, {
@@ -469,6 +474,7 @@ export default {
         this.reviewFormData.advantages = this.currentOwnReview.advantages;
         this.reviewFormData.disadvantages = this.currentOwnReview.disadvantages;
         this.reviewFormData.comment = this.currentOwnReview.comment;
+        this.reviewFormData.rating = this.currentOwnReview.rating;
       }
     },
   },
@@ -486,7 +492,7 @@ export default {
 
     isReviewSuccess(newValue) {
       if (newValue) {
-        if (!this.currentOwnReview) {
+        if (!this.haveOwnReview) {
           this.createReview();
         } else {
           this.updateReview();
