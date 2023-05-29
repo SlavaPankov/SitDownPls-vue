@@ -119,16 +119,16 @@
           <svg class="product__icon">
             <use xlink:href="@/assets/img/sprite.svg#rating-star"></use>
           </svg>
-          {{ roundRating(product.rating) }}
+          {{ helper.roundRating(product) }}
         </div>
         <h1 class="heading-reset product__heading">
           {{ product.name }}
         </h1>
         <div class="product__old-price" v-if="product.old_price">
-          {{ formattedPrice(product.old_price) }} руб
+          {{ helper.formattedPrice(product.old_price) }} руб
         </div>
         <div class="product__price">
-          {{ formattedPrice(product.price) }} руб
+          {{ helper.formattedPrice(product.price) }} руб
         </div>
         <div class="product__colors">
           <ul class="colors-list list-reset">
@@ -268,6 +268,7 @@ import ReviewsList from '@/components/ReviewsList';
 import BaseLoadError from '@/components/BaseLoadError';
 
 import { BASE_URL } from '@/api/config';
+import Helper from '@/api/Helper';
 import 'swiper/css';
 import 'swiper/css/thumbs';
 
@@ -331,6 +332,7 @@ export default {
       isAuthSuccess: false,
       isReviewSuccess: false,
       show: false,
+      helper: new Helper(),
     };
   },
 
@@ -364,23 +366,6 @@ export default {
           this.dataIsLoading = false;
           this.dataErrorLoad = true;
         });
-    },
-
-    roundRating() {
-      if (this.product.reviews && this.product.reviews.length > 0) {
-        const sum = this.product.reviews.reduce((a, b) => a + Number(b.rating), 0);
-        return (sum / this.product.reviews.length).toFixed(1).replace('.', ',');
-      }
-
-      return 0;
-    },
-
-    formattedPrice(price) {
-      return new Intl.NumberFormat('ru-RU', {
-        style: 'currency',
-        currency: 'RUB',
-      }).format(price)
-        .split(',')[0];
     },
 
     similarProducts() {

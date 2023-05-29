@@ -13,9 +13,9 @@ createApp(App)
   .mount('#app');
 
 // TODO: implement load data error component (1 hour)
+// TODO: implement checkUserRole function (30 minutes)
 // TODO: create Blog view (2 hour)
 // TODO: create Posts view (2 hour)
 // TODO: refactor (1 day)
-// TODO: implement checkUserRole function (30 minutes)
 // TODO: implement admin (1 week)
 // TODO: add style to 404 page (30 minutes)

@@ -129,5 +129,18 @@ export default {
     align-items: center;
     gap: 26px;
   }
+
+  &__rate {
+    margin-bottom: 15px;
+  }
+
+  &__bold {
+    padding-left: 8px;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+  }
 }
 </style>

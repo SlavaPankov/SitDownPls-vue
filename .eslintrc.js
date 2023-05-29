@@ -23,5 +23,6 @@ module.exports = {
         vue: 'never',
       },
     ],
+    'max-len': ['error', { code: 150 }],
   },
 };

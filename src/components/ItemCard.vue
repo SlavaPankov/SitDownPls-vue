@@ -4,7 +4,7 @@
       <svg class="rating-card__icon">
         <use xlink:href="@/assets/img/sprite.svg#rating-star"></use>
       </svg>
-      {{ roundRating }}
+      {{ helper.roundRating(product) }}
     </div>
     <router-link class="rating-card__link" :to="{
       name: 'product',
@@ -33,7 +33,7 @@
       {{ product.name }}
     </router-link>
     <div class="rating-card__price">
-      {{ formattedPrice(product.price) }} руб
+      {{ helper.formattedPrice(product.price) }} руб
     </div>
     <router-link :to="{
         name: 'product',
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import Helper from '@/api/Helper';
+
 export default {
   name: 'ItemCard',
   props: {
@@ -61,34 +63,10 @@ export default {
     },
   },
 
-  computed: {
-    roundRating() {
-      if (this.product.reviews && this.product.reviews.length > 0) {
-        const sum = this.product.reviews.reduce((a, b) => a + Number(b.rating), 0);
-        return (sum / this.product.reviews.length).toFixed(1).replace('.', ',');
-      }
-
-      return 0;
-    },
-
-    nameLastWord() {
-      const arrFromString = this.product.name.split(' ');
-
-      return arrFromString[arrFromString.length - 1];
-    },
-
-    nameWithoutLastWord() {
-      const arrFromString = this.product.name.split(' ');
-      arrFromString.pop();
-
-      return arrFromString.join(' ');
-    },
-  },
-
-  methods: {
-    formattedPrice(price) {
-      return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(price).split(',')[0];
-    },
+  data() {
+    return {
+      helper: new Helper(),
+    };
   },
 };
 </script>
