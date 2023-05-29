@@ -12,26 +12,26 @@
     <swiper-slide
       v-for="product in getDiscountProducts"
       :key="product.id">
-      <discount-card :product="product" />
+      <item-card mode="discount" :product="product" />
     </swiper-slide>
   </swiper>
 </template>
 
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import DiscountCard from '@/components/DiscountCard';
 import { Navigation } from 'swiper';
 import { mapGetters } from 'vuex';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+import ItemCard from '@/components/ItemCard';
 
 export default {
   name: 'SpecialsSlider',
   components: {
     Swiper,
     SwiperSlide,
-    DiscountCard,
+    ItemCard,
   },
 
   setup() {

@@ -1,5 +1,5 @@
 <template>
-  <article class="rating__card rating-card">
+  <article v-if="mode === 'item'" class="rating__card rating-card">
     <div class="rating-card__grade">
       <svg class="rating-card__icon">
         <use xlink:href="@/assets/img/sprite.svg#rating-star"></use>
@@ -45,6 +45,53 @@
       Купить
     </router-link>
   </article>
+  <article v-if="mode === 'discount'" class="specials__card special-card">
+    <span class="special-card__label">
+      - {{ helper.formattedPrice(discount) }}
+    </span>
+    <router-link :to="{
+      name: 'product',
+          params: {
+            slug: product.slug,
+            category: product.categories[0].slug
+          }
+        }"
+                 class="special-card__img-link"
+    >
+      <picture class="special-card__picture">
+        <img loading="lazy"
+             src="../assets/img/1-specials.png"
+             class="image special-card__image"
+             :alt="product.name"
+        >
+      </picture>
+    </router-link>
+    <router-link
+      :to="{ name: 'product',
+             params: {
+                slug: product.slug,
+                category: product.categories[0].slug } }"
+      class="heading-reset special-card__title"
+    >
+      {{ nameWithoutLastWord }} <span class="block">{{ nameLastWord }}</span>
+    </router-link>
+    <div class="special-card__prices">
+      <div class="special-card__prices-current">
+        {{ helper.formattedPrice(product.price) }} руб
+      </div>
+      <div class="special-card__prices-old">
+        {{ helper.formattedPrice(product.old_price) }} руб
+      </div>
+    </div>
+    <router-link
+      :to="{ name: 'product',
+             params: {
+              slug: product.slug,
+              category: product.categories[0].slug } }"
+      class="special-card__button btn-reset">
+      Купить
+    </router-link>
+  </article>
 </template>
 
 <script>
@@ -68,6 +115,25 @@ export default {
       helper: new Helper(),
     };
   },
+
+  computed: {
+    discount() {
+      return Number(this.product.old_price) - Number(this.product.price);
+    },
+
+    nameLastWord() {
+      const arrFromString = this.product.name.split(' ');
+
+      return arrFromString[arrFromString.length - 1];
+    },
+
+    nameWithoutLastWord() {
+      const arrFromString = this.product.name.split(' ');
+      arrFromString.pop();
+
+      return arrFromString.join(' ');
+    },
+  },
 };
 </script>
 
@@ -82,6 +148,20 @@ export default {
 
   &__link {
     margin-bottom: 16px;
+  }
+}
+
+.special-card {
+  @include special-card;
+}
+
+.specials__slider .swiper-slide {
+  flex-basis: 25%;
+  max-width: 296px;
+
+  &:nth-child(3n+2) {
+    flex-basis: 50%;
+    max-width: 624px;
   }
 }
 </style>
