@@ -12,6 +12,7 @@ import ResetPasswordView from '@/views/SetPasswordView';
 import LogInView from '@/views/LogInView';
 import ContactsView from '@/views/ContactsView';
 import SearchView from '@/views/SearchView';
+import PostView from '@/views/PostView';
 
 const routes = [
   {
@@ -118,6 +119,14 @@ const routes = [
         component: SearchView,
         meta: {
           breadcrumb: 'Результаты поиска',
+        },
+      },
+      {
+        path: '/blog/:id',
+        name: 'post',
+        component: PostView,
+        meta: {
+          breadcrumb: 'пост',
         },
       },
     ],

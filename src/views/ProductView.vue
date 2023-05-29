@@ -224,6 +224,7 @@
     </div>
   </section>
   <base-spinner v-show="dataIsLoading"/>
+  <base-load-error v-if="dataErrorLoad" :callback="handlerTryAgainClick" />
   <base-modal v-model:open="openModalReview">
       <review-form v-if="rememberToken"
                    v-model:form-data="reviewFormData"
@@ -249,7 +250,6 @@
         </button>
       </div>
     </base-modal>
-  <rating-stars />
 </template>
 
 <script>
@@ -265,7 +265,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import ReviewForm from '@/components/ReviewForm';
 import AuthForm from '@/components/AuthForm';
 import ReviewsList from '@/components/ReviewsList';
-import RatingStars from '@/components/RatingStars';
+import BaseLoadError from '@/components/BaseLoadError';
 
 import { BASE_URL } from '@/api/config';
 import 'swiper/css';
@@ -274,7 +274,7 @@ import 'swiper/css/thumbs';
 export default {
   name: 'ProductView',
   components: {
-    RatingStars,
+    BaseLoadError,
     ReviewsList,
     SimilarSlider,
     BaseSpinner,
@@ -323,6 +323,7 @@ export default {
       authGlobalError: '',
       dataIsLoading: true,
       dataIsLoaded: false,
+      dataErrorLoad: false,
       productAddSending: false,
       productAdded: false,
       openModalReview: false,
@@ -354,7 +355,14 @@ export default {
             this.$breadcrumbs.value[this.$breadcrumbs.value.length - 2].label = this.product.categories[0].name;
             this.dataIsLoaded = true;
             this.dataIsLoading = false;
+          } else {
+            this.dataIsLoading = false;
+            this.dataErrorLoad = true;
           }
+        })
+        .catch(() => {
+          this.dataIsLoading = false;
+          this.dataErrorLoad = true;
         });
     },
 
@@ -476,6 +484,10 @@ export default {
         this.reviewFormData.comment = this.currentOwnReview.comment;
         this.reviewFormData.rating = this.currentOwnReview.rating;
       }
+    },
+
+    handlerTryAgainClick() {
+      this.loadProduct(this.$route.params.slug);
     },
   },
 

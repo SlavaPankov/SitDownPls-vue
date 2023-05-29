@@ -12,6 +12,10 @@ createApp(App)
   .use(breadcrumbs)
   .mount('#app');
 
-// TODO: add reviews to product
-// TODO: add user rating to product
-// TODO: add style to 404 page
+// TODO: implement load data error component (1 hour)
+// TODO: create Blog view (2 hour)
+// TODO: create Posts view (2 hour)
+// TODO: refactor (1 day)
+// TODO: implement checkUserRole function (30 minutes)
+// TODO: implement admin (1 week)
+// TODO: add style to 404 page (30 minutes)

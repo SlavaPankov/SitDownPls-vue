@@ -73,7 +73,6 @@ import CategoriesList from '@/components/CategoriesList';
 import { mapGetters } from 'vuex';
 import UsefulSlider from '@/components/UsefulSlider';
 import BaseCallback from '@/components/BaseCallback';
-import ratingStar from '@/assets/img/svg/rating-star-outline.svg';
 
 export default {
   name: 'HomeView',
@@ -88,7 +87,6 @@ export default {
 
   data() {
     return {
-      startLink: ratingStar,
       RatingListLength: 0,
       offsetStep: window.innerWidth <= 1024 ? 6 : 8,
       ratingStep() {

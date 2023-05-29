@@ -17,6 +17,7 @@ export default createStore({
     rememberToken: '',
     dataIsLoaded: false,
     dataIsLoading: true,
+    dataLoadError: false,
     orderInfo: null,
     stores: [],
   },
@@ -80,6 +81,10 @@ export default createStore({
 
     getStateIsLoaded(state) {
       return state.dataIsLoaded;
+    },
+
+    getStateLoadError(state) {
+      return state.dataLoadError;
     },
 
     cartTotalPrice(state) {
@@ -148,6 +153,10 @@ export default createStore({
       state.dataIsLoaded = value;
     },
 
+    updateDataLoadError(state, value) {
+      state.dataLoadError = value;
+    },
+
     updateCartProductCount(state, {
       productId,
       quantity,
@@ -188,19 +197,44 @@ export default createStore({
     },
   },
   actions: {
+    loadError(ctx) {
+      ctx.commit('updateDataLoadError', true);
+      ctx.commit('updateIsLoading', false);
+    },
+
     loadCategories(ctx) {
       return axios
         .get(`${BASE_URL}/api/categories`)
-        .then((response) => ctx.commit('updateCategories', response.data.payload));
+        .then((response) => {
+          if (response.data.error === null) {
+            ctx.commit('updateCategories', response.data.payload);
+          } else {
+            ctx.dispatch('loadError');
+          }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
+        });
     },
 
     loadProducts(ctx) {
+      ctx.commit('updateIsLoaded', false);
+      ctx.commit('updateIsLoading', true);
+      ctx.commit('updateDataLoadError', false);
+
       return axios
         .get(`${BASE_URL}/api/products`)
         .then((response) => {
-          ctx.commit('updateProducts', response.data.payload);
-          ctx.commit('updateIsLoaded', true);
-          ctx.commit('updateIsLoading', false);
+          if (response.data.error === null) {
+            ctx.commit('updateProducts', response.data.payload);
+            ctx.commit('updateIsLoaded', true);
+            ctx.commit('updateIsLoading', false);
+          } else {
+            ctx.dispatch('loadError');
+          }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
         });
     },
 
@@ -212,36 +246,81 @@ export default createStore({
           },
         })
         .then((response) => {
-          const userAccessToken = response.data.payload.user.remember_token;
-          ctx.commit('updateBasket', response.data.payload);
+          if (response.data.error === null) {
+            const userAccessToken = response.data.payload.user.remember_token;
+            ctx.commit('updateBasket', response.data.payload);
 
-          if (!localStorage.getItem('userAccessToken')) {
-            ctx.commit('updateUserAccessToken', userAccessToken);
-            localStorage.setItem('userAccessToken', userAccessToken);
+            if (!localStorage.getItem('userAccessToken')) {
+              ctx.commit('updateUserAccessToken', userAccessToken);
+              localStorage.setItem('userAccessToken', userAccessToken);
+            }
+          } else {
+            ctx.dispatch('loadError');
           }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
         });
     },
 
     loadPosts(ctx) {
       return axios
         .get(`${BASE_URL}/api/posts`)
-        .then((response) => ctx.commit('updatePosts', response.data.payload));
+        .then((response) => {
+          if (response.data.error === null) {
+            ctx.commit('updatePosts', response.data.payload);
+          } else {
+            ctx.dispatch('loadError');
+          }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
+        });
     },
 
     loadColors(ctx) {
       return axios
         .get(`${BASE_URL}/api/colors`)
-        .then((response) => ctx.commit('updateColors', response.data.payload));
+        .then((response) => {
+          if (response.data.error === null) {
+            ctx.commit('updateColors', response.data.payload);
+          } else {
+            ctx.dispatch('loadError');
+          }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
+        });
     },
 
     loadDeliveryTypes(ctx) {
-      return axios.get(`${BASE_URL}/api/delivery-types`)
-        .then((response) => ctx.commit('updateDeliveryTypes', response.data.payload));
+      return axios
+        .get(`${BASE_URL}/api/delivery-types`)
+        .then((response) => {
+          if (response.data.error === null) {
+            ctx.commit('updateDeliveryTypes', response.data.payload);
+          } else {
+            ctx.dispatch('loadError');
+          }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
+        });
     },
 
     loadPaymentTypes(ctx) {
-      return axios.get(`${BASE_URL}/api/payment-types`)
-        .then((response) => ctx.commit('updatePaymentTypes', response.data.payload));
+      return axios
+        .get(`${BASE_URL}/api/payment-types`)
+        .then((response) => {
+          if (response.data.error === null) {
+            ctx.commit('updatePaymentTypes', response.data.payload);
+          } else {
+            ctx.dispatch('loadError');
+          }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
+        });
     },
 
     addProductToCart(ctx, {
@@ -257,7 +336,16 @@ export default createStore({
         params: {
           userAccessToken: ctx.state.userAccessToken,
         },
-      }).then((response) => ctx.commit('updateBasket', response.data.payload));
+      }).then((response) => {
+        if (response.data.error === null) {
+          ctx.commit('updateBasket', response.data.payload);
+        } else {
+          ctx.dispatch('loadError');
+        }
+      })
+        .catch(() => {
+          ctx.dispatch('loadError');
+        });
     },
 
     updateCartProductCount(ctx, {
@@ -283,7 +371,16 @@ export default createStore({
         params: {
           userAccessToken: ctx.state.userAccessToken,
         },
-      }).then((response) => ctx.commit('updateBasket', response.data.payload));
+      }).then((response) => {
+        if (response.data.payload === null) {
+          ctx.commit('updateBasket', response.data.payload);
+        } else {
+          ctx.dispatch('loadError');
+        }
+      })
+        .catch(() => {
+          ctx.dispatch('loadError');
+        });
     },
 
     deleteCartProduct(ctx, productId) {
@@ -296,7 +393,16 @@ export default createStore({
         params: {
           userAccessToken: ctx.state.userAccessToken,
         },
-      }).then((response) => ctx.commit('updateBasket', response.data.payload));
+      }).then((response) => {
+        if (response.data.error === null) {
+          ctx.commit('updateBasket', response.data.payload);
+        } else {
+          ctx.dispatch('loadError');
+        }
+      })
+        .catch(() => {
+          ctx.dispatch('loadError');
+        });
     },
 
     loadOrder(ctx, orderId) {
@@ -307,7 +413,14 @@ export default createStore({
           },
         })
         .then((response) => {
-          ctx.commit('updateOrderInfo', response.data.payload);
+          if (response.data.error === null) {
+            ctx.commit('updateOrderInfo', response.data.payload);
+          } else {
+            ctx.dispatch('loadError');
+          }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
         });
     },
 
@@ -316,7 +429,12 @@ export default createStore({
         .then((response) => {
           if (response.data.error === null) {
             ctx.commit('updateStores', response.data.payload);
+          } else {
+            ctx.dispatch('loadError');
           }
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
         });
     },
 
@@ -325,8 +443,14 @@ export default createStore({
         .then((response) => {
           if (response.data.error === null) {
             ctx.commit('updateUser', response.data.payload);
+          } else {
+            ctx.dispatch('loadError');
+            return response;
           }
           return response;
+        })
+        .catch(() => {
+          ctx.dispatch('loadError');
         });
     },
   },

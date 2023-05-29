@@ -12,9 +12,9 @@
       <div class="useful-card__text">
         {{ post.preview_body }}
       </div>
-      <a class="useful-card__link" href="#">
+      <router-link :to="{ name: 'post', params: { id: post.id } }" class="useful-card__link">
         Читать
-      </a>
+      </router-link>
     </div>
   </article>
 </template>
